@@ -10,7 +10,7 @@ GOLINT ?= $(GO) tool golangci-lint
 
 ##@ Primary Targets
 
-build: bin/ux .make/buf-build
+build: .make/buf-build bin/ux
 generate gen: codegen
 test: .make/ginkgo-run
 fmt format: .make/buf-fmt .make/go-fmt

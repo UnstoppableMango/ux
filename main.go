@@ -6,8 +6,13 @@ import (
 )
 
 func main() {
-	cmd := cmd.NewUx()
-	if err := cmd.Execute(); err != nil {
+	root := cmd.NewUx()
+	root.AddCommand(
+		cmd.NewCli(),
+		cmd.NewGenerate(),
+	)
+
+	if err := root.Execute(); err != nil {
 		cli.Fail(err)
 	}
 }
