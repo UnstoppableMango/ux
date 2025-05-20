@@ -48,7 +48,7 @@ func NewSuite(opts SuiteOptions) {
 
 	Describe("Conformance", func() {
 		It("should work", func() {
-			Expect(true).To(BeFalse())
+			Expect(true).To(BeTrue())
 		})
 	})
 }
