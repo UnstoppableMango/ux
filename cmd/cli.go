@@ -1,11 +1,26 @@
 package cmd
 
-import "github.com/spf13/cobra"
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+	"github.com/unstoppablemango/ux/pkg/cli"
+)
 
 func NewCli() *cobra.Command {
-	return &cobra.Command{
+	opts := cli.Options{}
+
+	cmd := &cobra.Command{
 		Use:    "cli",
 		Hidden: true,
 		Short:  "CLI e2e testing",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("Got opts: ", opts)
+			fmt.Println("Got args: ", args)
+		},
 	}
+
+	cli.Flags(cmd, &opts)
+
+	return cmd
 }

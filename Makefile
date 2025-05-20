@@ -29,8 +29,7 @@ GO_GRPC_SRC := ${PROTO_SRC:proto/%.proto=gen/%_grpc.pb.go}
 bin/ux: ${GO_SRC}
 	$(GO) build -o $@ main.go
 
-.PHONY: codegen
-codegen: ${GO_PB_SRC} ${GO_GRPC_SRC}
+codegen: ${GO_PB_SRC} ${GO_GRPC_SRC} .make/go-generate
 
 ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
@@ -84,6 +83,10 @@ bin/ginkgo: go.mod ## Optional bin install
 
 .make/ginkgo-run: $(filter %_test.go,${GO_SRC})
 	$(GINKGO) $(sort $(dir $?))
+	@touch $@
+
+.make/go-generate: ${GO_SRC}
+	$(GO) generate ./...
 	@touch $@
 
 .make/go-vet: ${GO_SRC}

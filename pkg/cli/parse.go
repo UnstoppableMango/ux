@@ -1,9 +1,22 @@
 package cli
 
-func Parse(args []string) (Input, error) {
+import (
+	"slices"
+
+	"github.com/unstoppablemango/ux/pkg/cli/sink"
+	"github.com/unstoppablemango/ux/pkg/cli/source"
+)
+
+func Parse(opts Options, args []string) (i Input, err error) {
 	if len(args) == 0 {
-		return Input{}, nil
+		return
+	}
+	if slices.Contains(args, "-") {
+		i.addSource("-", source.Stdin)
+	}
+	for _, o := range opts.Outputs {
+		i.addSink(o, sink.File(o))
 	}
 
-	return Input{}, nil
+	return i, nil
 }
