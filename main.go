@@ -7,9 +7,14 @@ import (
 
 func main() {
 	root := cmd.NewUx()
+
+	plugin := cmd.NewPlugin()
+	plugin.AddCommand(cmd.NewConformance())
+
 	root.AddCommand(
 		cmd.NewCli(),
 		cmd.NewGenerate(),
+		plugin,
 	)
 
 	if err := root.Execute(); err != nil {

@@ -18,3 +18,9 @@ func OpenStdin(ctx context.Context) (io.Reader, error) {
 }
 
 var Stdin stdin = OpenStdin
+
+type File string
+
+func (f File) Open(ctx context.Context) (io.Reader, error) {
+	return os.FromContext(ctx).Fs().Open(string(f))
+}

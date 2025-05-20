@@ -10,7 +10,7 @@ GOLINT ?= $(GO) tool golangci-lint
 
 ##@ Primary Targets
 
-build: .make/buf-build bin/ux
+build: .make/buf-build bin/ux bin/dummy
 generate gen: codegen
 test: .make/ginkgo-run
 fmt format: .make/buf-fmt .make/go-fmt
@@ -28,6 +28,9 @@ GO_GRPC_SRC := ${PROTO_SRC:proto/%.proto=gen/%_grpc.pb.go}
 
 bin/ux: ${GO_SRC}
 	$(GO) build -o $@ main.go
+
+bin/dummy: ${GO_SRC}
+	$(GO) build -o $@ ./cmd/dummy
 
 codegen: ${GO_PB_SRC} ${GO_GRPC_SRC} .make/go-generate
 
@@ -81,7 +84,7 @@ bin/ginkgo: go.mod ## Optional bin install
 	$(GO) fmt $(addprefix ./,$(sort $(dir $?)))
 	@touch $@
 
-.make/ginkgo-run: $(filter %_test.go,${GO_SRC})
+.make/ginkgo-run: ${GO_SRC}
 	$(GINKGO) $(sort $(dir $?))
 	@touch $@
 

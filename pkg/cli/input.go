@@ -5,12 +5,16 @@ import (
 	"io"
 )
 
+type Opener[T any] interface {
+	Open(ctx context.Context) (T, error)
+}
+
 type Source interface {
-	Open(ctx context.Context) (io.Reader, error)
+	Opener[io.Reader]
 }
 
 type Sink interface {
-	Open(ctx context.Context) (io.Writer, error)
+	Opener[io.Writer]
 }
 
 type Input struct {

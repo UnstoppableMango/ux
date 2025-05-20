@@ -17,6 +17,12 @@ func NewCli() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("Got opts: ", opts)
 			fmt.Println("Got args: ", args)
+
+			if inputs, err := cli.Parse(opts, args); err != nil {
+				cli.Fail(err)
+			} else {
+				fmt.Println("Parsed inputs: ", inputs)
+			}
 		},
 	}
 
