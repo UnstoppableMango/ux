@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package dev.unmango.ux.v1alpha1;
+
+message Payload {
+  string content_type = 1;
+  bytes data = 2;
+}
+
+message GenerateRequest {
+  string target = 1;
+  Payload payload = 2;
+}
+
+message GenerateResponse {
+  Payload payload = 1;
+}
+
+service UxService {
+  rpc Generate(GenerateRequest) returns (GenerateResponse);
+}

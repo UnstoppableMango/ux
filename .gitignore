@@ -1,0 +1,6 @@
+bin/
+.make/
+
+.envrc
+.vscode/*
+!.vscode/extensions.json
