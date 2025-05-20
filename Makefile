@@ -2,11 +2,12 @@ _ != mkdir -p .make
 
 ##@ Tools
 
-GO     ?= go
-BUF    ?= $(GO) tool buf
-DEVCTL ?= $(GO) tool devctl
-GINKGO ?= $(GO) tool ginkgo
-GOLINT ?= $(GO) tool golangci-lint
+GO      ?= go
+BUF     ?= $(GO) tool buf
+DEVCTL  ?= $(GO) tool devctl
+GINKGO  ?= $(GO) tool ginkgo
+GOLINT  ?= $(GO) tool golangci-lint
+MOCKGEN ?= $(GO) tool mockgen
 
 ##@ Primary Targets
 
