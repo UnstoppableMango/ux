@@ -20,19 +20,21 @@ tidy: go.sum buf.lock
 ##@ Source
 
 PROTO_SRC   != $(BUF) ls-files
+GRPC_PROTO  := $(filter %/plugin.proto %/ux.proto,${PROTO_SRC})
 GO_SRC      != $(DEVCTL) list --go
 GO_PB_SRC   := ${PROTO_SRC:proto/%.proto=gen/%.pb.go}
-GO_GRPC_SRC := ${PROTO_SRC:proto/%.proto=gen/%_grpc.pb.go}
+GO_GRPC_SRC := ${GRPC_PROTO:proto/%.proto=gen/%_grpc.pb.go}
+GO_CODEGEN  := ${GO_GRPC_SRC} ${GO_PB_SRC}
 
 ##@ Artifacts
 
-bin/ux: ${GO_SRC}
+bin/ux: ${GO_SRC} ## Build the ux CLI
 	$(GO) build -o $@ main.go
 
-bin/dummy: ${GO_SRC}
+bin/dummy: ${GO_SRC} ## Build the dummy testing utility
 	$(GO) build -o $@ ./cmd/dummy
 
-codegen: ${GO_PB_SRC} ${GO_GRPC_SRC} .make/go-generate
+codegen: ${GO_CODEGEN} .make/go-generate
 
 ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
@@ -52,7 +54,7 @@ go.sum: go.mod ${GO_SRC}
 %_test.go: ## Generate a Ginkgo test
 	cd $(dir $@) && $(GINKGO) generate $(notdir $@)
 
-.envrc: hack/example.envrc
+.envrc: hack/example.envrc ## Generate a recommended .envrc
 	cp $< $@ && chmod a=,u=r $@
 
 export GOBIN := ${CURDIR}/bin

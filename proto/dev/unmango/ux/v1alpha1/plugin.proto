@@ -2,9 +2,15 @@ syntax = "proto3";
 
 package dev.unmango.ux.v1alpha1;
 
+message Capability {
+  string from = 1;
+  string to = 2;
+  bool lossy = 3;
+}
+
 message RegisterRequest {
   string name = 1;
-  repeated string capabilities = 2;
+  repeated Capability capabilities = 2;
 }
 
 message RegisterResponse {}
