@@ -1,0 +1,16 @@
+.github/
+.make/
+.vscode/
+bin/
+hack/
+proto/
+test/
+.dockerignore
+.editorconfig
+.envrc
+.gitignore
+buf.gen.yaml
+buf.yaml
+Dockerfile
+LICENSE
+Makefile

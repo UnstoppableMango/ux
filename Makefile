@@ -5,6 +5,7 @@ _ != mkdir -p .make
 GO      ?= go
 BUF     ?= $(GO) tool buf
 DEVCTL  ?= $(GO) tool devctl
+DOCKER  ?= docker
 GINKGO  ?= $(GO) tool ginkgo
 GOLINT  ?= $(GO) tool golangci-lint
 MOCKGEN ?= $(GO) tool mockgen
@@ -17,6 +18,7 @@ test: .make/ginkgo-run
 fmt format: .make/buf-fmt .make/go-fmt
 lint: .make/buf-lint .make/go-vet .make/golangci-lint-run
 tidy: go.sum buf.lock
+docker: .make/docker-ux
 
 ##@ Source
 
@@ -81,6 +83,10 @@ bin/ginkgo: go.mod ## Optional bin install
 
 .make/buf-lint: ${PROTO_SRC}
 	$(BUF) lint $(addprefix --path ,$?)
+	@touch $@
+
+.make/docker-ux: Dockerfile .dockerignore ${GO_SRC}
+	$(DOCKER) build ${CURDIR} -t unstoppablemango/ux:v0.0.1-alpha
 	@touch $@
 
 .make/go-fmt: ${GO_SRC}
