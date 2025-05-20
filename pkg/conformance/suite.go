@@ -37,7 +37,7 @@ func NewSuite(opts SuiteOptions) {
 		_ = context.AfterFunc(ctx, server.Stop)
 		go func() {
 			err := server.Serve(lis)
-			fmt.Fprintf(GinkgoWriter, "Server stopped: %s", err)
+			_, _ = fmt.Fprintf(GinkgoWriter, "Server stopped: %s", err)
 		}()
 	})
 
