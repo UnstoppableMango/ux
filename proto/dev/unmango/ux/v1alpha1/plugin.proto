@@ -7,7 +7,6 @@ import "dev/unmango/ux/v1alpha1/ux.proto";
 service PluginService {
   rpc Acknowledge(AcknowledgeRequest) returns (AcknowledgeResponse);
   rpc Complete(CompleteRequest) returns (CompleteResponse);
-  rpc Register(RegisterRequest) returns (RegisterResponse);
 }
 
 message AcknowledgeRequest {
@@ -24,14 +23,9 @@ message CompleteRequest {
   Payload payload = 2;
 }
 
-message CompleteResponse {}
-
-message RegisterRequest {
-  string name = 1;
-  repeated Capability capabilities = 2;
+message CompleteResponse {
+  bool head_pat = 1;
 }
-
-message RegisterResponse {}
 
 message Capability {
   string from = 1;

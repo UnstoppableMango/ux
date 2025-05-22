@@ -171,6 +171,7 @@ func (x *CompleteRequest) GetPayload() *Payload {
 
 type CompleteResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	HeadPat       bool                   `protobuf:"varint,1,opt,name=head_pat,json=headPat,proto3" json:"head_pat,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -205,92 +206,11 @@ func (*CompleteResponse) Descriptor() ([]byte, []int) {
 	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{3}
 }
 
-type RegisterRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Capabilities  []*Capability          `protobuf:"bytes,2,rep,name=capabilities,proto3" json:"capabilities,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RegisterRequest) Reset() {
-	*x = RegisterRequest{}
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RegisterRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RegisterRequest) ProtoMessage() {}
-
-func (x *RegisterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[4]
+func (x *CompleteResponse) GetHeadPat() bool {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.HeadPat
 	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RegisterRequest.ProtoReflect.Descriptor instead.
-func (*RegisterRequest) Descriptor() ([]byte, []int) {
-	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *RegisterRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *RegisterRequest) GetCapabilities() []*Capability {
-	if x != nil {
-		return x.Capabilities
-	}
-	return nil
-}
-
-type RegisterResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RegisterResponse) Reset() {
-	*x = RegisterResponse{}
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RegisterResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RegisterResponse) ProtoMessage() {}
-
-func (x *RegisterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RegisterResponse.ProtoReflect.Descriptor instead.
-func (*RegisterResponse) Descriptor() ([]byte, []int) {
-	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{5}
+	return false
 }
 
 type Capability struct {
@@ -304,7 +224,7 @@ type Capability struct {
 
 func (x *Capability) Reset() {
 	*x = Capability{}
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[6]
+	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -316,7 +236,7 @@ func (x *Capability) String() string {
 func (*Capability) ProtoMessage() {}
 
 func (x *Capability) ProtoReflect() protoreflect.Message {
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[6]
+	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -329,7 +249,7 @@ func (x *Capability) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Capability.ProtoReflect.Descriptor instead.
 func (*Capability) Descriptor() ([]byte, []int) {
-	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{6}
+	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Capability) GetFrom() string {
@@ -367,21 +287,17 @@ const file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc = "" +
 	"\x0fCompleteRequest\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\tR\trequestId\x12:\n" +
-	"\apayload\x18\x02 \x01(\v2 .dev.unmango.ux.v1alpha1.PayloadR\apayload\"\x12\n" +
-	"\x10CompleteResponse\"n\n" +
-	"\x0fRegisterRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12G\n" +
-	"\fcapabilities\x18\x02 \x03(\v2#.dev.unmango.ux.v1alpha1.CapabilityR\fcapabilities\"\x12\n" +
-	"\x10RegisterResponse\"F\n" +
+	"\apayload\x18\x02 \x01(\v2 .dev.unmango.ux.v1alpha1.PayloadR\apayload\"-\n" +
+	"\x10CompleteResponse\x12\x19\n" +
+	"\bhead_pat\x18\x01 \x01(\bR\aheadPat\"F\n" +
 	"\n" +
 	"Capability\x12\x12\n" +
 	"\x04from\x18\x01 \x01(\tR\x04from\x12\x0e\n" +
 	"\x02to\x18\x02 \x01(\tR\x02to\x12\x14\n" +
-	"\x05lossy\x18\x03 \x01(\bR\x05lossy2\xbb\x02\n" +
+	"\x05lossy\x18\x03 \x01(\bR\x05lossy2\xda\x01\n" +
 	"\rPluginService\x12h\n" +
 	"\vAcknowledge\x12+.dev.unmango.ux.v1alpha1.AcknowledgeRequest\x1a,.dev.unmango.ux.v1alpha1.AcknowledgeResponse\x12_\n" +
-	"\bComplete\x12(.dev.unmango.ux.v1alpha1.CompleteRequest\x1a).dev.unmango.ux.v1alpha1.CompleteResponse\x12_\n" +
-	"\bRegister\x12(.dev.unmango.ux.v1alpha1.RegisterRequest\x1a).dev.unmango.ux.v1alpha1.RegisterResponseB\xf0\x01\n" +
+	"\bComplete\x12(.dev.unmango.ux.v1alpha1.CompleteRequest\x1a).dev.unmango.ux.v1alpha1.CompleteResponseB\xf0\x01\n" +
 	"\x1bcom.dev.unmango.ux.v1alpha1B\vPluginProtoP\x01ZEgithub.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1;uxv1alpha1\xa2\x02\x03DUU\xaa\x02\x17Dev.Unmango.Ux.V1alpha1\xca\x02\x17Dev\\Unmango\\Ux\\V1alpha1\xe2\x02#Dev\\Unmango\\Ux\\V1alpha1\\GPBMetadata\xea\x02\x1aDev::Unmango::Ux::V1alpha1b\x06proto3"
 
 var (
@@ -396,32 +312,27 @@ func file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP() []byte {
 	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescData
 }
 
-var file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_dev_unmango_ux_v1alpha1_plugin_proto_goTypes = []any{
 	(*AcknowledgeRequest)(nil),  // 0: dev.unmango.ux.v1alpha1.AcknowledgeRequest
 	(*AcknowledgeResponse)(nil), // 1: dev.unmango.ux.v1alpha1.AcknowledgeResponse
 	(*CompleteRequest)(nil),     // 2: dev.unmango.ux.v1alpha1.CompleteRequest
 	(*CompleteResponse)(nil),    // 3: dev.unmango.ux.v1alpha1.CompleteResponse
-	(*RegisterRequest)(nil),     // 4: dev.unmango.ux.v1alpha1.RegisterRequest
-	(*RegisterResponse)(nil),    // 5: dev.unmango.ux.v1alpha1.RegisterResponse
-	(*Capability)(nil),          // 6: dev.unmango.ux.v1alpha1.Capability
-	(*Payload)(nil),             // 7: dev.unmango.ux.v1alpha1.Payload
+	(*Capability)(nil),          // 4: dev.unmango.ux.v1alpha1.Capability
+	(*Payload)(nil),             // 5: dev.unmango.ux.v1alpha1.Payload
 }
 var file_dev_unmango_ux_v1alpha1_plugin_proto_depIdxs = []int32{
-	6, // 0: dev.unmango.ux.v1alpha1.AcknowledgeRequest.capabilities:type_name -> dev.unmango.ux.v1alpha1.Capability
-	7, // 1: dev.unmango.ux.v1alpha1.CompleteRequest.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
-	6, // 2: dev.unmango.ux.v1alpha1.RegisterRequest.capabilities:type_name -> dev.unmango.ux.v1alpha1.Capability
-	0, // 3: dev.unmango.ux.v1alpha1.PluginService.Acknowledge:input_type -> dev.unmango.ux.v1alpha1.AcknowledgeRequest
-	2, // 4: dev.unmango.ux.v1alpha1.PluginService.Complete:input_type -> dev.unmango.ux.v1alpha1.CompleteRequest
-	4, // 5: dev.unmango.ux.v1alpha1.PluginService.Register:input_type -> dev.unmango.ux.v1alpha1.RegisterRequest
-	1, // 6: dev.unmango.ux.v1alpha1.PluginService.Acknowledge:output_type -> dev.unmango.ux.v1alpha1.AcknowledgeResponse
-	3, // 7: dev.unmango.ux.v1alpha1.PluginService.Complete:output_type -> dev.unmango.ux.v1alpha1.CompleteResponse
-	5, // 8: dev.unmango.ux.v1alpha1.PluginService.Register:output_type -> dev.unmango.ux.v1alpha1.RegisterResponse
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 0: dev.unmango.ux.v1alpha1.AcknowledgeRequest.capabilities:type_name -> dev.unmango.ux.v1alpha1.Capability
+	5, // 1: dev.unmango.ux.v1alpha1.CompleteRequest.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
+	0, // 2: dev.unmango.ux.v1alpha1.PluginService.Acknowledge:input_type -> dev.unmango.ux.v1alpha1.AcknowledgeRequest
+	2, // 3: dev.unmango.ux.v1alpha1.PluginService.Complete:input_type -> dev.unmango.ux.v1alpha1.CompleteRequest
+	1, // 4: dev.unmango.ux.v1alpha1.PluginService.Acknowledge:output_type -> dev.unmango.ux.v1alpha1.AcknowledgeResponse
+	3, // 5: dev.unmango.ux.v1alpha1.PluginService.Complete:output_type -> dev.unmango.ux.v1alpha1.CompleteResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_dev_unmango_ux_v1alpha1_plugin_proto_init() }
@@ -436,7 +347,7 @@ func file_dev_unmango_ux_v1alpha1_plugin_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc), len(file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

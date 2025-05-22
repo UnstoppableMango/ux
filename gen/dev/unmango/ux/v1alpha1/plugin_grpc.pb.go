@@ -21,7 +21,6 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	PluginService_Acknowledge_FullMethodName = "/dev.unmango.ux.v1alpha1.PluginService/Acknowledge"
 	PluginService_Complete_FullMethodName    = "/dev.unmango.ux.v1alpha1.PluginService/Complete"
-	PluginService_Register_FullMethodName    = "/dev.unmango.ux.v1alpha1.PluginService/Register"
 )
 
 // PluginServiceClient is the client API for PluginService service.
@@ -30,7 +29,6 @@ const (
 type PluginServiceClient interface {
 	Acknowledge(ctx context.Context, in *AcknowledgeRequest, opts ...grpc.CallOption) (*AcknowledgeResponse, error)
 	Complete(ctx context.Context, in *CompleteRequest, opts ...grpc.CallOption) (*CompleteResponse, error)
-	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 }
 
 type pluginServiceClient struct {
@@ -61,23 +59,12 @@ func (c *pluginServiceClient) Complete(ctx context.Context, in *CompleteRequest,
 	return out, nil
 }
 
-func (c *pluginServiceClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RegisterResponse)
-	err := c.cc.Invoke(ctx, PluginService_Register_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // PluginServiceServer is the server API for PluginService service.
 // All implementations must embed UnimplementedPluginServiceServer
 // for forward compatibility.
 type PluginServiceServer interface {
 	Acknowledge(context.Context, *AcknowledgeRequest) (*AcknowledgeResponse, error)
 	Complete(context.Context, *CompleteRequest) (*CompleteResponse, error)
-	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	mustEmbedUnimplementedPluginServiceServer()
 }
 
@@ -93,9 +80,6 @@ func (UnimplementedPluginServiceServer) Acknowledge(context.Context, *Acknowledg
 }
 func (UnimplementedPluginServiceServer) Complete(context.Context, *CompleteRequest) (*CompleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Complete not implemented")
-}
-func (UnimplementedPluginServiceServer) Register(context.Context, *RegisterRequest) (*RegisterResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
 func (UnimplementedPluginServiceServer) mustEmbedUnimplementedPluginServiceServer() {}
 func (UnimplementedPluginServiceServer) testEmbeddedByValue()                       {}
@@ -154,24 +138,6 @@ func _PluginService_Complete_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PluginService_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RegisterRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(PluginServiceServer).Register(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: PluginService_Register_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PluginServiceServer).Register(ctx, req.(*RegisterRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // PluginService_ServiceDesc is the grpc.ServiceDesc for PluginService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -186,10 +152,6 @@ var PluginService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Complete",
 			Handler:    _PluginService_Complete_Handler,
-		},
-		{
-			MethodName: "Register",
-			Handler:    _PluginService_Register_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

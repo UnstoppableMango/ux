@@ -1,7 +1,6 @@
 package e2e_test
 
 import (
-	"bytes"
 	"os"
 	"os/exec"
 
@@ -29,10 +28,10 @@ var _ = Describe("E2e", func() {
 		It("should execute", func() {
 			cmd := exec.Command(uxPath, "plugin", "conformance", dummyPath)
 
-			ses, err := gexec.Start(cmd, &bytes.Buffer{}, GinkgoWriter)
+			ses, err := gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 
 			Expect(err).NotTo(HaveOccurred())
-			Eventually(ses).Should(gexec.Exit(0))
+			Eventually(ses, "30s").Should(gexec.Exit(0))
 		})
 	})
 })

@@ -8,10 +8,10 @@ import (
 
 type PluginService struct {
 	uxv1alpha1.UnimplementedPluginServiceServer
-	Requests []*uxv1alpha1.RegisterRequest
+	Requests []*uxv1alpha1.AcknowledgeRequest
 }
 
-func (s *PluginService) Register(_ context.Context, req *uxv1alpha1.RegisterRequest) (*uxv1alpha1.RegisterResponse, error) {
+func (s *PluginService) Acknowledge(_ context.Context, req *uxv1alpha1.AcknowledgeRequest) (*uxv1alpha1.AcknowledgeResponse, error) {
 	s.Requests = append(s.Requests, req)
-	return &uxv1alpha1.RegisterResponse{}, nil
+	return &uxv1alpha1.AcknowledgeResponse{}, nil
 }
