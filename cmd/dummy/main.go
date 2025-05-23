@@ -33,5 +33,9 @@ func main() {
 		cli.Fail(err)
 	}
 
-	fmt.Print(res)
+	pat, err := client.Plugin().Complete(ctx, &uxv1alpha1.CompleteRequest{
+		RequestId: res.RequestId,
+	})
+
+	fmt.Print(pat)
 }
