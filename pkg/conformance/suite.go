@@ -26,7 +26,10 @@ func NewSuite(opts SuiteOptions) bool {
 
 		BeforeEach(func() {
 			server := grpc.NewServer()
-			plugin = &PluginService{Requests: []*uxv1alpha1.AcknowledgeRequest{}}
+			plugin = &PluginService{
+				AcknowledgeEndpoint: endpoint[*uxv1alpha1.AcknowledgeRequest, *uxv1alpha1.AcknowledgeResponse]{},
+				CompleteEndpoint:    endpoint[*uxv1alpha1.CompleteRequest, *uxv1alpha1.CompleteResponse]{},
+			}
 			uxv1alpha1.RegisterPluginServiceServer(server, plugin)
 
 			sock = filepath.Join(GinkgoT().TempDir(), "ux.sock")
@@ -41,18 +44,26 @@ func NewSuite(opts SuiteOptions) bool {
 		})
 
 		It("should work", func() {
+			plugin.AcknowledgeEndpoint.Return(&uxv1alpha1.AcknowledgeResponse{
+				RequestId: "test-request-id",
+			})
+
 			cmd := exec.Command(opts.Plugin, "unix://"+sock)
 			ses, err := gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 			Expect(err).NotTo(HaveOccurred())
 
 			Eventually(func(g Gomega) {
-				g.Expect(plugin.Requests).NotTo(BeEmpty())
+				g.Expect(plugin.AcknowledgeEndpoint.Requests).NotTo(BeEmpty())
 			}).Should(Succeed())
 
 			req := &uxv1alpha1.AcknowledgeRequest{}
-			Expect(plugin.Requests).To(ContainElement(
+			Expect(plugin.AcknowledgeEndpoint.Requests).To(ContainElement(
 				HaveField("Name", "dummy"), &req,
 			))
+
+			Eventually(func(g Gomega) {
+				g.Expect(plugin.CompleteEndpoint.Requests).NotTo(BeEmpty())
+			}).Should(Succeed())
 
 			Eventually(ses).Should(gexec.Exit(0))
 		})

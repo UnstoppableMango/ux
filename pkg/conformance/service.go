@@ -50,24 +50,14 @@ type PluginService struct {
 	uxv1alpha1.UnimplementedPluginServiceServer
 	AcknowledgeEndpoint endpoint[*uxv1alpha1.AcknowledgeRequest, *uxv1alpha1.AcknowledgeResponse]
 	CompleteEndpoint    endpoint[*uxv1alpha1.CompleteRequest, *uxv1alpha1.CompleteResponse]
-
-	Requests  stack[*uxv1alpha1.AcknowledgeRequest]
-	Responses stack[*uxv1alpha1.AcknowledgeResponse]
 }
 
 func (s *PluginService) Acknowledge(_ context.Context, req *uxv1alpha1.AcknowledgeRequest) (*uxv1alpha1.AcknowledgeResponse, error) {
-	s.Requests = s.Requests.Push(req)
+	s.AcknowledgeEndpoint.Receive(req)
+	return s.AcknowledgeEndpoint.NextResponse()
+}
 
-	var (
-		res *uxv1alpha1.AcknowledgeResponse
-		ok  bool
-	)
-	if s.Responses, res, ok = s.Responses.Pop(); ok {
-		return res, nil
-	} else {
-		return &uxv1alpha1.AcknowledgeResponse{}, nil
-	}
-
-	// s.AcknowledgeEndpoint.Receive(req)
-	// return s.AcknowledgeEndpoint.NextResponse()
+func (s *PluginService) Complete(_ context.Context, req *uxv1alpha1.CompleteRequest) (*uxv1alpha1.CompleteResponse, error) {
+	s.CompleteEndpoint.Receive(req)
+	return s.CompleteEndpoint.NextResponse()
 }
