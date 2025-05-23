@@ -2,19 +2,33 @@ syntax = "proto3";
 
 package dev.unmango.ux.v1alpha1;
 
-message Capability {
-  string from = 1;
-  string to = 2;
-  bool lossy = 3;
+import "dev/unmango/ux/v1alpha1/ux.proto";
+
+service PluginService {
+  rpc Acknowledge(AcknowledgeRequest) returns (AcknowledgeResponse);
+  rpc Complete(CompleteRequest) returns (CompleteResponse);
 }
 
-message RegisterRequest {
+message AcknowledgeRequest {
   string name = 1;
   repeated Capability capabilities = 2;
 }
 
-message RegisterResponse {}
+message AcknowledgeResponse {
+  string request_id = 1;
+}
 
-service PluginService {
-  rpc Register(RegisterRequest) returns (RegisterResponse);
+message CompleteRequest {
+  string request_id = 1;
+  Payload payload = 2;
+}
+
+message CompleteResponse {
+  bool head_pat = 1;
+}
+
+message Capability {
+  string from = 1;
+  string to = 2;
+  bool lossy = 3;
 }
