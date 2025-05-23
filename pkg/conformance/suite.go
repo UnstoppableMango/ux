@@ -1,6 +1,7 @@
 package conformance
 
 import (
+	"fmt"
 	"net"
 	"os/exec"
 	"path/filepath"
@@ -48,6 +49,7 @@ func NewSuite(opts SuiteOptions) bool {
 				RequestId: "test-request-id",
 			})
 
+			By(fmt.Sprint("Starting the plugin: ", opts.Plugin))
 			cmd := exec.Command(opts.Plugin, "unix://"+sock)
 			ses, err := gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 			Expect(err).NotTo(HaveOccurred())
