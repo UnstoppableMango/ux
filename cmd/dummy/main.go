@@ -36,6 +36,9 @@ func main() {
 	pat, err := client.Plugin().Complete(ctx, &uxv1alpha1.CompleteRequest{
 		RequestId: res.RequestId,
 	})
+	if err != nil {
+		cli.Fail(err)
+	}
 
 	fmt.Print(pat)
 }
