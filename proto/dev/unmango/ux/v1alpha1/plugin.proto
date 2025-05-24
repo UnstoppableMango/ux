@@ -16,6 +16,8 @@ message AcknowledgeRequest {
 
 message AcknowledgeResponse {
   string request_id = 1;
+  bool abort = 2;
+  Payload payload = 3;
 }
 
 message CompleteRequest {

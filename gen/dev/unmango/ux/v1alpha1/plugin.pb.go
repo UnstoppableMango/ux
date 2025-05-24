@@ -76,6 +76,8 @@ func (x *AcknowledgeRequest) GetCapabilities() []*Capability {
 type AcknowledgeResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Abort         bool                   `protobuf:"varint,2,opt,name=abort,proto3" json:"abort,omitempty"`
+	Payload       *Payload               `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -115,6 +117,20 @@ func (x *AcknowledgeResponse) GetRequestId() string {
 		return x.RequestId
 	}
 	return ""
+}
+
+func (x *AcknowledgeResponse) GetAbort() bool {
+	if x != nil {
+		return x.Abort
+	}
+	return false
+}
+
+func (x *AcknowledgeResponse) GetPayload() *Payload {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
 }
 
 type CompleteRequest struct {
@@ -280,10 +296,12 @@ const file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc = "" +
 	"$dev/unmango/ux/v1alpha1/plugin.proto\x12\x17dev.unmango.ux.v1alpha1\x1a dev/unmango/ux/v1alpha1/ux.proto\"q\n" +
 	"\x12AcknowledgeRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12G\n" +
-	"\fcapabilities\x18\x02 \x03(\v2#.dev.unmango.ux.v1alpha1.CapabilityR\fcapabilities\"4\n" +
+	"\fcapabilities\x18\x02 \x03(\v2#.dev.unmango.ux.v1alpha1.CapabilityR\fcapabilities\"\x86\x01\n" +
 	"\x13AcknowledgeResponse\x12\x1d\n" +
 	"\n" +
-	"request_id\x18\x01 \x01(\tR\trequestId\"l\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12\x14\n" +
+	"\x05abort\x18\x02 \x01(\bR\x05abort\x12:\n" +
+	"\apayload\x18\x03 \x01(\v2 .dev.unmango.ux.v1alpha1.PayloadR\apayload\"l\n" +
 	"\x0fCompleteRequest\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\tR\trequestId\x12:\n" +
@@ -323,16 +341,17 @@ var file_dev_unmango_ux_v1alpha1_plugin_proto_goTypes = []any{
 }
 var file_dev_unmango_ux_v1alpha1_plugin_proto_depIdxs = []int32{
 	4, // 0: dev.unmango.ux.v1alpha1.AcknowledgeRequest.capabilities:type_name -> dev.unmango.ux.v1alpha1.Capability
-	5, // 1: dev.unmango.ux.v1alpha1.CompleteRequest.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
-	0, // 2: dev.unmango.ux.v1alpha1.PluginService.Acknowledge:input_type -> dev.unmango.ux.v1alpha1.AcknowledgeRequest
-	2, // 3: dev.unmango.ux.v1alpha1.PluginService.Complete:input_type -> dev.unmango.ux.v1alpha1.CompleteRequest
-	1, // 4: dev.unmango.ux.v1alpha1.PluginService.Acknowledge:output_type -> dev.unmango.ux.v1alpha1.AcknowledgeResponse
-	3, // 5: dev.unmango.ux.v1alpha1.PluginService.Complete:output_type -> dev.unmango.ux.v1alpha1.CompleteResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	5, // 1: dev.unmango.ux.v1alpha1.AcknowledgeResponse.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
+	5, // 2: dev.unmango.ux.v1alpha1.CompleteRequest.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
+	0, // 3: dev.unmango.ux.v1alpha1.PluginService.Acknowledge:input_type -> dev.unmango.ux.v1alpha1.AcknowledgeRequest
+	2, // 4: dev.unmango.ux.v1alpha1.PluginService.Complete:input_type -> dev.unmango.ux.v1alpha1.CompleteRequest
+	1, // 5: dev.unmango.ux.v1alpha1.PluginService.Acknowledge:output_type -> dev.unmango.ux.v1alpha1.AcknowledgeResponse
+	3, // 6: dev.unmango.ux.v1alpha1.PluginService.Complete:output_type -> dev.unmango.ux.v1alpha1.CompleteResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_dev_unmango_ux_v1alpha1_plugin_proto_init() }
