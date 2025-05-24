@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os"
 
-	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
+	"github.com/unstoppablemango/ux/pkg/plugin"
 	"github.com/unstoppablemango/ux/pkg/plugin/cli"
+	"github.com/unstoppablemango/ux/pkg/plugin/handler"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -17,7 +17,6 @@ func main() {
 		cli.Fail(err)
 	}
 
-	fmt.Println("Parsed input: ", input)
 	client, err := input.Host.NewClient(
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
@@ -25,20 +24,12 @@ func main() {
 		cli.Fail(err)
 	}
 
+	plugin := plugin.New("dummy", handler.NoOp,
+		plugin.WithClient(client),
+	)
+
 	ctx := context.Background()
-	res, err := client.Plugin().Acknowledge(ctx, &uxv1alpha1.AcknowledgeRequest{
-		Name: "dummy",
-	})
-	if err != nil {
+	if err = plugin.Invoke(ctx); err != nil {
 		cli.Fail(err)
 	}
-
-	pat, err := client.Plugin().Complete(ctx, &uxv1alpha1.CompleteRequest{
-		RequestId: res.RequestId,
-	})
-	if err != nil {
-		cli.Fail(err)
-	}
-
-	fmt.Print(pat)
 }
