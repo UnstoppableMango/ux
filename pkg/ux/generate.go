@@ -1,7 +1,9 @@
 package ux
 
-import "context"
+import (
+	"context"
+)
 
-func Generate(ctx context.Context) error {
+func Generate(ctx context.Context, input Input) error {
 	return nil
 }
