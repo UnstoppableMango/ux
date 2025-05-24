@@ -14,6 +14,12 @@ import (
 	"github.com/unstoppablemango/ux/pkg/conformance"
 )
 
+var conformanceCmd = NewConformance()
+
+func init() {
+	pluginCmd.AddCommand(conformanceCmd)
+}
+
 func NewConformance() *cobra.Command {
 	return &cobra.Command{
 		Use:   "conformance",
