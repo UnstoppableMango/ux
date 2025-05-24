@@ -8,7 +8,8 @@ import (
 )
 
 type Builder interface {
-	BindPersistentFlags(cmd *cobra.Command)
+	BindPersistentFlags(*cobra.Command)
+	Config() Config
 	Initialize()
 }
 
@@ -18,7 +19,7 @@ type builder struct {
 }
 
 func NewBuilder() Builder {
-	return &builder{}
+	return &builder{viper: viper.New()}
 }
 
 func (b *builder) Initialize() {
@@ -28,6 +29,13 @@ func (b *builder) Initialize() {
 		b.viper.AddConfigPath(DefaultDir)
 		b.viper.SetConfigName(DefaultName)
 		b.viper.SetConfigType(DefaultType)
+	}
+}
+
+func (b *builder) Config() Config {
+	return &config{
+		Viper: b.viper,
+		File:  b.cfgFile,
 	}
 }
 

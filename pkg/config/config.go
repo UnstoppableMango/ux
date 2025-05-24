@@ -4,7 +4,6 @@ import (
 	"path/filepath"
 
 	"github.com/adrg/xdg"
-	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
@@ -34,9 +33,4 @@ func New() Config {
 	return &config{
 		Viper: viper.New(),
 	}
-}
-
-func PersistentFlags(flags *pflag.FlagSet) {
-	var cfgFile string
-	flags.StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cobra.yaml)")
 }
