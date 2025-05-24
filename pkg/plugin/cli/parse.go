@@ -4,7 +4,12 @@ import (
 	"fmt"
 
 	"github.com/unstoppablemango/ux/pkg/host"
+	"github.com/unstoppablemango/ux/pkg/ux"
 )
+
+type Input struct {
+	Host ux.Host
+}
 
 func Parse(args []string) (i Input, err error) {
 	if len(args) == 0 {
