@@ -6,13 +6,17 @@ import (
 	"github.com/charmbracelet/log"
 	"github.com/unmango/go/option"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
+	"github.com/unstoppablemango/ux/pkg/ux"
+	"google.golang.org/grpc"
 )
 
-// This whole API is a little weird, I might redo it
+// This whole API is a little weird, I'll probably redo it
 
 type Plugin struct {
 	Handler
-	uxv1alpha1.PluginServiceClient
+
+	grpc []grpc.DialOption
+
 	Name string
 	Caps []uxv1alpha1.Capability
 }
@@ -29,12 +33,6 @@ func New(name string, handler Handler, options ...Option) *Plugin {
 	return plugin
 }
 
-func WithClient(c Client) Option {
-	return func(p *Plugin) {
-		p.PluginServiceClient = c.Plugin()
-	}
-}
-
 func WithCapability(from, to string, lossy bool) Option {
 	return WithCapabilities(uxv1alpha1.Capability{
 		From:  from,
@@ -49,11 +47,23 @@ func WithCapabilities(capabilities ...uxv1alpha1.Capability) Option {
 	}
 }
 
-func (p *Plugin) Invoke(ctx context.Context) error {
+func WithDialOptions(options ...grpc.DialOption) Option {
+	return func(p *Plugin) {
+		p.grpc = append(p.grpc, options...)
+	}
+}
+
+func (p *Plugin) Acknowledge(ctx context.Context, host ux.Host) error {
 	log := log.FromContext(ctx)
 
+	log.Debug("Connecting to host", "host", host)
+	client, err := ClientFor(host, p.grpc...)
+	if err != nil {
+		return err
+	}
+
 	log.Info("Acknowledging invocation")
-	ack, err := p.Acknowledge(ctx, &uxv1alpha1.AcknowledgeRequest{
+	ack, err := client.V1Alpha1().Acknowledge(ctx, &uxv1alpha1.AcknowledgeRequest{
 		Name: p.Name,
 	})
 	if err != nil {
@@ -67,7 +77,7 @@ func (p *Plugin) Invoke(ctx context.Context) error {
 	}
 
 	log.Info("Completing request")
-	res, err := p.Complete(ctx, &uxv1alpha1.CompleteRequest{
+	res, err := client.V1Alpha1().Complete(ctx, &uxv1alpha1.CompleteRequest{
 		RequestId: ack.RequestId,
 		Payload:   output,
 	})
@@ -75,8 +85,7 @@ func (p *Plugin) Invoke(ctx context.Context) error {
 		return err
 	}
 
-	if !res.HeadPat {
-		// Sad...
+	if !res.HeadPat { // Sad...
 		log.Debug("No head pat")
 	}
 
