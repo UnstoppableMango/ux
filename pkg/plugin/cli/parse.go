@@ -1,26 +1,20 @@
 package cli
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/unstoppablemango/ux/pkg/host"
+)
 
 func Parse(args []string) (i Input, err error) {
 	if len(args) == 0 {
 		return i, fmt.Errorf("no arguments provided")
 	}
 	if len(args) >= 1 {
-		i.Host = Host(args[0])
-	}
-	if len(args) >= 2 {
-		i.Command, err = ParseCommand(args[1])
+		if i.Host, err = host.Parse(args[0]); err != nil {
+			return i, err
+		}
 	}
 
 	return
-}
-
-func ParseCommand(val string) (Command, error) {
-	switch val {
-	case "register":
-		return RegisterCommand, nil
-	default:
-		return "", fmt.Errorf("unsupported command: %s", val)
-	}
 }
