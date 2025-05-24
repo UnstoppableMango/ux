@@ -9,28 +9,15 @@ import (
 
 const (
 	Project     = "ux"
-	DefaultName = "." + Project
+	DefaultName = ".config"
 	DefaultType = "yaml"
+	DefaultFile = DefaultName + "." + DefaultType
 )
 
 var (
-	Reload = xdg.Reload
-
 	DefaultDir  = filepath.Join(xdg.ConfigHome, Project)
-	DefaultFile = DefaultName + DefaultType
 	DefaultPath = filepath.Join(DefaultDir, DefaultFile)
+	Default     = viper.NewWithOptions()
 )
 
 type Config interface{}
-
-type config struct {
-	*viper.Viper
-
-	File string
-}
-
-func New() Config {
-	return &config{
-		Viper: viper.New(),
-	}
-}
