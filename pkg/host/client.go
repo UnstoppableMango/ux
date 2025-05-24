@@ -6,5 +6,5 @@ import (
 )
 
 func NewClient(host ux.Host, opts ...grpc.DialOption) (*grpc.ClientConn, error) {
-	return host.NewClient(opts...)
+	return host.Dial(opts...)
 }

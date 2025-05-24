@@ -20,7 +20,7 @@ func (c client) V1Alpha1() uxv1alpha1.PluginServiceClient {
 }
 
 func ClientFor(host ux.Host, opts ...grpc.DialOption) (Client, error) {
-	if conn, err := host.NewClient(opts...); err != nil {
+	if conn, err := host.Dial(opts...); err != nil {
 		return nil, err
 	} else {
 		return client{conn}, nil
