@@ -57,7 +57,7 @@ func (p *Plugin) Acknowledge(ctx context.Context, host ux.Host) error {
 	log := log.FromContext(ctx)
 
 	log.Debug("Connecting to host", "host", host)
-	client, err := ClientFor(host, p.grpc...)
+	client, err := Dial(host, p.grpc...)
 	if err != nil {
 		return err
 	}
