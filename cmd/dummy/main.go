@@ -11,25 +11,20 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
+var Plugin = plugin.New("dummy", handler.NoOp,
+	plugin.WithDialOptions(
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	),
+)
+
 func main() {
 	input, err := cli.Parse(os.Args[1:])
 	if err != nil {
 		cli.Fail(err)
 	}
 
-	client, err := input.Host.NewClient(
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
-	)
-	if err != nil {
-		cli.Fail(err)
-	}
-
-	plugin := plugin.New("dummy", handler.NoOp,
-		plugin.WithClient(client),
-	)
-
 	ctx := context.Background()
-	if err = plugin.Invoke(ctx); err != nil {
+	if err = Plugin.Acknowledge(ctx, input.Host); err != nil {
 		cli.Fail(err)
 	}
 }
