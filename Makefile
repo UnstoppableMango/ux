@@ -68,6 +68,10 @@ bin/buf: go.mod ## Optional bin install
 bin/devctl: go.mod ## Optional bin install
 	$(GO) install github.com/unmango/devctl
 
+bin/dprint: .versions/dprint | .make/dprint/install.sh
+	DPRINT_INSTALL=${CURDIR} .make/dprint/install.sh $(shell $(DEVCTL) v dprint)
+	@touch $@
+
 bin/ginkgo: go.mod ## Optional bin install
 	$(GO) install github.com/onsi/ginkgo/v2/ginkgo
 
@@ -88,6 +92,11 @@ bin/ginkgo: go.mod ## Optional bin install
 .make/docker-ux: Dockerfile .dockerignore ${GO_SRC}
 	$(DOCKER) build ${CURDIR} -t unstoppablemango/ux:v0.0.1-alpha
 	@touch $@
+
+.make/dprint/install.sh:
+	@mkdir -p $(dir $@)
+	curl -fsSL https://dprint.dev/install.sh -o $@
+	@chmod +x $@
 
 .make/go-fmt: ${GO_SRC}
 	$(GO) fmt $(addprefix ./,$(sort $(dir $?)))
