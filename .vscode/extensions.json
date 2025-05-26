@@ -1,11 +1,11 @@
 {
-  "recommendations": [
-    "bufbuild.vscode-buf",
-    "mkhl.direnv",
-    "ms-azuretools.vscode-containers",
-    "dprint.dprint",
-    "editorconfig.editorconfig",
-    "golang.go",
-    "timonwong.shellcheck"
-  ]
+	"recommendations": [
+		"bufbuild.vscode-buf",
+		"mkhl.direnv",
+		"ms-azuretools.vscode-containers",
+		"dprint.dprint",
+		"editorconfig.editorconfig",
+		"golang.go",
+		"timonwong.shellcheck"
+	]
 }

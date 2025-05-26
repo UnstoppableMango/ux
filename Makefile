@@ -99,7 +99,10 @@ bin/ginkgo: go.mod ## Optional bin install
 	curl -fsSL https://dprint.dev/install.sh -o $@
 	@chmod +x $@
 
-.make/dprint-fmt: README.md .dprint.json .github/renovate.json | bin/dprint
+JSON_SRC := .dprint.json .github/renovate.json .vscode/extensions.json
+# MD_SRC   := README.md
+
+.make/dprint-fmt: ${JSON_SRC} ${MD_SRC} | bin/dprint
 	$(DPRINT) fmt --allow-no-files $?
 	@touch $@
 
