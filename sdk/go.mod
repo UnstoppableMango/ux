@@ -11,7 +11,7 @@ require (
 	github.com/unmango/go v0.3.0
 	github.com/unstoppablemango/ux v0.0.0-00010101000000-000000000000
 	go.uber.org/mock v0.5.2
-	google.golang.org/grpc v1.72.1
+	google.golang.org/grpc v1.72.2
 )
 
 require (
