@@ -1,3 +1,9 @@
 package ux
 
-type Plugin interface{}
+import (
+	"context"
+)
+
+type Plugin interface {
+	Invoke(context.Context, string) error
+}
