@@ -6,6 +6,7 @@ GO      ?= go
 BUF     ?= $(GO) tool buf
 DEVCTL  ?= $(GO) tool devctl
 DOCKER  ?= docker
+DPRINT  ?= ${CURDIR}/bin/dprint
 GINKGO  ?= $(GO) tool ginkgo
 GOLINT  ?= $(GO) tool golangci-lint
 MOCKGEN ?= $(GO) tool mockgen
@@ -15,7 +16,7 @@ MOCKGEN ?= $(GO) tool mockgen
 build: .make/buf-build bin/ux bin/dummy
 generate gen: codegen
 test: .make/ginkgo-run
-fmt format: .make/buf-fmt .make/go-fmt
+fmt format: .make/buf-fmt .make/go-fmt .make/dprint-fmt
 lint: .make/buf-lint .make/go-vet .make/golangci-lint-run
 tidy: go.sum buf.lock
 docker: .make/docker-ux
@@ -97,6 +98,10 @@ bin/ginkgo: go.mod ## Optional bin install
 	@mkdir -p $(dir $@)
 	curl -fsSL https://dprint.dev/install.sh -o $@
 	@chmod +x $@
+
+.make/dprint-fmt: README.md .dprint.json .github/renovate.json | bin/dprint
+	$(DPRINT) fmt --allow-no-files $?
+	@touch $@
 
 .make/go-fmt: ${GO_SRC}
 	$(GO) fmt $(addprefix ./,$(sort $(dir $?)))
