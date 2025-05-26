@@ -3,5 +3,10 @@
 	"extends": [
 		"local>UnstoppableMango/renovate-config"
 	],
-	"automerge": true
+	"automerge": true,
+	"ignorePaths": [
+		"**/node_modules/**",
+		"**/bower_components/**",
+		"cmd/dummy/**"
+	]
 }
