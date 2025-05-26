@@ -10,6 +10,6 @@
 		"cmd/dummy/**"
 	],
 	"ignoreDeps": [
-		"unstoppablemango/ux"
+		"github.com/unstoppablemango/ux"
 	]
 }
