@@ -1,4 +1,4 @@
-package ux
+package sdk
 
 import "google.golang.org/grpc"
 

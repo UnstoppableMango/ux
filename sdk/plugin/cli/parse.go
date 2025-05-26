@@ -3,12 +3,12 @@ package cli
 import (
 	"fmt"
 
-	"github.com/unstoppablemango/ux/pkg/host"
-	"github.com/unstoppablemango/ux/pkg/ux"
+	"github.com/unstoppablemango/ux/sdk"
+	"github.com/unstoppablemango/ux/sdk/host"
 )
 
 type Input struct {
-	Host ux.Host
+	Host sdk.Host
 }
 
 func Parse(args []string) (i Input, err error) {

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/unstoppablemango/ux/pkg/ux"
+	"github.com/unstoppablemango/ux/sdk"
 )
 
 type Plugin struct {
@@ -15,6 +16,6 @@ func New(path string) ux.Plugin {
 }
 
 // Acknowledge implements ux.Plugin.
-func (p *Plugin) Acknowledge(context.Context, ux.Host) error {
+func (p *Plugin) Acknowledge(context.Context, sdk.Host) error {
 	panic("unimplemented")
 }

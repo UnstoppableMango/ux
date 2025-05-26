@@ -4,7 +4,7 @@ import (
 	"context"
 
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
-	"github.com/unstoppablemango/ux/pkg/plugin"
+	"github.com/unstoppablemango/ux/sdk/plugin"
 )
 
 var (

@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/afero"
 	"github.com/unstoppablemango/ux/pkg/config"
-	"github.com/unstoppablemango/ux/pkg/plugin/cli"
+	"github.com/unstoppablemango/ux/pkg/plugin"
 	"github.com/unstoppablemango/ux/pkg/ux"
 )
 
@@ -36,7 +36,7 @@ func (r LocalDirectory) List(context.Context) (iter.Seq2[string, ux.Plugin], err
 				return err
 			}
 
-			plugins[info.Name()] = cli.New(path)
+			plugins[info.Name()] = plugin.LocalBinary(path)
 			return nil
 		},
 	)

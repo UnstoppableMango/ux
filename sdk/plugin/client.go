@@ -2,7 +2,7 @@ package plugin
 
 import (
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
-	"github.com/unstoppablemango/ux/pkg/ux"
+	"github.com/unstoppablemango/ux/sdk"
 	"google.golang.org/grpc"
 )
 
@@ -19,7 +19,7 @@ func (c connection) V1Alpha1() uxv1alpha1.PluginServiceClient {
 	return uxv1alpha1.NewPluginServiceClient(c.conn)
 }
 
-func Dial(host ux.Host, opts ...grpc.DialOption) (Connection, error) {
+func Dial(host sdk.Host, opts ...grpc.DialOption) (Connection, error) {
 	if conn, err := host.Dial(opts...); err != nil {
 		return nil, err
 	} else {

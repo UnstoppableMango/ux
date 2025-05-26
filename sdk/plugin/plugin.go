@@ -6,7 +6,7 @@ import (
 	"github.com/charmbracelet/log"
 	"github.com/unmango/go/option"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
-	"github.com/unstoppablemango/ux/pkg/ux"
+	"github.com/unstoppablemango/ux/sdk"
 	"google.golang.org/grpc"
 )
 
@@ -53,7 +53,7 @@ func WithDialOptions(options ...grpc.DialOption) Option {
 	}
 }
 
-func (p *Plugin) Acknowledge(ctx context.Context, host ux.Host) error {
+func (p *Plugin) Acknowledge(ctx context.Context, host sdk.Host) error {
 	log := log.FromContext(ctx)
 
 	log.Debug("Connecting to host", "host", host)
