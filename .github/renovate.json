@@ -4,12 +4,8 @@
 		"github>UnstoppableMango/renovate-config"
 	],
 	"automerge": true,
-	"ignorePaths": [
-		"**/node_modules/**",
-		"**/bower_components/**",
-		"cmd/dummy/**"
-	],
 	"ignoreDeps": [
-		"github.com/unstoppablemango/ux"
+		"github.com/unstoppablemango/ux",
+		"github.com/unstoppablemango/ux/sdk"
 	]
 }
