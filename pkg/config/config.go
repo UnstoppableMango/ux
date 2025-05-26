@@ -4,7 +4,6 @@ import (
 	"path/filepath"
 
 	"github.com/adrg/xdg"
-	"github.com/spf13/viper"
 )
 
 const (
@@ -17,7 +16,7 @@ const (
 var (
 	DefaultDir  = filepath.Join(xdg.ConfigHome, Project)
 	DefaultPath = filepath.Join(DefaultDir, DefaultFile)
-	Default     = viper.NewWithOptions()
+	PluginDir   = filepath.Join(DefaultDir, "plugins")
 )
 
 type Config interface{}

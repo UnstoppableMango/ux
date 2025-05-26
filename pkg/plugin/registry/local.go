@@ -8,11 +8,16 @@ import (
 	"regexp"
 
 	"github.com/spf13/afero"
+	"github.com/unstoppablemango/ux/pkg/config"
 	"github.com/unstoppablemango/ux/pkg/plugin/cli"
 	"github.com/unstoppablemango/ux/pkg/ux"
 )
 
 var BinPattern = regexp.MustCompile(`(.+2.+)|(ux-.+)`)
+
+var UserConfig = IgnoreNotFound(LocalDirectory{
+	Path: config.PluginDir,
+})
 
 type LocalDirectory struct {
 	Fs   afero.Fs
