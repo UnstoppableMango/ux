@@ -3,5 +3,5 @@ package sdk
 import "context"
 
 type Plugin interface {
-	Acknowledge(context.Context, Host) error
+	Invoke(context.Context, Host) error
 }
