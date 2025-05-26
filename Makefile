@@ -6,6 +6,7 @@ GO      ?= go
 BUF     ?= $(GO) tool buf
 DEVCTL  ?= $(GO) tool devctl
 DOCKER  ?= docker
+DPRINT  ?= ${CURDIR}/bin/dprint
 GINKGO  ?= $(GO) tool ginkgo
 GOLINT  ?= $(GO) tool golangci-lint
 MOCKGEN ?= $(GO) tool mockgen
@@ -15,7 +16,7 @@ MOCKGEN ?= $(GO) tool mockgen
 build: .make/buf-build bin/ux bin/dummy
 generate gen: codegen
 test: .make/ginkgo-run
-fmt format: .make/buf-fmt .make/go-fmt
+fmt format: .make/buf-fmt .make/go-fmt .make/dprint-fmt
 lint: .make/buf-lint .make/go-vet .make/golangci-lint-run
 tidy: go.sum buf.lock
 docker: .make/docker-ux
@@ -68,6 +69,10 @@ bin/buf: go.mod ## Optional bin install
 bin/devctl: go.mod ## Optional bin install
 	$(GO) install github.com/unmango/devctl
 
+bin/dprint: .versions/dprint | .make/dprint/install.sh
+	DPRINT_INSTALL=${CURDIR} .make/dprint/install.sh $(shell $(DEVCTL) v dprint)
+	@touch $@
+
 bin/ginkgo: go.mod ## Optional bin install
 	$(GO) install github.com/onsi/ginkgo/v2/ginkgo
 
@@ -87,6 +92,18 @@ bin/ginkgo: go.mod ## Optional bin install
 
 .make/docker-ux: Dockerfile .dockerignore ${GO_SRC}
 	$(DOCKER) build ${CURDIR} -t unstoppablemango/ux:v0.0.1-alpha
+	@touch $@
+
+.make/dprint/install.sh:
+	@mkdir -p $(dir $@)
+	curl -fsSL https://dprint.dev/install.sh -o $@
+	@chmod +x $@
+
+JSON_SRC := .dprint.json .github/renovate.json .vscode/extensions.json
+# MD_SRC   := README.md
+
+.make/dprint-fmt: ${JSON_SRC} ${MD_SRC} | bin/dprint
+	$(DPRINT) fmt --allow-no-files $?
 	@touch $@
 
 .make/go-fmt: ${GO_SRC}

@@ -37,6 +37,17 @@ jobs:
         with:
           install-mode: none
 
+  dprint:
+    runs-on: ubuntu-latest
+    env:
+      # renovate: datasource=github-tags depName=dprint/dprint
+      DPRINT_VERSION: 0.50.0
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dprint/check@v2.2
+        with:
+          dprint-version: ${{ env.DPRINT_VERSION }}
+
   docker:
     runs-on: ubuntu-latest
     steps:
