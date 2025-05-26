@@ -21,17 +21,17 @@ type SuiteOptions struct {
 func NewSuite(opts SuiteOptions) bool {
 	return Describe("Conformance", func() {
 		var (
-			plugin *PluginService
+			plugin *UxService
 			sock   string
 		)
 
 		BeforeEach(func() {
 			server := grpc.NewServer()
-			plugin = &PluginService{
+			plugin = &UxService{
 				AcknowledgeEndpoint: endpoint[*uxv1alpha1.AcknowledgeRequest, *uxv1alpha1.AcknowledgeResponse]{},
 				CompleteEndpoint:    endpoint[*uxv1alpha1.CompleteRequest, *uxv1alpha1.CompleteResponse]{},
 			}
-			uxv1alpha1.RegisterPluginServiceServer(server, plugin)
+			uxv1alpha1.RegisterUxServiceServer(server, plugin)
 
 			sock = filepath.Join(GinkgoT().TempDir(), "ux.sock")
 			lis, err := net.Listen("unix", sock)

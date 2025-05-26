@@ -43,21 +43,21 @@ func (e *endpoint[T, U]) NextResponse() (res U, err error) {
 	}
 }
 
-// PluginService is implemented as a manual mock instead of using gomock due to the embedded
+// UxService is implemented as a manual mock instead of using gomock due to the embedded
 // struct requirement. The generated mock methods do not satisfy that requirement and
 // gomock does not appear to support specifying structs to be embedded.
-type PluginService struct {
-	uxv1alpha1.UnimplementedPluginServiceServer
+type UxService struct {
+	uxv1alpha1.UnimplementedUxServiceServer
 	AcknowledgeEndpoint endpoint[*uxv1alpha1.AcknowledgeRequest, *uxv1alpha1.AcknowledgeResponse]
 	CompleteEndpoint    endpoint[*uxv1alpha1.CompleteRequest, *uxv1alpha1.CompleteResponse]
 }
 
-func (s *PluginService) Acknowledge(_ context.Context, req *uxv1alpha1.AcknowledgeRequest) (*uxv1alpha1.AcknowledgeResponse, error) {
+func (s *UxService) Acknowledge(_ context.Context, req *uxv1alpha1.AcknowledgeRequest) (*uxv1alpha1.AcknowledgeResponse, error) {
 	s.AcknowledgeEndpoint.Receive(req)
 	return s.AcknowledgeEndpoint.NextResponse()
 }
 
-func (s *PluginService) Complete(_ context.Context, req *uxv1alpha1.CompleteRequest) (*uxv1alpha1.CompleteResponse, error) {
+func (s *UxService) Complete(_ context.Context, req *uxv1alpha1.CompleteRequest) (*uxv1alpha1.CompleteResponse, error) {
 	s.CompleteEndpoint.Receive(req)
 	return s.CompleteEndpoint.NextResponse()
 }
