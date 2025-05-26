@@ -11,7 +11,7 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/spf13/cobra"
 	"github.com/unmango/go/cli"
-	"github.com/unstoppablemango/ux/pkg/conformance"
+	"github.com/unstoppablemango/ux/pkg/plugin/conformance"
 )
 
 func NewConformance() *cobra.Command {
