@@ -7,8 +7,18 @@ The Universal codegen CLI.
 Install the CLI:
 
 ```shell
-go install github.com/unstoppablemango/ux@main
+go install github.com/unstoppablemango/ux@latest
 ```
+
+### Docker
+
+Or run with Docker:
+
+```shell
+docker run --rm -it ghcr.io/unstoppablemango/ux:latest
+```
+
+### Codegen
 
 Generate stuff (doesn't work yet)
 
