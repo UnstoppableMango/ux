@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	PluginService_Capabilities_FullMethodName = "/dev.unmango.ux.v1alpha1.PluginService/Capabilities"
+	PluginService_Invoke_FullMethodName       = "/dev.unmango.ux.v1alpha1.PluginService/Invoke"
 )
 
 // PluginServiceClient is the client API for PluginService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PluginServiceClient interface {
 	Capabilities(ctx context.Context, in *CapabilitiesRequest, opts ...grpc.CallOption) (*CapabilitiesResponse, error)
+	Invoke(ctx context.Context, in *InvokeRequest, opts ...grpc.CallOption) (*InvokeResponse, error)
 }
 
 type pluginServiceClient struct {
@@ -47,11 +49,22 @@ func (c *pluginServiceClient) Capabilities(ctx context.Context, in *Capabilities
 	return out, nil
 }
 
+func (c *pluginServiceClient) Invoke(ctx context.Context, in *InvokeRequest, opts ...grpc.CallOption) (*InvokeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InvokeResponse)
+	err := c.cc.Invoke(ctx, PluginService_Invoke_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PluginServiceServer is the server API for PluginService service.
 // All implementations must embed UnimplementedPluginServiceServer
 // for forward compatibility.
 type PluginServiceServer interface {
 	Capabilities(context.Context, *CapabilitiesRequest) (*CapabilitiesResponse, error)
+	Invoke(context.Context, *InvokeRequest) (*InvokeResponse, error)
 	mustEmbedUnimplementedPluginServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedPluginServiceServer struct{}
 
 func (UnimplementedPluginServiceServer) Capabilities(context.Context, *CapabilitiesRequest) (*CapabilitiesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Capabilities not implemented")
+}
+func (UnimplementedPluginServiceServer) Invoke(context.Context, *InvokeRequest) (*InvokeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Invoke not implemented")
 }
 func (UnimplementedPluginServiceServer) mustEmbedUnimplementedPluginServiceServer() {}
 func (UnimplementedPluginServiceServer) testEmbeddedByValue()                       {}
@@ -104,6 +120,24 @@ func _PluginService_Capabilities_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PluginService_Invoke_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InvokeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PluginServiceServer).Invoke(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PluginService_Invoke_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PluginServiceServer).Invoke(ctx, req.(*InvokeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PluginService_ServiceDesc is the grpc.ServiceDesc for PluginService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var PluginService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Capabilities",
 			Handler:    _PluginService_Capabilities_Handler,
+		},
+		{
+			MethodName: "Invoke",
+			Handler:    _PluginService_Invoke_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

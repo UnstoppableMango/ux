@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/unmango/go/iter"
+	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/plugin"
-	"github.com/unstoppablemango/ux/pkg/ux"
 )
 
 type Filtered struct {

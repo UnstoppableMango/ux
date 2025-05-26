@@ -7,9 +7,9 @@ import (
 	"regexp"
 
 	"github.com/spf13/afero"
+	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/config"
 	"github.com/unstoppablemango/ux/pkg/plugin"
-	"github.com/unstoppablemango/ux/pkg/ux"
 )
 
 var BinPattern = regexp.MustCompile(`(.+2.+)|(ux-.+)`)

@@ -4,7 +4,7 @@ import (
 	"iter"
 	"maps"
 
-	"github.com/unstoppablemango/ux/pkg/ux"
+	ux "github.com/unstoppablemango/ux/pkg"
 )
 
 type Input struct {

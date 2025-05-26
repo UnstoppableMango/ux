@@ -3,7 +3,7 @@ package cli
 import (
 	"context"
 
-	"github.com/unstoppablemango/ux/pkg/ux"
+	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/sdk"
 )
 
