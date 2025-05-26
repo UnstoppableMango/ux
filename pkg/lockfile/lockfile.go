@@ -6,5 +6,5 @@ import (
 )
 
 func New[T proto.Message](path string) ux.LockFile[T] {
-	return At[T](path)
+	return at[T](path)
 }
