@@ -2,7 +2,6 @@ package registry
 
 import (
 	"context"
-	"iter"
 	"maps"
 
 	"github.com/unstoppablemango/ux/pkg/plugin"
@@ -11,7 +10,7 @@ import (
 
 type Aggregate []plugin.Registry
 
-func (registries Aggregate) List(ctx context.Context) (iter.Seq2[string, ux.Plugin], error) {
+func (registries Aggregate) List(ctx context.Context) (plugin.List, error) {
 	plugins := map[string]ux.Plugin{}
 	for _, r := range registries {
 		if list, err := r.List(ctx); err != nil {

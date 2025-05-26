@@ -5,9 +5,7 @@ import (
 	"errors"
 	"io/fs"
 
-	"github.com/unmango/go/iter"
 	"github.com/unstoppablemango/ux/pkg/plugin"
-	"github.com/unstoppablemango/ux/pkg/ux"
 )
 
 type ErrorFilter struct {
@@ -15,9 +13,9 @@ type ErrorFilter struct {
 	Registry plugin.Registry
 }
 
-func (r ErrorFilter) List(ctx context.Context) (iter.Seq2[string, ux.Plugin], error) {
+func (r ErrorFilter) List(ctx context.Context) (plugin.List, error) {
 	if plugins, err := r.Registry.List(ctx); r.Filter(err) {
-		return iter.Empty2[string, ux.Plugin](), nil
+		return plugin.EmptyList, nil
 	} else {
 		return plugins, err
 	}
