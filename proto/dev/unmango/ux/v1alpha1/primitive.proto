@@ -12,3 +12,11 @@ message Payload {
   string content_type = 1;
   bytes data = 2;
 }
+
+message Plugin {
+  string id = 1;
+}
+
+message Plan {
+  repeated Plugin plugins = 1;
+}

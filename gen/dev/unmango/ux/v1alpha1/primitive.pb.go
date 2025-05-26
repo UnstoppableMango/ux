@@ -133,6 +133,94 @@ func (x *Payload) GetData() []byte {
 	return nil
 }
 
+type Plugin struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Plugin) Reset() {
+	*x = Plugin{}
+	mi := &file_dev_unmango_ux_v1alpha1_primitive_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Plugin) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Plugin) ProtoMessage() {}
+
+func (x *Plugin) ProtoReflect() protoreflect.Message {
+	mi := &file_dev_unmango_ux_v1alpha1_primitive_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Plugin.ProtoReflect.Descriptor instead.
+func (*Plugin) Descriptor() ([]byte, []int) {
+	return file_dev_unmango_ux_v1alpha1_primitive_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Plugin) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type Plan struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Plugins       []*Plugin              `protobuf:"bytes,1,rep,name=plugins,proto3" json:"plugins,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Plan) Reset() {
+	*x = Plan{}
+	mi := &file_dev_unmango_ux_v1alpha1_primitive_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Plan) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Plan) ProtoMessage() {}
+
+func (x *Plan) ProtoReflect() protoreflect.Message {
+	mi := &file_dev_unmango_ux_v1alpha1_primitive_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Plan.ProtoReflect.Descriptor instead.
+func (*Plan) Descriptor() ([]byte, []int) {
+	return file_dev_unmango_ux_v1alpha1_primitive_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Plan) GetPlugins() []*Plugin {
+	if x != nil {
+		return x.Plugins
+	}
+	return nil
+}
+
 var File_dev_unmango_ux_v1alpha1_primitive_proto protoreflect.FileDescriptor
 
 const file_dev_unmango_ux_v1alpha1_primitive_proto_rawDesc = "" +
@@ -145,7 +233,11 @@ const file_dev_unmango_ux_v1alpha1_primitive_proto_rawDesc = "" +
 	"\x05lossy\x18\x03 \x01(\bR\x05lossy\"@\n" +
 	"\aPayload\x12!\n" +
 	"\fcontent_type\x18\x01 \x01(\tR\vcontentType\x12\x12\n" +
-	"\x04data\x18\x02 \x01(\fR\x04dataB\xf3\x01\n" +
+	"\x04data\x18\x02 \x01(\fR\x04data\"\x18\n" +
+	"\x06Plugin\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"A\n" +
+	"\x04Plan\x129\n" +
+	"\aplugins\x18\x01 \x03(\v2\x1f.dev.unmango.ux.v1alpha1.PluginR\apluginsB\xf3\x01\n" +
 	"\x1bcom.dev.unmango.ux.v1alpha1B\x0ePrimitiveProtoP\x01ZEgithub.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1;uxv1alpha1\xa2\x02\x03DUU\xaa\x02\x17Dev.Unmango.Ux.V1alpha1\xca\x02\x17Dev\\Unmango\\Ux\\V1alpha1\xe2\x02#Dev\\Unmango\\Ux\\V1alpha1\\GPBMetadata\xea\x02\x1aDev::Unmango::Ux::V1alpha1b\x06proto3"
 
 var (
@@ -160,17 +252,20 @@ func file_dev_unmango_ux_v1alpha1_primitive_proto_rawDescGZIP() []byte {
 	return file_dev_unmango_ux_v1alpha1_primitive_proto_rawDescData
 }
 
-var file_dev_unmango_ux_v1alpha1_primitive_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_dev_unmango_ux_v1alpha1_primitive_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_dev_unmango_ux_v1alpha1_primitive_proto_goTypes = []any{
 	(*Capability)(nil), // 0: dev.unmango.ux.v1alpha1.Capability
 	(*Payload)(nil),    // 1: dev.unmango.ux.v1alpha1.Payload
+	(*Plugin)(nil),     // 2: dev.unmango.ux.v1alpha1.Plugin
+	(*Plan)(nil),       // 3: dev.unmango.ux.v1alpha1.Plan
 }
 var file_dev_unmango_ux_v1alpha1_primitive_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	2, // 0: dev.unmango.ux.v1alpha1.Plan.plugins:type_name -> dev.unmango.ux.v1alpha1.Plugin
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_dev_unmango_ux_v1alpha1_primitive_proto_init() }
@@ -184,7 +279,7 @@ func file_dev_unmango_ux_v1alpha1_primitive_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dev_unmango_ux_v1alpha1_primitive_proto_rawDesc), len(file_dev_unmango_ux_v1alpha1_primitive_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
