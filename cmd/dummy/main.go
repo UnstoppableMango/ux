@@ -4,9 +4,9 @@ import (
 	"context"
 	"os"
 
-	"github.com/unstoppablemango/ux/pkg/plugin"
-	"github.com/unstoppablemango/ux/pkg/plugin/cli"
-	"github.com/unstoppablemango/ux/pkg/plugin/handler"
+	"github.com/unstoppablemango/ux/sdk/plugin"
+	"github.com/unstoppablemango/ux/sdk/plugin/cli"
+	"github.com/unstoppablemango/ux/sdk/plugin/handler"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
