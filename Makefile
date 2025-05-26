@@ -36,7 +36,7 @@ bin/ux: ${GO_SRC} ## Build the ux CLI
 	$(GO) build -o $@ main.go
 
 bin/dummy: ${GO_SRC} ## Build the dummy testing utility
-	$(GO) build -o $@ ./cmd/dummy
+	$(GO) build -C cmd/dummy -o ${CURDIR}/$@ main.go
 
 codegen: ${GO_CODEGEN} .make/go-generate
 
