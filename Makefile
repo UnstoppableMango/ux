@@ -18,7 +18,7 @@ generate gen: codegen
 test: .make/ginkgo-run
 fmt format: .make/buf-fmt .make/go-fmt .make/dprint-fmt
 lint: .make/buf-lint .make/go-vet .make/golangci-lint-run
-tidy: go.sum buf.lock
+tidy: go.sum sdk/go.sum buf.lock
 docker: .make/docker-ux
 
 ##@ Source
@@ -125,3 +125,8 @@ JSON_SRC := .dprint.json .github/renovate.json .vscode/extensions.json
 .make/golangci-lint-run: ${GO_SRC}
 	$(GOLINT) run
 	@touch $@
+
+##@ SDK
+
+sdk/%:
+	$(MAKE) -C sdk $*

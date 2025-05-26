@@ -8,6 +8,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
+	"github.com/unstoppablemango/ux/pkg/plugin"
 	"github.com/unstoppablemango/ux/pkg/plugin/registry"
 )
 
@@ -49,10 +50,10 @@ var _ = Describe("Local", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(plugins).NotTo(BeEmpty())
 			Expect(plugins).To(HaveKeyWithValue("a2b",
-				HaveField("Path", filepath.Join(path, "a2b")),
+				plugin.LocalBinary(filepath.Join(path, "a2b")),
 			))
 			Expect(plugins).To(HaveKeyWithValue("ux-plugin",
-				HaveField("Path", filepath.Join(path, "ux-plugin")),
+				plugin.LocalBinary(filepath.Join(path, "ux-plugin")),
 			))
 		})
 	})
