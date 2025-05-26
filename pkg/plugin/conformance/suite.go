@@ -21,17 +21,17 @@ type SuiteOptions struct {
 func NewSuite(opts SuiteOptions) bool {
 	return Describe("Conformance", func() {
 		var (
-			plugin *UxService
-			sock   string
+			ux   *UxService
+			sock string
 		)
 
 		BeforeEach(func() {
 			server := grpc.NewServer()
-			plugin = &UxService{
+			ux = &UxService{
 				AcknowledgeEndpoint: endpoint[*uxv1alpha1.AcknowledgeRequest, *uxv1alpha1.AcknowledgeResponse]{},
 				CompleteEndpoint:    endpoint[*uxv1alpha1.CompleteRequest, *uxv1alpha1.CompleteResponse]{},
 			}
-			uxv1alpha1.RegisterUxServiceServer(server, plugin)
+			uxv1alpha1.RegisterUxServiceServer(server, ux)
 
 			sock = filepath.Join(GinkgoT().TempDir(), "ux.sock")
 			lis, err := net.Listen("unix", sock)
@@ -45,7 +45,7 @@ func NewSuite(opts SuiteOptions) bool {
 		})
 
 		It("should work", func() {
-			plugin.AcknowledgeEndpoint.Return(&uxv1alpha1.AcknowledgeResponse{
+			ux.AcknowledgeEndpoint.Return(&uxv1alpha1.AcknowledgeResponse{
 				RequestId: "test-request-id",
 			})
 
@@ -55,16 +55,16 @@ func NewSuite(opts SuiteOptions) bool {
 			Expect(err).NotTo(HaveOccurred())
 
 			Eventually(func(g Gomega) {
-				g.Expect(plugin.AcknowledgeEndpoint.Requests).NotTo(BeEmpty())
+				g.Expect(ux.AcknowledgeEndpoint.Requests).NotTo(BeEmpty())
 			}).Should(Succeed())
 
 			req := &uxv1alpha1.AcknowledgeRequest{}
-			Expect(plugin.AcknowledgeEndpoint.Requests).To(ContainElement(
+			Expect(ux.AcknowledgeEndpoint.Requests).To(ContainElement(
 				HaveField("Name", "dummy"), &req,
 			))
 
 			Eventually(func(g Gomega) {
-				g.Expect(plugin.CompleteEndpoint.Requests).NotTo(BeEmpty())
+				g.Expect(ux.CompleteEndpoint.Requests).NotTo(BeEmpty())
 			}).Should(Succeed())
 
 			Eventually(ses).Should(gexec.Exit(0))
