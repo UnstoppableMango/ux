@@ -19,13 +19,17 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UxService_Generate_FullMethodName = "/dev.unmango.ux.v1alpha1.UxService/Generate"
+	UxService_Acknowledge_FullMethodName = "/dev.unmango.ux.v1alpha1.UxService/Acknowledge"
+	UxService_Complete_FullMethodName    = "/dev.unmango.ux.v1alpha1.UxService/Complete"
+	UxService_Generate_FullMethodName    = "/dev.unmango.ux.v1alpha1.UxService/Generate"
 )
 
 // UxServiceClient is the client API for UxService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UxServiceClient interface {
+	Acknowledge(ctx context.Context, in *AcknowledgeRequest, opts ...grpc.CallOption) (*AcknowledgeResponse, error)
+	Complete(ctx context.Context, in *CompleteRequest, opts ...grpc.CallOption) (*CompleteResponse, error)
 	Generate(ctx context.Context, in *GenerateRequest, opts ...grpc.CallOption) (*GenerateResponse, error)
 }
 
@@ -35,6 +39,26 @@ type uxServiceClient struct {
 
 func NewUxServiceClient(cc grpc.ClientConnInterface) UxServiceClient {
 	return &uxServiceClient{cc}
+}
+
+func (c *uxServiceClient) Acknowledge(ctx context.Context, in *AcknowledgeRequest, opts ...grpc.CallOption) (*AcknowledgeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AcknowledgeResponse)
+	err := c.cc.Invoke(ctx, UxService_Acknowledge_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *uxServiceClient) Complete(ctx context.Context, in *CompleteRequest, opts ...grpc.CallOption) (*CompleteResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CompleteResponse)
+	err := c.cc.Invoke(ctx, UxService_Complete_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *uxServiceClient) Generate(ctx context.Context, in *GenerateRequest, opts ...grpc.CallOption) (*GenerateResponse, error) {
@@ -51,6 +75,8 @@ func (c *uxServiceClient) Generate(ctx context.Context, in *GenerateRequest, opt
 // All implementations must embed UnimplementedUxServiceServer
 // for forward compatibility.
 type UxServiceServer interface {
+	Acknowledge(context.Context, *AcknowledgeRequest) (*AcknowledgeResponse, error)
+	Complete(context.Context, *CompleteRequest) (*CompleteResponse, error)
 	Generate(context.Context, *GenerateRequest) (*GenerateResponse, error)
 	mustEmbedUnimplementedUxServiceServer()
 }
@@ -62,6 +88,12 @@ type UxServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedUxServiceServer struct{}
 
+func (UnimplementedUxServiceServer) Acknowledge(context.Context, *AcknowledgeRequest) (*AcknowledgeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Acknowledge not implemented")
+}
+func (UnimplementedUxServiceServer) Complete(context.Context, *CompleteRequest) (*CompleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Complete not implemented")
+}
 func (UnimplementedUxServiceServer) Generate(context.Context, *GenerateRequest) (*GenerateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Generate not implemented")
 }
@@ -84,6 +116,42 @@ func RegisterUxServiceServer(s grpc.ServiceRegistrar, srv UxServiceServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&UxService_ServiceDesc, srv)
+}
+
+func _UxService_Acknowledge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AcknowledgeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UxServiceServer).Acknowledge(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UxService_Acknowledge_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UxServiceServer).Acknowledge(ctx, req.(*AcknowledgeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UxService_Complete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CompleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UxServiceServer).Complete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UxService_Complete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UxServiceServer).Complete(ctx, req.(*CompleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _UxService_Generate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -111,6 +179,14 @@ var UxService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "dev.unmango.ux.v1alpha1.UxService",
 	HandlerType: (*UxServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Acknowledge",
+			Handler:    _UxService_Acknowledge_Handler,
+		},
+		{
+			MethodName: "Complete",
+			Handler:    _UxService_Complete_Handler,
+		},
 		{
 			MethodName: "Generate",
 			Handler:    _UxService_Generate_Handler,

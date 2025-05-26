@@ -19,16 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PluginService_Acknowledge_FullMethodName = "/dev.unmango.ux.v1alpha1.PluginService/Acknowledge"
-	PluginService_Complete_FullMethodName    = "/dev.unmango.ux.v1alpha1.PluginService/Complete"
+	PluginService_Capabilities_FullMethodName = "/dev.unmango.ux.v1alpha1.PluginService/Capabilities"
 )
 
 // PluginServiceClient is the client API for PluginService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PluginServiceClient interface {
-	Acknowledge(ctx context.Context, in *AcknowledgeRequest, opts ...grpc.CallOption) (*AcknowledgeResponse, error)
-	Complete(ctx context.Context, in *CompleteRequest, opts ...grpc.CallOption) (*CompleteResponse, error)
+	Capabilities(ctx context.Context, in *CapabilitiesRequest, opts ...grpc.CallOption) (*CapabilitiesResponse, error)
 }
 
 type pluginServiceClient struct {
@@ -39,20 +37,10 @@ func NewPluginServiceClient(cc grpc.ClientConnInterface) PluginServiceClient {
 	return &pluginServiceClient{cc}
 }
 
-func (c *pluginServiceClient) Acknowledge(ctx context.Context, in *AcknowledgeRequest, opts ...grpc.CallOption) (*AcknowledgeResponse, error) {
+func (c *pluginServiceClient) Capabilities(ctx context.Context, in *CapabilitiesRequest, opts ...grpc.CallOption) (*CapabilitiesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(AcknowledgeResponse)
-	err := c.cc.Invoke(ctx, PluginService_Acknowledge_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *pluginServiceClient) Complete(ctx context.Context, in *CompleteRequest, opts ...grpc.CallOption) (*CompleteResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CompleteResponse)
-	err := c.cc.Invoke(ctx, PluginService_Complete_FullMethodName, in, out, cOpts...)
+	out := new(CapabilitiesResponse)
+	err := c.cc.Invoke(ctx, PluginService_Capabilities_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -63,8 +51,7 @@ func (c *pluginServiceClient) Complete(ctx context.Context, in *CompleteRequest,
 // All implementations must embed UnimplementedPluginServiceServer
 // for forward compatibility.
 type PluginServiceServer interface {
-	Acknowledge(context.Context, *AcknowledgeRequest) (*AcknowledgeResponse, error)
-	Complete(context.Context, *CompleteRequest) (*CompleteResponse, error)
+	Capabilities(context.Context, *CapabilitiesRequest) (*CapabilitiesResponse, error)
 	mustEmbedUnimplementedPluginServiceServer()
 }
 
@@ -75,11 +62,8 @@ type PluginServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedPluginServiceServer struct{}
 
-func (UnimplementedPluginServiceServer) Acknowledge(context.Context, *AcknowledgeRequest) (*AcknowledgeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Acknowledge not implemented")
-}
-func (UnimplementedPluginServiceServer) Complete(context.Context, *CompleteRequest) (*CompleteResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Complete not implemented")
+func (UnimplementedPluginServiceServer) Capabilities(context.Context, *CapabilitiesRequest) (*CapabilitiesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Capabilities not implemented")
 }
 func (UnimplementedPluginServiceServer) mustEmbedUnimplementedPluginServiceServer() {}
 func (UnimplementedPluginServiceServer) testEmbeddedByValue()                       {}
@@ -102,38 +86,20 @@ func RegisterPluginServiceServer(s grpc.ServiceRegistrar, srv PluginServiceServe
 	s.RegisterService(&PluginService_ServiceDesc, srv)
 }
 
-func _PluginService_Acknowledge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AcknowledgeRequest)
+func _PluginService_Capabilities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CapabilitiesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PluginServiceServer).Acknowledge(ctx, in)
+		return srv.(PluginServiceServer).Capabilities(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: PluginService_Acknowledge_FullMethodName,
+		FullMethod: PluginService_Capabilities_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PluginServiceServer).Acknowledge(ctx, req.(*AcknowledgeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _PluginService_Complete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CompleteRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(PluginServiceServer).Complete(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: PluginService_Complete_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PluginServiceServer).Complete(ctx, req.(*CompleteRequest))
+		return srv.(PluginServiceServer).Capabilities(ctx, req.(*CapabilitiesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -146,12 +112,8 @@ var PluginService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*PluginServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Acknowledge",
-			Handler:    _PluginService_Acknowledge_Handler,
-		},
-		{
-			MethodName: "Complete",
-			Handler:    _PluginService_Complete_Handler,
+			MethodName: "Capabilities",
+			Handler:    _PluginService_Capabilities_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
