@@ -7,12 +7,6 @@ import (
 	"github.com/unstoppablemango/ux/pkg/cli"
 )
 
-var cliCmd = NewCli()
-
-func init() {
-	rootCmd.AddCommand(cliCmd)
-}
-
 func NewCli() *cobra.Command {
 	opts := cli.Options{}
 

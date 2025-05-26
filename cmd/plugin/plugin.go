@@ -1,14 +1,17 @@
-package cmd
+package plugin
 
 import "github.com/spf13/cobra"
 
-var pluginCmd = NewPlugin()
+var PluginCmd = New()
 
 func init() {
-	rootCmd.AddCommand(pluginCmd)
+	PluginCmd.AddCommand(
+		NewConformance(),
+		NewList(),
+	)
 }
 
-func NewPlugin() *cobra.Command {
+func New() *cobra.Command {
 	return &cobra.Command{
 		Use:   "plugin",
 		Short: "Plugin related commands",

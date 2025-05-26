@@ -6,12 +6,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var generateCmd = NewGenerate()
-
-func init() {
-	rootCmd.AddCommand(generateCmd)
-}
-
 func NewGenerate() *cobra.Command {
 	return &cobra.Command{
 		Use:     "generate",
