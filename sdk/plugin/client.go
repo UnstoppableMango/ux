@@ -7,7 +7,7 @@ import (
 )
 
 type Connection interface {
-	V1Alpha1() uxv1alpha1.PluginServiceClient
+	V1Alpha1() uxv1alpha1.UxServiceClient
 }
 
 type connection struct {
@@ -15,8 +15,8 @@ type connection struct {
 }
 
 // V1Alpha1 implements Client.
-func (c connection) V1Alpha1() uxv1alpha1.PluginServiceClient {
-	return uxv1alpha1.NewPluginServiceClient(c.conn)
+func (c connection) V1Alpha1() uxv1alpha1.UxServiceClient {
+	return uxv1alpha1.NewUxServiceClient(c.conn)
 }
 
 func Dial(host sdk.Host, opts ...grpc.DialOption) (Connection, error) {

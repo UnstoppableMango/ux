@@ -2,20 +2,31 @@ syntax = "proto3";
 
 package dev.unmango.ux.v1alpha1;
 
-message Payload {
-  string content_type = 1;
-  bytes data = 2;
+import "dev/unmango/ux/v1alpha1/codegen.proto";
+import "dev/unmango/ux/v1alpha1/primitive.proto";
+
+service UxService {
+  rpc Acknowledge(AcknowledgeRequest) returns (AcknowledgeResponse);
+  rpc Complete(CompleteRequest) returns (CompleteResponse);
+  rpc Generate(GenerateRequest) returns (GenerateResponse);
 }
 
-message GenerateRequest {
-  string target = 1;
+message AcknowledgeRequest {
+  string name = 1;
+  repeated Capability capabilities = 2;
+}
+
+message AcknowledgeResponse {
+  string request_id = 1;
+  bool abort = 2;
+  Payload payload = 3;
+}
+
+message CompleteRequest {
+  string request_id = 1;
   Payload payload = 2;
 }
 
-message GenerateResponse {
-  Payload payload = 1;
-}
-
-service UxService {
-  rpc Generate(GenerateRequest) returns (GenerateResponse);
+message CompleteResponse {
+  bool head_pat = 1;
 }

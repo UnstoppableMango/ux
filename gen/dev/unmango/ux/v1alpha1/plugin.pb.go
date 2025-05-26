@@ -21,28 +21,26 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type AcknowledgeRequest struct {
+type CapabilitiesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Capabilities  []*Capability          `protobuf:"bytes,2,rep,name=capabilities,proto3" json:"capabilities,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AcknowledgeRequest) Reset() {
-	*x = AcknowledgeRequest{}
+func (x *CapabilitiesRequest) Reset() {
+	*x = CapabilitiesRequest{}
 	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AcknowledgeRequest) String() string {
+func (x *CapabilitiesRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AcknowledgeRequest) ProtoMessage() {}
+func (*CapabilitiesRequest) ProtoMessage() {}
 
-func (x *AcknowledgeRequest) ProtoReflect() protoreflect.Message {
+func (x *CapabilitiesRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -54,48 +52,32 @@ func (x *AcknowledgeRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AcknowledgeRequest.ProtoReflect.Descriptor instead.
-func (*AcknowledgeRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CapabilitiesRequest.ProtoReflect.Descriptor instead.
+func (*CapabilitiesRequest) Descriptor() ([]byte, []int) {
 	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AcknowledgeRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *AcknowledgeRequest) GetCapabilities() []*Capability {
-	if x != nil {
-		return x.Capabilities
-	}
-	return nil
-}
-
-type AcknowledgeResponse struct {
+type CapabilitiesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	Abort         bool                   `protobuf:"varint,2,opt,name=abort,proto3" json:"abort,omitempty"`
-	Payload       *Payload               `protobuf:"bytes,3,opt,name=payload,proto3" json:"payload,omitempty"`
+	All           []*Capability          `protobuf:"bytes,1,rep,name=all,proto3" json:"all,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AcknowledgeResponse) Reset() {
-	*x = AcknowledgeResponse{}
+func (x *CapabilitiesResponse) Reset() {
+	*x = CapabilitiesResponse{}
 	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AcknowledgeResponse) String() string {
+func (x *CapabilitiesResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AcknowledgeResponse) ProtoMessage() {}
+func (*CapabilitiesResponse) ProtoMessage() {}
 
-func (x *AcknowledgeResponse) ProtoReflect() protoreflect.Message {
+func (x *CapabilitiesResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -107,215 +89,28 @@ func (x *AcknowledgeResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AcknowledgeResponse.ProtoReflect.Descriptor instead.
-func (*AcknowledgeResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CapabilitiesResponse.ProtoReflect.Descriptor instead.
+func (*CapabilitiesResponse) Descriptor() ([]byte, []int) {
 	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AcknowledgeResponse) GetRequestId() string {
+func (x *CapabilitiesResponse) GetAll() []*Capability {
 	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
-func (x *AcknowledgeResponse) GetAbort() bool {
-	if x != nil {
-		return x.Abort
-	}
-	return false
-}
-
-func (x *AcknowledgeResponse) GetPayload() *Payload {
-	if x != nil {
-		return x.Payload
+		return x.All
 	}
 	return nil
-}
-
-type CompleteRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	Payload       *Payload               `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CompleteRequest) Reset() {
-	*x = CompleteRequest{}
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CompleteRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CompleteRequest) ProtoMessage() {}
-
-func (x *CompleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CompleteRequest.ProtoReflect.Descriptor instead.
-func (*CompleteRequest) Descriptor() ([]byte, []int) {
-	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *CompleteRequest) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
-func (x *CompleteRequest) GetPayload() *Payload {
-	if x != nil {
-		return x.Payload
-	}
-	return nil
-}
-
-type CompleteResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	HeadPat       bool                   `protobuf:"varint,1,opt,name=head_pat,json=headPat,proto3" json:"head_pat,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CompleteResponse) Reset() {
-	*x = CompleteResponse{}
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CompleteResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CompleteResponse) ProtoMessage() {}
-
-func (x *CompleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CompleteResponse.ProtoReflect.Descriptor instead.
-func (*CompleteResponse) Descriptor() ([]byte, []int) {
-	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *CompleteResponse) GetHeadPat() bool {
-	if x != nil {
-		return x.HeadPat
-	}
-	return false
-}
-
-type Capability struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	From          string                 `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
-	To            string                 `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
-	Lossy         bool                   `protobuf:"varint,3,opt,name=lossy,proto3" json:"lossy,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Capability) Reset() {
-	*x = Capability{}
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Capability) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Capability) ProtoMessage() {}
-
-func (x *Capability) ProtoReflect() protoreflect.Message {
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Capability.ProtoReflect.Descriptor instead.
-func (*Capability) Descriptor() ([]byte, []int) {
-	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *Capability) GetFrom() string {
-	if x != nil {
-		return x.From
-	}
-	return ""
-}
-
-func (x *Capability) GetTo() string {
-	if x != nil {
-		return x.To
-	}
-	return ""
-}
-
-func (x *Capability) GetLossy() bool {
-	if x != nil {
-		return x.Lossy
-	}
-	return false
 }
 
 var File_dev_unmango_ux_v1alpha1_plugin_proto protoreflect.FileDescriptor
 
 const file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc = "" +
 	"\n" +
-	"$dev/unmango/ux/v1alpha1/plugin.proto\x12\x17dev.unmango.ux.v1alpha1\x1a dev/unmango/ux/v1alpha1/ux.proto\"q\n" +
-	"\x12AcknowledgeRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12G\n" +
-	"\fcapabilities\x18\x02 \x03(\v2#.dev.unmango.ux.v1alpha1.CapabilityR\fcapabilities\"\x86\x01\n" +
-	"\x13AcknowledgeResponse\x12\x1d\n" +
-	"\n" +
-	"request_id\x18\x01 \x01(\tR\trequestId\x12\x14\n" +
-	"\x05abort\x18\x02 \x01(\bR\x05abort\x12:\n" +
-	"\apayload\x18\x03 \x01(\v2 .dev.unmango.ux.v1alpha1.PayloadR\apayload\"l\n" +
-	"\x0fCompleteRequest\x12\x1d\n" +
-	"\n" +
-	"request_id\x18\x01 \x01(\tR\trequestId\x12:\n" +
-	"\apayload\x18\x02 \x01(\v2 .dev.unmango.ux.v1alpha1.PayloadR\apayload\"-\n" +
-	"\x10CompleteResponse\x12\x19\n" +
-	"\bhead_pat\x18\x01 \x01(\bR\aheadPat\"F\n" +
-	"\n" +
-	"Capability\x12\x12\n" +
-	"\x04from\x18\x01 \x01(\tR\x04from\x12\x0e\n" +
-	"\x02to\x18\x02 \x01(\tR\x02to\x12\x14\n" +
-	"\x05lossy\x18\x03 \x01(\bR\x05lossy2\xda\x01\n" +
-	"\rPluginService\x12h\n" +
-	"\vAcknowledge\x12+.dev.unmango.ux.v1alpha1.AcknowledgeRequest\x1a,.dev.unmango.ux.v1alpha1.AcknowledgeResponse\x12_\n" +
-	"\bComplete\x12(.dev.unmango.ux.v1alpha1.CompleteRequest\x1a).dev.unmango.ux.v1alpha1.CompleteResponseB\xf0\x01\n" +
+	"$dev/unmango/ux/v1alpha1/plugin.proto\x12\x17dev.unmango.ux.v1alpha1\x1a'dev/unmango/ux/v1alpha1/primitive.proto\"\x15\n" +
+	"\x13CapabilitiesRequest\"M\n" +
+	"\x14CapabilitiesResponse\x125\n" +
+	"\x03all\x18\x01 \x03(\v2#.dev.unmango.ux.v1alpha1.CapabilityR\x03all2|\n" +
+	"\rPluginService\x12k\n" +
+	"\fCapabilities\x12,.dev.unmango.ux.v1alpha1.CapabilitiesRequest\x1a-.dev.unmango.ux.v1alpha1.CapabilitiesResponseB\xf0\x01\n" +
 	"\x1bcom.dev.unmango.ux.v1alpha1B\vPluginProtoP\x01ZEgithub.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1;uxv1alpha1\xa2\x02\x03DUU\xaa\x02\x17Dev.Unmango.Ux.V1alpha1\xca\x02\x17Dev\\Unmango\\Ux\\V1alpha1\xe2\x02#Dev\\Unmango\\Ux\\V1alpha1\\GPBMetadata\xea\x02\x1aDev::Unmango::Ux::V1alpha1b\x06proto3"
 
 var (
@@ -330,28 +125,21 @@ func file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP() []byte {
 	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescData
 }
 
-var file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_dev_unmango_ux_v1alpha1_plugin_proto_goTypes = []any{
-	(*AcknowledgeRequest)(nil),  // 0: dev.unmango.ux.v1alpha1.AcknowledgeRequest
-	(*AcknowledgeResponse)(nil), // 1: dev.unmango.ux.v1alpha1.AcknowledgeResponse
-	(*CompleteRequest)(nil),     // 2: dev.unmango.ux.v1alpha1.CompleteRequest
-	(*CompleteResponse)(nil),    // 3: dev.unmango.ux.v1alpha1.CompleteResponse
-	(*Capability)(nil),          // 4: dev.unmango.ux.v1alpha1.Capability
-	(*Payload)(nil),             // 5: dev.unmango.ux.v1alpha1.Payload
+	(*CapabilitiesRequest)(nil),  // 0: dev.unmango.ux.v1alpha1.CapabilitiesRequest
+	(*CapabilitiesResponse)(nil), // 1: dev.unmango.ux.v1alpha1.CapabilitiesResponse
+	(*Capability)(nil),           // 2: dev.unmango.ux.v1alpha1.Capability
 }
 var file_dev_unmango_ux_v1alpha1_plugin_proto_depIdxs = []int32{
-	4, // 0: dev.unmango.ux.v1alpha1.AcknowledgeRequest.capabilities:type_name -> dev.unmango.ux.v1alpha1.Capability
-	5, // 1: dev.unmango.ux.v1alpha1.AcknowledgeResponse.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
-	5, // 2: dev.unmango.ux.v1alpha1.CompleteRequest.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
-	0, // 3: dev.unmango.ux.v1alpha1.PluginService.Acknowledge:input_type -> dev.unmango.ux.v1alpha1.AcknowledgeRequest
-	2, // 4: dev.unmango.ux.v1alpha1.PluginService.Complete:input_type -> dev.unmango.ux.v1alpha1.CompleteRequest
-	1, // 5: dev.unmango.ux.v1alpha1.PluginService.Acknowledge:output_type -> dev.unmango.ux.v1alpha1.AcknowledgeResponse
-	3, // 6: dev.unmango.ux.v1alpha1.PluginService.Complete:output_type -> dev.unmango.ux.v1alpha1.CompleteResponse
-	5, // [5:7] is the sub-list for method output_type
-	3, // [3:5] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2, // 0: dev.unmango.ux.v1alpha1.CapabilitiesResponse.all:type_name -> dev.unmango.ux.v1alpha1.Capability
+	0, // 1: dev.unmango.ux.v1alpha1.PluginService.Capabilities:input_type -> dev.unmango.ux.v1alpha1.CapabilitiesRequest
+	1, // 2: dev.unmango.ux.v1alpha1.PluginService.Capabilities:output_type -> dev.unmango.ux.v1alpha1.CapabilitiesResponse
+	2, // [2:3] is the sub-list for method output_type
+	1, // [1:2] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_dev_unmango_ux_v1alpha1_plugin_proto_init() }
@@ -359,14 +147,14 @@ func file_dev_unmango_ux_v1alpha1_plugin_proto_init() {
 	if File_dev_unmango_ux_v1alpha1_plugin_proto != nil {
 		return
 	}
-	file_dev_unmango_ux_v1alpha1_ux_proto_init()
+	file_dev_unmango_ux_v1alpha1_primitive_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc), len(file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
