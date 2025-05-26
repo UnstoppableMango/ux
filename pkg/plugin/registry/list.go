@@ -2,11 +2,9 @@ package registry
 
 import (
 	"context"
-	"iter"
 
 	"github.com/unmango/go/option"
 	"github.com/unstoppablemango/ux/pkg/plugin"
-	"github.com/unstoppablemango/ux/pkg/ux"
 )
 
 var Default plugin.Registry = Aggregate{UserConfig}
@@ -26,7 +24,7 @@ func AllOrDefault(registries []plugin.Registry) plugin.Registry {
 	}
 }
 
-func List(ctx context.Context, options ...ListOption) (iter.Seq2[string, ux.Plugin], error) {
+func List(ctx context.Context, options ...ListOption) (plugin.List, error) {
 	opts := ListOptions{}
 	option.ApplyAll(&opts, options)
 

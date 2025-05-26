@@ -3,7 +3,6 @@ package registry
 import (
 	"context"
 	"io/fs"
-	"iter"
 	"maps"
 	"regexp"
 
@@ -24,7 +23,7 @@ type LocalDirectory struct {
 	Path string
 }
 
-func (r LocalDirectory) List(context.Context) (iter.Seq2[string, ux.Plugin], error) {
+func (r LocalDirectory) List(context.Context) (plugin.List, error) {
 	if r.Fs == nil {
 		r.Fs = afero.NewOsFs()
 	}

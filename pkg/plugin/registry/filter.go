@@ -13,7 +13,7 @@ type Filtered struct {
 	Registry plugin.Registry
 }
 
-func (r Filtered) List(ctx context.Context) (iter.Seq2[string, ux.Plugin], error) {
+func (r Filtered) List(ctx context.Context) (plugin.List, error) {
 	if plugins, err := r.Registry.List(ctx); err != nil {
 		return nil, err
 	} else {
