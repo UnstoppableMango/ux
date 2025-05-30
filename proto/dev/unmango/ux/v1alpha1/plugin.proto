@@ -6,7 +6,7 @@ import "dev/unmango/ux/v1alpha1/primitive.proto";
 
 service PluginService {
   rpc Capabilities(CapabilitiesRequest) returns (CapabilitiesResponse);
-  rpc Invoke(InvokeRequest) returns (InvokeResponse);
+  rpc Generate(GenerateRequest) returns (GenerateResponse);
 }
 
 message CapabilitiesRequest {}
@@ -15,8 +15,11 @@ message CapabilitiesResponse {
   repeated Capability all = 1;
 }
 
-message InvokeRequest {
-  string host = 1;
+message GenerateRequest {
+  string target = 1;
+  Payload payload = 2;
 }
 
-message InvokeResponse {}
+message GenerateResponse {
+  Payload payload = 1;
+}
