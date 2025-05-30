@@ -2,29 +2,31 @@ package main
 
 import (
 	"context"
-	"os"
 
+	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	"github.com/unstoppablemango/ux/sdk/plugin"
 	"github.com/unstoppablemango/ux/sdk/plugin/cli"
-	"github.com/unstoppablemango/ux/sdk/plugin/handler"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"github.com/unstoppablemango/ux/sdk/plugin/cmd"
 )
 
-var Plugin = plugin.New("dummy", handler.NoOp,
-	plugin.WithDialOptions(
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
-	),
+type generator struct{}
+
+// Generate implements ux.Generator.
+func (generator) Generate(context.Context, *uxv1alpha1.GenerateRequest) (*uxv1alpha1.GenerateResponse, error) {
+	return &uxv1alpha1.GenerateResponse{}, nil
+}
+
+var Plugin = plugin.New(
+	plugin.WithCapabilities(&uxv1alpha1.Capability{
+		From:  "dummyA",
+		To:    "dummyB",
+		Lossy: true,
+	}),
+	plugin.WithGenerator(generator{}),
 )
 
 func main() {
-	input, err := cli.Parse(os.Args[1:])
-	if err != nil {
-		cli.Fail(err)
-	}
-
-	ctx := context.Background()
-	if err = Plugin.Acknowledge(ctx, input.Host); err != nil {
+	if err := cmd.Execute("dummy", cli.New(Plugin)); err != nil {
 		cli.Fail(err)
 	}
 }
