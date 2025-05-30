@@ -197,88 +197,6 @@ func (x *GenerateResponse) GetPayload() *Payload {
 	return nil
 }
 
-type InvokeRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to Request:
-	//
-	//	*InvokeRequest_Capabilities
-	//	*InvokeRequest_Generate
-	Request       isInvokeRequest_Request `protobuf_oneof:"request"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *InvokeRequest) Reset() {
-	*x = InvokeRequest{}
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *InvokeRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*InvokeRequest) ProtoMessage() {}
-
-func (x *InvokeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use InvokeRequest.ProtoReflect.Descriptor instead.
-func (*InvokeRequest) Descriptor() ([]byte, []int) {
-	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *InvokeRequest) GetRequest() isInvokeRequest_Request {
-	if x != nil {
-		return x.Request
-	}
-	return nil
-}
-
-func (x *InvokeRequest) GetCapabilities() *CapabilitiesRequest {
-	if x != nil {
-		if x, ok := x.Request.(*InvokeRequest_Capabilities); ok {
-			return x.Capabilities
-		}
-	}
-	return nil
-}
-
-func (x *InvokeRequest) GetGenerate() *GenerateRequest {
-	if x != nil {
-		if x, ok := x.Request.(*InvokeRequest_Generate); ok {
-			return x.Generate
-		}
-	}
-	return nil
-}
-
-type isInvokeRequest_Request interface {
-	isInvokeRequest_Request()
-}
-
-type InvokeRequest_Capabilities struct {
-	Capabilities *CapabilitiesRequest `protobuf:"bytes,1,opt,name=capabilities,proto3,oneof"`
-}
-
-type InvokeRequest_Generate struct {
-	Generate *GenerateRequest `protobuf:"bytes,2,opt,name=generate,proto3,oneof"`
-}
-
-func (*InvokeRequest_Capabilities) isInvokeRequest_Request() {}
-
-func (*InvokeRequest_Generate) isInvokeRequest_Request() {}
-
 var File_dev_unmango_ux_v1alpha1_plugin_proto protoreflect.FileDescriptor
 
 const file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc = "" +
@@ -291,11 +209,7 @@ const file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc = "" +
 	"\x06target\x18\x01 \x01(\tR\x06target\x12:\n" +
 	"\apayload\x18\x02 \x01(\v2 .dev.unmango.ux.v1alpha1.PayloadR\apayload\"N\n" +
 	"\x10GenerateResponse\x12:\n" +
-	"\apayload\x18\x01 \x01(\v2 .dev.unmango.ux.v1alpha1.PayloadR\apayload\"\xb6\x01\n" +
-	"\rInvokeRequest\x12R\n" +
-	"\fcapabilities\x18\x01 \x01(\v2,.dev.unmango.ux.v1alpha1.CapabilitiesRequestH\x00R\fcapabilities\x12F\n" +
-	"\bgenerate\x18\x02 \x01(\v2(.dev.unmango.ux.v1alpha1.GenerateRequestH\x00R\bgenerateB\t\n" +
-	"\arequest2\xdd\x01\n" +
+	"\apayload\x18\x01 \x01(\v2 .dev.unmango.ux.v1alpha1.PayloadR\apayload2\xdd\x01\n" +
 	"\rPluginService\x12k\n" +
 	"\fCapabilities\x12,.dev.unmango.ux.v1alpha1.CapabilitiesRequest\x1a-.dev.unmango.ux.v1alpha1.CapabilitiesResponse\x12_\n" +
 	"\bGenerate\x12(.dev.unmango.ux.v1alpha1.GenerateRequest\x1a).dev.unmango.ux.v1alpha1.GenerateResponseB\xf0\x01\n" +
@@ -313,31 +227,28 @@ func file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP() []byte {
 	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescData
 }
 
-var file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_dev_unmango_ux_v1alpha1_plugin_proto_goTypes = []any{
 	(*CapabilitiesRequest)(nil),  // 0: dev.unmango.ux.v1alpha1.CapabilitiesRequest
 	(*CapabilitiesResponse)(nil), // 1: dev.unmango.ux.v1alpha1.CapabilitiesResponse
 	(*GenerateRequest)(nil),      // 2: dev.unmango.ux.v1alpha1.GenerateRequest
 	(*GenerateResponse)(nil),     // 3: dev.unmango.ux.v1alpha1.GenerateResponse
-	(*InvokeRequest)(nil),        // 4: dev.unmango.ux.v1alpha1.InvokeRequest
-	(*Capability)(nil),           // 5: dev.unmango.ux.v1alpha1.Capability
-	(*Payload)(nil),              // 6: dev.unmango.ux.v1alpha1.Payload
+	(*Capability)(nil),           // 4: dev.unmango.ux.v1alpha1.Capability
+	(*Payload)(nil),              // 5: dev.unmango.ux.v1alpha1.Payload
 }
 var file_dev_unmango_ux_v1alpha1_plugin_proto_depIdxs = []int32{
-	5, // 0: dev.unmango.ux.v1alpha1.CapabilitiesResponse.all:type_name -> dev.unmango.ux.v1alpha1.Capability
-	6, // 1: dev.unmango.ux.v1alpha1.GenerateRequest.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
-	6, // 2: dev.unmango.ux.v1alpha1.GenerateResponse.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
-	0, // 3: dev.unmango.ux.v1alpha1.InvokeRequest.capabilities:type_name -> dev.unmango.ux.v1alpha1.CapabilitiesRequest
-	2, // 4: dev.unmango.ux.v1alpha1.InvokeRequest.generate:type_name -> dev.unmango.ux.v1alpha1.GenerateRequest
-	0, // 5: dev.unmango.ux.v1alpha1.PluginService.Capabilities:input_type -> dev.unmango.ux.v1alpha1.CapabilitiesRequest
-	2, // 6: dev.unmango.ux.v1alpha1.PluginService.Generate:input_type -> dev.unmango.ux.v1alpha1.GenerateRequest
-	1, // 7: dev.unmango.ux.v1alpha1.PluginService.Capabilities:output_type -> dev.unmango.ux.v1alpha1.CapabilitiesResponse
-	3, // 8: dev.unmango.ux.v1alpha1.PluginService.Generate:output_type -> dev.unmango.ux.v1alpha1.GenerateResponse
-	7, // [7:9] is the sub-list for method output_type
-	5, // [5:7] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	4, // 0: dev.unmango.ux.v1alpha1.CapabilitiesResponse.all:type_name -> dev.unmango.ux.v1alpha1.Capability
+	5, // 1: dev.unmango.ux.v1alpha1.GenerateRequest.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
+	5, // 2: dev.unmango.ux.v1alpha1.GenerateResponse.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
+	0, // 3: dev.unmango.ux.v1alpha1.PluginService.Capabilities:input_type -> dev.unmango.ux.v1alpha1.CapabilitiesRequest
+	2, // 4: dev.unmango.ux.v1alpha1.PluginService.Generate:input_type -> dev.unmango.ux.v1alpha1.GenerateRequest
+	1, // 5: dev.unmango.ux.v1alpha1.PluginService.Capabilities:output_type -> dev.unmango.ux.v1alpha1.CapabilitiesResponse
+	3, // 6: dev.unmango.ux.v1alpha1.PluginService.Generate:output_type -> dev.unmango.ux.v1alpha1.GenerateResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_dev_unmango_ux_v1alpha1_plugin_proto_init() }
@@ -346,17 +257,13 @@ func file_dev_unmango_ux_v1alpha1_plugin_proto_init() {
 		return
 	}
 	file_dev_unmango_ux_v1alpha1_primitive_proto_init()
-	file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[4].OneofWrappers = []any{
-		(*InvokeRequest_Capabilities)(nil),
-		(*InvokeRequest_Generate)(nil),
-	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc), len(file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

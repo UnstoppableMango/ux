@@ -23,10 +23,3 @@ message GenerateRequest {
 message GenerateResponse {
   Payload payload = 1;
 }
-
-message InvokeRequest {
-  oneof request {
-    CapabilitiesRequest capabilities = 1;
-    GenerateRequest generate = 2;
-  }
-}
