@@ -1,11 +1,5 @@
 package conformance
 
-import (
-	"context"
-
-	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
-)
-
 type stack[T any] []T
 
 func (s stack[T]) Push(elem T) stack[T] {
@@ -41,23 +35,4 @@ func (e *endpoint[T, U]) NextResponse() (res U, err error) {
 	} else {
 		return res, nil // TODO
 	}
-}
-
-// UxService is implemented as a manual mock instead of using gomock due to the embedded
-// struct requirement. The generated mock methods do not satisfy that requirement and
-// gomock does not appear to support specifying structs to be embedded.
-type UxService struct {
-	uxv1alpha1.UnimplementedUxServiceServer
-	AcknowledgeEndpoint endpoint[*uxv1alpha1.AcknowledgeRequest, *uxv1alpha1.AcknowledgeResponse]
-	CompleteEndpoint    endpoint[*uxv1alpha1.CompleteRequest, *uxv1alpha1.CompleteResponse]
-}
-
-func (s *UxService) Acknowledge(_ context.Context, req *uxv1alpha1.AcknowledgeRequest) (*uxv1alpha1.AcknowledgeResponse, error) {
-	s.AcknowledgeEndpoint.Receive(req)
-	return s.AcknowledgeEndpoint.NextResponse()
-}
-
-func (s *UxService) Complete(_ context.Context, req *uxv1alpha1.CompleteRequest) (*uxv1alpha1.CompleteResponse, error) {
-	s.CompleteEndpoint.Receive(req)
-	return s.CompleteEndpoint.NextResponse()
 }
