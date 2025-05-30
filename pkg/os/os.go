@@ -6,34 +6,45 @@ import (
 	"os"
 
 	"github.com/spf13/afero"
-	"github.com/unstoppablemango/ux/pkg/os/fs"
 )
 
 //go:generate go tool mockgen -destination zz_generated.mock.go -package os . Os
 
+var System = sys{}
+
 type Os interface {
 	Fs() afero.Fs
+	Stderr() io.Writer
 	Stdin() io.Reader
+	Stdout() io.Writer
 }
 
 type (
-	key    struct{}
-	System struct{ fs afero.Fs }
+	key struct{}
+	sys struct{}
 )
 
-func (s System) Fs() afero.Fs {
-	return s.fs
+func (sys) Fs() afero.Fs {
+	return afero.NewOsFs()
 }
 
-func (System) Stdin() io.Reader {
+func (sys) Stderr() io.Writer {
+	return os.Stderr
+}
+
+func (sys) Stdin() io.Reader {
 	return os.Stdin
+}
+
+func (sys) Stdout() io.Writer {
+	return os.Stdout
 }
 
 func FromContext(ctx context.Context) Os {
 	if v := ctx.Value(key{}); v != nil {
 		return v.(Os)
 	} else {
-		return System{fs.FromContext(ctx)}
+		return System
 	}
 }
 
