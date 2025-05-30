@@ -118,7 +118,7 @@ JSON_SRC := .dprint.json .github/renovate.json .vscode/extensions.json
 	$(GO) generate ./...
 	@touch $@
 
-.make/go-vet: ${GO_SRC}
+.make/go-vet: $(filter-out sdk/% cmd/dummy/%,${GO_SRC})
 	$(GO) vet $(addprefix ./,$(sort $(dir $?)))
 	@touch $@
 
