@@ -128,5 +128,7 @@ JSON_SRC := .dprint.json .github/renovate.json .vscode/extensions.json
 
 ##@ SDK
 
+sdk/build: $(filter sdk/%,${GO_SRC})
+sdk/go.sum: sdk/go.mod $(filter sdk/%,${GO_SRC})
 sdk/%:
 	$(MAKE) -C sdk $*
