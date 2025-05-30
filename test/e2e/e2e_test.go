@@ -38,7 +38,7 @@ var _ = Describe("E2e", func() {
 		})
 	})
 
-	Describe("Conformance", func() {
+	Describe("Plugin Conformance", func() {
 		BeforeEach(func() {
 			Expect(os.Setenv("GINKGO_NO_COLOR", "true")).To(Succeed())
 		})
