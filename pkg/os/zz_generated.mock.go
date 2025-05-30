@@ -55,6 +55,20 @@ func (mr *MockOsMockRecorder) Fs() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fs", reflect.TypeOf((*MockOs)(nil).Fs))
 }
 
+// Stderr mocks base method.
+func (m *MockOs) Stderr() io.Writer {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Stderr")
+	ret0, _ := ret[0].(io.Writer)
+	return ret0
+}
+
+// Stderr indicates an expected call of Stderr.
+func (mr *MockOsMockRecorder) Stderr() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Stderr", reflect.TypeOf((*MockOs)(nil).Stderr))
+}
+
 // Stdin mocks base method.
 func (m *MockOs) Stdin() io.Reader {
 	m.ctrl.T.Helper()
@@ -67,4 +81,18 @@ func (m *MockOs) Stdin() io.Reader {
 func (mr *MockOsMockRecorder) Stdin() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Stdin", reflect.TypeOf((*MockOs)(nil).Stdin))
+}
+
+// Stdout mocks base method.
+func (m *MockOs) Stdout() io.Writer {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Stdout")
+	ret0, _ := ret[0].(io.Writer)
+	return ret0
+}
+
+// Stdout indicates an expected call of Stdout.
+func (mr *MockOsMockRecorder) Stdout() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Stdout", reflect.TypeOf((*MockOs)(nil).Stdout))
 }
