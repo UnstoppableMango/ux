@@ -24,7 +24,7 @@ var _ = Describe("E2e", func() {
 	})
 
 	Describe("Dummy", func() {
-		FIt("should return capabilities", func(ctx context.Context) {
+		It("should return capabilities", func(ctx context.Context) {
 			p := plugin.LocalBinary(dummyPath)
 
 			res, err := p.Capabilities(ctx, &uxv1alpha1.CapabilitiesRequest{})
