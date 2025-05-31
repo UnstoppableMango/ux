@@ -2,7 +2,6 @@ package list
 
 import (
 	"github.com/unstoppablemango/ux/pkg/plugin"
-	"github.com/unstoppablemango/ux/pkg/plugin/registry"
 	"github.com/unstoppablemango/ux/pkg/plugin/registry/internal"
 )
 
@@ -15,7 +14,7 @@ type Option func(*Options)
 
 func (o Options) Aggregate() plugin.Registry {
 	if o.disableDefault {
-		return registry.Aggregate(o.registries)
+		return internal.Aggregate(o.registries)
 	} else {
 		return AllOrDefault(o.registries)
 	}
@@ -23,7 +22,7 @@ func (o Options) Aggregate() plugin.Registry {
 
 func AllOrDefault(registries []plugin.Registry) plugin.Registry {
 	if len(registries) > 0 {
-		return registry.Aggregate(registries)
+		return internal.Aggregate(registries)
 	} else {
 		return internal.Default()
 	}

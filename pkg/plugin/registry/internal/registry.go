@@ -4,14 +4,13 @@ import (
 	"sync"
 
 	"github.com/unstoppablemango/ux/pkg/plugin"
-	"github.com/unstoppablemango/ux/pkg/plugin/registry"
 )
 
 var reg = &Static{}
 
 type Static struct {
 	sync.Mutex
-	r registry.Aggregate
+	r Aggregate
 }
 
 func Default() plugin.Registry {
