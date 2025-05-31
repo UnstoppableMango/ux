@@ -2,7 +2,7 @@ package local_test
 
 import (
 	"context"
-	"os"
+	"maps"
 	"path/filepath"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -12,28 +12,39 @@ import (
 )
 
 var _ = Describe("Directory", func() {
-	Describe("Directory", func() {
-		var path string
+	Describe("Cwd", func() {
+		It("should list", func(ctx context.Context) {
+			dir := local.Cwd.Join("testdata")
 
-		BeforeEach(func() {
-			cwd, err := os.Getwd()
+			plugins, err := dir.List(ctx)
+
 			Expect(err).NotTo(HaveOccurred())
-			path = filepath.Join(cwd, "testdata")
+			Expect(plugins).NotTo(BeEmpty())
+			Expect(maps.Collect(plugins)).To(HaveKeyWithValue("a2b",
+				plugin.LocalBinary(filepath.Join(testdata, "a2b")),
+			))
+			Expect(maps.Collect(plugins)).To(HaveKeyWithValue("ux-plugin",
+				plugin.LocalBinary(filepath.Join(testdata, "ux-plugin")),
+			))
+			Expect(maps.Collect(plugins)).NotTo(HaveKey("testdata"))
 		})
+	})
 
+	Describe("Directory", func() {
 		It("should list plugins", func(ctx context.Context) {
-			dir := local.Directory(path)
+			dir := local.Directory(testdata)
 
 			plugins, err := dir.List(ctx)
 
 			Expect(err).NotTo(HaveOccurred())
 			Expect(plugins).NotTo(BeEmpty())
 			Expect(plugins).To(HaveKeyWithValue("a2b",
-				plugin.LocalBinary(filepath.Join(path, "a2b")),
+				plugin.LocalBinary(filepath.Join(testdata, "a2b")),
 			))
 			Expect(plugins).To(HaveKeyWithValue("ux-plugin",
-				plugin.LocalBinary(filepath.Join(path, "ux-plugin")),
+				plugin.LocalBinary(filepath.Join(testdata, "ux-plugin")),
 			))
+			Expect(maps.Collect(plugins)).NotTo(HaveKey("testdata"))
 		})
 	})
 })

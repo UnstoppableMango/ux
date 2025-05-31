@@ -14,6 +14,7 @@ var System = sys{}
 
 type Os interface {
 	Fs() afero.Fs
+	Getwd() (string, error)
 	Stderr() io.Writer
 	Stdin() io.Reader
 	Stdout() io.Writer
@@ -26,6 +27,10 @@ type (
 
 func (sys) Fs() afero.Fs {
 	return afero.NewOsFs()
+}
+
+func (sys) Getwd() (dir string, err error) {
+	return os.Getwd()
 }
 
 func (sys) Stderr() io.Writer {

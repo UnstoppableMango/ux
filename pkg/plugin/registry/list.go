@@ -12,5 +12,11 @@ func List(ctx context.Context, options ...list.Option) (plugin.List, error) {
 	opts := list.Options{}
 	option.ApplyAll(&opts, options)
 
-	return opts.Aggregate().List(ctx)
+	if len(opts.Registries) > 0 {
+		return Aggregate(opts.Registries).List(ctx)
+	} else if !opts.DisableDefault {
+		return Default.List(ctx)
+	} else {
+		return plugin.EmptyList, nil
+	}
 }

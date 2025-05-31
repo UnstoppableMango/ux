@@ -21,9 +21,10 @@ var _ = Describe("Local", func() {
 
 		DescribeTable("should NOT match", func(path string) {
 			matches := local.BinPattern.MatchString(path)
-			Expect(matches).To(BeFalseBecause("The path does not match plugin.BinPattern"))
+			Expect(matches).To(BeFalseBecause("The path matched plugin.BinPattern"))
 		},
 			Entry(nil, "kubectl-plugin"),
-			Entry(nil, "a3b"))
+			Entry(nil, "a3b"),
+			Entry(nil, "tdl-linux-amd64.tar.gz"))
 	})
 })
