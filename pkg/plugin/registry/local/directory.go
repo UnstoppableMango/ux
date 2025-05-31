@@ -1,35 +1,26 @@
-package registry
+package local
 
 import (
 	"context"
 	"io/fs"
 	"maps"
-	"regexp"
 
 	"github.com/spf13/afero"
 	ux "github.com/unstoppablemango/ux/pkg"
-	"github.com/unstoppablemango/ux/pkg/config"
+	"github.com/unstoppablemango/ux/pkg/os"
 	"github.com/unstoppablemango/ux/pkg/plugin"
 )
 
-var BinPattern = regexp.MustCompile(`(.+2.+)|(ux-.+)`)
+type LocalDirectory string
 
-var UserConfig = IgnoreNotFound(LocalDirectory{
-	Path: config.PluginDir,
-})
-
-type LocalDirectory struct {
-	Fs   afero.Fs
-	Path string
+func (d LocalDirectory) Path() string {
+	return string(d)
 }
 
-func (r LocalDirectory) List(context.Context) (plugin.List, error) {
-	if r.Fs == nil {
-		r.Fs = afero.NewOsFs()
-	}
-
+func (d LocalDirectory) List(ctx context.Context) (plugin.List, error) {
+	os := os.FromContext(ctx)
 	plugins := map[string]ux.Plugin{}
-	err := afero.Walk(afero.NewRegexpFs(r.Fs, BinPattern), r.Path,
+	err := afero.Walk(afero.NewRegexpFs(os.Fs(), BinPattern), d.Path(),
 		func(path string, info fs.FileInfo, err error) error {
 			if err != nil {
 				return err
