@@ -22,7 +22,7 @@ var _ = Describe("Directory", func() {
 		})
 
 		It("should list plugins", func(ctx context.Context) {
-			dir := local.LocalDirectory(path)
+			dir := local.Directory(path)
 
 			plugins, err := dir.List(ctx)
 

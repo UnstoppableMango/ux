@@ -11,7 +11,7 @@ import (
 
 var (
 	BinPattern = regexp.MustCompile(`(.+2.+)|(ux-.+)`)
-	UserConfig = registry.IgnoreNotFound(LocalDirectory(config.PluginDir))
+	UserConfig = registry.IgnoreNotFound(Directory(config.PluginDir))
 
 	Default plugin.Registry = internal.Aggregate{UserConfig}
 )

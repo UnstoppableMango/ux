@@ -11,13 +11,13 @@ import (
 	"github.com/unstoppablemango/ux/pkg/plugin"
 )
 
-type LocalDirectory string
+type Directory string
 
-func (d LocalDirectory) Path() string {
+func (d Directory) Path() string {
 	return string(d)
 }
 
-func (d LocalDirectory) List(ctx context.Context) (plugin.List, error) {
+func (d Directory) List(ctx context.Context) (plugin.List, error) {
 	os := os.FromContext(ctx)
 	plugins := map[string]ux.Plugin{}
 	err := afero.Walk(afero.NewRegexpFs(os.Fs(), BinPattern), d.Path(),
