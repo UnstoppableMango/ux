@@ -7,22 +7,12 @@ import (
 	"github.com/unstoppablemango/ux/pkg/plugin"
 )
 
-var Default plugin.Registry = Aggregate{UserConfig}
-
 type ListOptions struct {
 	disableDefault bool
 	registries     []plugin.Registry
 }
 
 type ListOption func(*ListOptions)
-
-func AllOrDefault(registries []plugin.Registry) plugin.Registry {
-	if len(registries) > 0 {
-		return Aggregate(registries)
-	} else {
-		return Default
-	}
-}
 
 func List(ctx context.Context, options ...ListOption) (plugin.List, error) {
 	opts := ListOptions{}
@@ -35,6 +25,14 @@ func (o ListOptions) aggregate() plugin.Registry {
 	if o.disableDefault {
 		return Aggregate(o.registries)
 	} else {
-		return AllOrDefault(o.registries)
+		return allOrDefault(o.registries, nil)
+	}
+}
+
+func allOrDefault(registries []plugin.Registry, def plugin.Registry) plugin.Registry {
+	if len(registries) > 0 {
+		return Aggregate(registries)
+	} else {
+		return def
 	}
 }
