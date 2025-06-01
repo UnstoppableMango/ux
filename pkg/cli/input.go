@@ -10,6 +10,12 @@ type Input struct {
 	sinks   iter.Seq2[string, ux.Sink]
 }
 
+// Plugins implements ux.Input.
+func (i Input) Plugins() iter.Seq2[string, ux.Plugin] {
+	panic("unimplemented")
+}
+
+// Sources implements ux.Input.
 func (i Input) Sources() iter.Seq2[string, ux.Source] {
 	if i.sources == nil {
 		return iter.Empty2[string, ux.Source]()
@@ -18,6 +24,7 @@ func (i Input) Sources() iter.Seq2[string, ux.Source] {
 	}
 }
 
+// Sinks implements ux.Input.
 func (i Input) Sinks() iter.Seq2[string, ux.Sink] {
 	if i.sinks == nil {
 		return iter.Empty2[string, ux.Sink]()

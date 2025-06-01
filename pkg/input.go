@@ -16,6 +16,7 @@ type (
 )
 
 type Input interface {
+	Plugins() iter.Seq2[string, Plugin]
 	Sources() iter.Seq2[string, Source]
 	Sinks() iter.Seq2[string, Sink]
 }
