@@ -17,6 +17,7 @@ var (
 	DefaultDir  = filepath.Join(xdg.ConfigHome, Project)
 	DefaultPath = filepath.Join(DefaultDir, DefaultFile)
 	PluginDir   = filepath.Join(DefaultDir, "plugins")
+	LocalBin    = xdg.BinHome
 )
 
 type Config interface{}

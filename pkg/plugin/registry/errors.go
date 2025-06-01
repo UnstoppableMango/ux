@@ -2,10 +2,9 @@ package registry
 
 import (
 	"context"
-	"errors"
-	"io/fs"
 
 	"github.com/unstoppablemango/ux/pkg/plugin"
+	"github.com/unstoppablemango/ux/pkg/plugin/registry/local"
 )
 
 type ErrorFilter struct {
@@ -26,9 +25,5 @@ func FilterErrors(registry plugin.Registry, filter func(error) bool) plugin.Regi
 }
 
 func IgnoreNotFound(registry plugin.Registry) plugin.Registry {
-	return FilterErrors(registry, IsNotFound)
-}
-
-func IsNotFound(err error) bool {
-	return errors.Is(err, fs.ErrNotExist)
+	return FilterErrors(registry, local.IsNotFound)
 }
