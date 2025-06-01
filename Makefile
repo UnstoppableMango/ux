@@ -2,14 +2,15 @@ _ != mkdir -p .make
 
 ##@ Tools
 
-GO      ?= go
-BUF     ?= $(GO) tool buf
-DEVCTL  ?= $(GO) tool devctl
-DOCKER  ?= docker
-DPRINT  ?= ${CURDIR}/bin/dprint
-GINKGO  ?= $(GO) tool ginkgo
-GOLINT  ?= $(GO) tool golangci-lint
-MOCKGEN ?= $(GO) tool mockgen
+GO         ?= go
+BUF        ?= $(GO) tool buf
+DEVCTL     ?= $(GO) tool devctl
+DOCKER     ?= docker
+DPRINT     ?= ${CURDIR}/bin/dprint
+GINKGO     ?= $(GO) tool ginkgo
+GOLINT     ?= $(GO) tool golangci-lint
+GORELEASER ?= $(GO) tool goreleaser
+MOCKGEN    ?= $(GO) tool mockgen
 
 ##@ Primary Targets
 

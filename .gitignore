@@ -5,3 +5,6 @@ bin/
 .envrc
 .vscode/*
 !.vscode/extensions.json
+
+# Added by goreleaser init:
+dist/
