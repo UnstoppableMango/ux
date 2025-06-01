@@ -27,6 +27,7 @@ var _ = Describe("Directory", func() {
 				plugin.LocalBinary(filepath.Join(testdata, "ux-plugin")),
 			))
 			Expect(maps.Collect(plugins)).NotTo(HaveKey("testdata"))
+			Expect(maps.Collect(plugins)).NotTo(HaveKey("ux-thing.bin"))
 		})
 	})
 
@@ -38,13 +39,14 @@ var _ = Describe("Directory", func() {
 
 			Expect(err).NotTo(HaveOccurred())
 			Expect(plugins).NotTo(BeEmpty())
-			Expect(plugins).To(HaveKeyWithValue("a2b",
+			Expect(maps.Collect(plugins)).To(HaveKeyWithValue("a2b",
 				plugin.LocalBinary(filepath.Join(testdata, "a2b")),
 			))
-			Expect(plugins).To(HaveKeyWithValue("ux-plugin",
+			Expect(maps.Collect(plugins)).To(HaveKeyWithValue("ux-plugin",
 				plugin.LocalBinary(filepath.Join(testdata, "ux-plugin")),
 			))
 			Expect(maps.Collect(plugins)).NotTo(HaveKey("testdata"))
+			Expect(maps.Collect(plugins)).NotTo(HaveKey("ux-thing.bin"))
 		})
 	})
 })

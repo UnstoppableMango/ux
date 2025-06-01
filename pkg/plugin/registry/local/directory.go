@@ -2,6 +2,7 @@ package local
 
 import (
 	"context"
+	"errors"
 	"io/fs"
 	"maps"
 	"path/filepath"
@@ -32,12 +33,20 @@ func (d Directory) List(ctx context.Context) (plugin.List, error) {
 	})
 
 	plugins := map[string]ux.Plugin{}
-	err := afero.Walk(afero.NewRegexpFs(os.Fs(), BinPattern), d.Path(),
+	err := afero.Walk(os.Fs(), d.Path(),
 		func(path string, info fs.FileInfo, err error) error {
-			if err != nil {
+			switch {
+			case errors.Is(err, fs.ErrNotExist):
+				fallthrough
+			case info.IsDir():
+				return nil
+			case err != nil:
 				return err
+			case !BinPattern.MatchString(info.Name()):
+				return nil
 			}
-			if info.IsDir() {
+
+			if ext := filepath.Ext(path); ext != "" {
 				return nil
 			}
 

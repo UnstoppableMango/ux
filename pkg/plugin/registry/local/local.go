@@ -5,5 +5,5 @@ import (
 )
 
 var (
-	BinPattern = regexp.MustCompile(`(.+2.+)|(ux-.+)`)
+	BinPattern = regexp.MustCompile(`(.+2.+)|(^ux-.+$)`)
 )
