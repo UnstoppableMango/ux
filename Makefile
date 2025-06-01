@@ -1,4 +1,5 @@
 _ != mkdir -p .make
+VERSION ?= sha:$(shell git rev-parse HEAD)
 
 ##@ Tools
 
@@ -34,7 +35,7 @@ GO_CODEGEN  := ${GO_GRPC_SRC} ${GO_PB_SRC}
 ##@ Artifacts
 
 bin/ux: ${GO_SRC} ## Build the ux CLI
-	$(GO) build -o $@ main.go
+	$(GO) build -o $@ --ldflags='-X github.com/unstoppablemango/ux/cmd.Version=${VERSION}' main.go
 
 bin/dummy: ${GO_SRC} ## Build the dummy testing utility
 	$(GO) build -C cmd/dummy -o ${CURDIR}/$@ main.go
