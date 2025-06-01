@@ -19,9 +19,6 @@ COPY gen ./gen
 COPY pkg ./pkg
 COPY main.go ./
 
-# To include vcs metadata
-COPY .git/ .git/
-
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
 	go build --ldflags="$LDFLAGS" -o /out/ux
 
