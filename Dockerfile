@@ -4,6 +4,8 @@ FROM golang:1.24@sha256:4c0a1814a7c6c65ece28b3bfea14ee3cf83b5e80b81418453f0e9d52
 ARG BUILDPLATFORM
 ARG TARGETOS
 ARG TARGETARCH
+ARG VERSION=v0.0.1-docker
+ARG LDFLAGS="-X github.com/unstoppablemango/ux/cmd.Version=$VERSION"
 
 FROM base AS download
 WORKDIR /src
@@ -17,7 +19,11 @@ COPY gen ./gen
 COPY pkg ./pkg
 COPY main.go ./
 
-RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /out/ux
+# To include vcs metadata
+COPY .git/ .git/
+
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
+	go build --ldflags="$LDFLAGS" -o /out/ux
 
 FROM --platform=$BUILDPLATFORM scratch
 COPY --from=build /out/ux /usr/bin/
