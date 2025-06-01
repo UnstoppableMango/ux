@@ -8,10 +8,17 @@ import (
 	"github.com/unstoppablemango/ux/pkg/plugin/registry"
 )
 
+var listCmd = NewList()
+
+func init() {
+	PluginCmd.AddCommand(listCmd)
+}
+
 func NewList() *cobra.Command {
 	return &cobra.Command{
-		Use:   "list",
-		Short: "List all reachable plugins",
+		Use:     "list",
+		Short:   "List all reachable plugins",
+		Aliases: []string{"ls", "l"},
 		Run: func(cmd *cobra.Command, args []string) {
 			plugins, err := registry.List(cmd.Context())
 			if err != nil {
