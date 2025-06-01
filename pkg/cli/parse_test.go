@@ -12,6 +12,6 @@ var _ = Describe("Parse", func() {
 		input, err := cli.Parse(cli.Options{}, []string{"-"})
 
 		Expect(err).NotTo(HaveOccurred())
-		Expect(input.Sources).To(HaveKey("-"))
+		Expect(input.Sources()).To(HaveKey("-"))
 	})
 })
