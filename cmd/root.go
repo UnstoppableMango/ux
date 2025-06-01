@@ -1,6 +1,9 @@
 package cmd
 
-import "github.com/unstoppablemango/ux/cmd/plugin"
+import (
+	"github.com/charmbracelet/log"
+	"github.com/unstoppablemango/ux/cmd/plugin"
+)
 
 var rootCmd = NewUx()
 
@@ -11,5 +14,6 @@ func init() {
 }
 
 func Execute() error {
+	log.SetReportTimestamp(false)
 	return rootCmd.Execute()
 }
