@@ -16,6 +16,6 @@ type (
 )
 
 type Input interface {
-	GetSources() iter.Seq2[string, Source]
-	GetSinks() iter.Seq2[string, Sink]
+	Sources() iter.Seq2[string, Source]
+	Sinks() iter.Seq2[string, Sink]
 }
