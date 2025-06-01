@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 
+	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/os"
 )
 
@@ -17,7 +18,7 @@ func OpenStdin(ctx context.Context) (io.Reader, error) {
 	return os.FromContext(ctx).Stdin(), nil
 }
 
-var Stdin stdin = OpenStdin
+var Stdin ux.Source = stdin(OpenStdin)
 
 type File string
 
