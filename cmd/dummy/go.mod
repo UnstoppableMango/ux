@@ -17,7 +17,7 @@ require (
 	github.com/spf13/afero v1.14.0 // indirect
 	github.com/spf13/cobra v1.9.1 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
-	github.com/unmango/go v0.3.0 // indirect
+	github.com/unmango/go v0.3.2 // indirect
 	go.uber.org/mock v0.5.2 // indirect
 	golang.org/x/net v0.40.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
