@@ -55,6 +55,21 @@ func (mr *MockOsMockRecorder) Fs() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fs", reflect.TypeOf((*MockOs)(nil).Fs))
 }
 
+// Getwd mocks base method.
+func (m *MockOs) Getwd() (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Getwd")
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Getwd indicates an expected call of Getwd.
+func (mr *MockOsMockRecorder) Getwd() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Getwd", reflect.TypeOf((*MockOs)(nil).Getwd))
+}
+
 // Stderr mocks base method.
 func (m *MockOs) Stderr() io.Writer {
 	m.ctrl.T.Helper()
