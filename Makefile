@@ -1,15 +1,17 @@
 _ != mkdir -p .make
+VERSION := v0.0.1-development
 
 ##@ Tools
 
-GO      ?= go
-BUF     ?= $(GO) tool buf
-DEVCTL  ?= $(GO) tool devctl
-DOCKER  ?= docker
-DPRINT  ?= ${CURDIR}/bin/dprint
-GINKGO  ?= $(GO) tool ginkgo
-GOLINT  ?= $(GO) tool golangci-lint
-MOCKGEN ?= $(GO) tool mockgen
+GO         ?= go
+BUF        ?= $(GO) tool buf
+DEVCTL     ?= $(GO) tool devctl
+DOCKER     ?= docker
+DPRINT     ?= ${CURDIR}/bin/dprint
+GINKGO     ?= $(GO) tool ginkgo
+GOLINT     ?= $(GO) tool golangci-lint
+GORELEASER ?= goreleaser
+MOCKGEN    ?= $(GO) tool mockgen
 
 ##@ Primary Targets
 
@@ -32,8 +34,9 @@ GO_CODEGEN  := ${GO_GRPC_SRC} ${GO_PB_SRC}
 
 ##@ Artifacts
 
+LDFLAGS := -X github.com/unstoppablemango/ux/cmd.Version=${VERSION}
 bin/ux: ${GO_SRC} ## Build the ux CLI
-	$(GO) build -o $@ main.go
+	$(GO) build -o $@ -ldflags='${LDFLAGS}'
 
 bin/dummy: ${GO_SRC} ## Build the dummy testing utility
 	$(GO) build -C cmd/dummy -o ${CURDIR}/$@ main.go
@@ -91,7 +94,8 @@ bin/ginkgo: go.mod ## Optional bin install
 	@touch $@
 
 .make/docker-ux: Dockerfile .dockerignore ${GO_SRC}
-	$(DOCKER) build ${CURDIR} -t unstoppablemango/ux:v0.0.1-alpha
+	$(DOCKER) build ${CURDIR} -t unstoppablemango/ux:${VERSION} \
+		--build-arg LDFLAGS='${LDFLAGS}'
 	@touch $@
 
 .make/dprint/install.sh:
