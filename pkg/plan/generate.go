@@ -2,7 +2,6 @@ package plan
 
 import (
 	"fmt"
-	"iter"
 	"slices"
 
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
@@ -19,8 +18,16 @@ const (
 
 func Generate(inv plugin.Inventory, from, to string) (ux.Plan, error) {
 	plan := []ux.Plugin{}
-	n := 0
-	for plugin := range iterator(inv, from, to) {
+
+	for i := 0; true; i++ {
+		if i >= MaxIterations {
+			return nil, fmt.Errorf("max iterations reached")
+		}
+		if len(plan) > MaxLength {
+			return nil, fmt.Errorf("plan length reached")
+		}
+
+		plugin, done := next(inv, from, to)
 		if plugin == nil {
 			return nil, fmt.Errorf("no viable plugins")
 		}
@@ -29,31 +36,14 @@ func Generate(inv plugin.Inventory, from, to string) (ux.Plan, error) {
 		} else {
 			plan = append(plan, plugin)
 		}
-		if l := len(plan); l > MaxLength {
-			return nil, fmt.Errorf("plan length reached: %d", l)
+		if done {
+			return slices.Values(plan), nil
 		}
 
-		n++
-		if n > MaxIterations {
-			return nil, fmt.Errorf("max iterations reached: %d", n)
-		}
+		// TODO: Need the selected capability to update from and to
 	}
 
 	return slices.Values(plan), nil
-}
-
-func iterator(inv plugin.Inventory, from, to string) iter.Seq[ux.Plugin] {
-	return func(yield func(ux.Plugin) bool) {
-		for {
-			p, done := next(inv, from, to)
-			if p != nil && !yield(p) {
-				return
-			}
-			if done {
-				return
-			}
-		}
-	}
 }
 
 func next(inv plugin.Inventory, from, to string) (ux.Plugin, bool) {
