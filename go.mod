@@ -20,11 +20,10 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 	github.com/spf13/viper v1.20.1
-	github.com/unmango/go v0.3.2
+	github.com/unmango/go v0.4.1
 	go.uber.org/mock v0.5.2
 	google.golang.org/grpc v1.72.2
 	google.golang.org/protobuf v1.36.6
-	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -303,6 +302,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20250505200425-f936aa4a68b2 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250505200425-f936aa4a68b2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.6.1 // indirect
 	mvdan.cc/gofumpt v0.8.0 // indirect
 	mvdan.cc/unparam v0.0.0-20250301125049-0df0534333a4 // indirect
