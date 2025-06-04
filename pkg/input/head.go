@@ -13,7 +13,7 @@ func Head(input ux.Input) (string, error) {
 	if h := slices.Collect(Heads(input)); len(h) == 1 {
 		return h[0], nil
 	} else {
-		return "", fmt.Errorf("input has multiple heads: %v", h)
+		return "", fmt.Errorf("multiple inputs are not currently supported: %v", h)
 	}
 }
 

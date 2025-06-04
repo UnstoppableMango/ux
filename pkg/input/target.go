@@ -12,7 +12,7 @@ func Target(input ux.Input) (string, error) {
 	if t := slices.Collect(Targets(input)); len(t) == 1 {
 		return t[0], nil
 	} else {
-		return "", fmt.Errorf("input has multiple targets: %v", t)
+		return "", fmt.Errorf("multiple targets are not currently supported: %v", t)
 	}
 }
 

@@ -110,7 +110,7 @@ JSON_SRC := .dprint.json .github/renovate.json .vscode/extensions.json
 	$(DPRINT) fmt --allow-no-files $?
 	@touch $@
 
-.make/go-fmt: ${GO_SRC}
+.make/go-fmt: $(filter-out cmd/dummy/% sdk/%,${GO_SRC})
 	$(GO) fmt $(addprefix ./,$(sort $(dir $?)))
 	@touch $@
 
