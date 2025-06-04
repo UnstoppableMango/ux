@@ -17,9 +17,10 @@ func Codec(payload *uxv1alpha1.Payload) (codec.Codec, error) {
 	switch typ {
 	case "application/json":
 		return codec.Json, nil
-	case "application/protobuf":
+	case "application/protobuf", "application/x-protobuf",
+		"application/vnd.google.protobuf", "application/x-google-protobuf":
 		return codec.GoogleProto, nil
-	case "application/yaml", "application/x-yaml":
+	case "application/yaml", "application/x-yaml", "text/yaml", "text/x-yaml":
 		return codec.GoYaml, nil
 	default:
 		return nil, fmt.Errorf("unsupported content type: %s", payload.ContentType)
