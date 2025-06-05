@@ -6,19 +6,23 @@ import (
 	. "github.com/onsi/ginkgo/v2" //nolint:staticcheck
 	. "github.com/onsi/gomega"    //nolint:staticcheck
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
-	"github.com/unstoppablemango/ux/pkg/plugin"
+	ux "github.com/unstoppablemango/ux/pkg"
 )
 
 type SuiteOptions struct {
-	Plugin string
+	Plugin ux.Plugin
 }
 
 func NewSuite(opts SuiteOptions) bool {
 	return Describe("Conformance", func() {
-		It("should list capabilities", func(ctx context.Context) {
-			p := plugin.LocalBinary(opts.Plugin)
+		var plugin ux.Plugin
 
-			res, err := p.Capabilities(ctx, &uxv1alpha1.CapabilitiesRequest{})
+		BeforeEach(func() {
+			plugin = opts.Plugin
+		})
+
+		It("should list capabilities", func(ctx context.Context) {
+			res, err := plugin.Capabilities(ctx, &uxv1alpha1.CapabilitiesRequest{})
 
 			Expect(err).NotTo(HaveOccurred())
 			Expect(res).NotTo(BeNil())
