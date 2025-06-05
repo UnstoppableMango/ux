@@ -110,12 +110,12 @@ JSON_SRC := .dprint.json .github/renovate.json .vscode/extensions.json
 	$(DPRINT) fmt --allow-no-files $?
 	@touch $@
 
-.make/go-fmt: ${GO_SRC}
-	$(GO) fmt $(addprefix ./,$(sort $(dir $?)))
-	@touch $@
-
 .make/ginkgo-run: ${GO_SRC}
 	$(GINKGO) $(sort $(dir $?))
+	@touch $@
+
+.make/go-fmt: ${GO_SRC}
+	$(GO) fmt $(addprefix ./,$(sort $(dir $?)))
 	@touch $@
 
 .make/go-generate: ${GO_SRC}
