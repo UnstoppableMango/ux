@@ -16,6 +16,7 @@ FROM download AS build
 WORKDIR /src
 COPY cmd ./cmd
 COPY gen ./gen
+COPY internal ./internal
 COPY pkg ./pkg
 COPY main.go ./
 
