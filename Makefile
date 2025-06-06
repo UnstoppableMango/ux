@@ -1,5 +1,5 @@
 _ != mkdir -p .make
-VERSION := v0.0.1-development
+VERSION ?= v0.0.1-development
 
 ##@ Tools
 
@@ -34,7 +34,7 @@ GO_CODEGEN  := ${GO_GRPC_SRC} ${GO_PB_SRC}
 
 ##@ Artifacts
 
-LDFLAGS := -X github.com/unstoppablemango/ux/cmd.Version=${VERSION}
+LDFLAGS := -X github.com/unstoppablemango/ux/internal.Version=${VERSION}
 bin/ux: ${GO_SRC} ## Build the ux CLI
 	$(GO) build -o $@ -ldflags='${LDFLAGS}'
 
