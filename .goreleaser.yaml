@@ -15,7 +15,7 @@ builds:
       - windows
       - darwin
     ldflags:
-      - -X github.com/unstoppablemango/ux/cmd.Version={{.Version}}
+      - -X github.com/unstoppablemango/ux/internal.Version={{.Version}}
 
 archives:
   - formats: [tar.gz]
