@@ -23,7 +23,7 @@ require (
 	github.com/unmango/go v0.4.1
 	go.uber.org/mock v0.5.2
 	golang.org/x/mod v0.24.0
-	google.golang.org/grpc v1.72.2
+	google.golang.org/grpc v1.73.0
 	google.golang.org/protobuf v1.36.6
 )
 
