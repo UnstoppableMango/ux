@@ -26,3 +26,11 @@ func Codec(payload *uxv1alpha1.Payload) (codec.Codec, error) {
 		return nil, fmt.Errorf("unsupported content type: %s", payload.ContentType)
 	}
 }
+
+func Unmarshal(payload *uxv1alpha1.Payload, v any) error {
+	if codec, err := Codec(payload); err != nil {
+		return err
+	} else {
+		return codec.Unmarshal(payload.Data, v)
+	}
+}
