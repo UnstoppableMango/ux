@@ -11,6 +11,7 @@ type BuildInfo struct {
 	GoArch    string
 	GoOs      string
 	GoVersion string
+	Version   string
 }
 
 func ReadBuildInfo() BuildInfo {
@@ -24,6 +25,8 @@ func ReadBuildInfo() BuildInfo {
 	if !ok {
 		return bi
 	}
+
+	bi.Version = info.Main.Version
 
 	var modified bool
 	for _, setting := range info.Settings {
