@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -20,6 +21,20 @@ var _ = Describe("E2e", func() {
 			ses := Run(cmd)
 
 			Eventually(ses).Should(gexec.Exit(0))
+		})
+
+		It("should generate", func() {
+			outDir := GinkgoT().TempDir()
+			out := filepath.Join(outDir, "some.yaml")
+			cmd := exec.Command(uxPath, "generate", "dummy",
+				"-i", "testdata/some.yaml",
+				"-o", out,
+			)
+
+			ses := Run(cmd)
+
+			Eventually(ses).Should(gexec.Exit(0))
+			Expect(out).To(BeARegularFile())
 		})
 	})
 
