@@ -2,8 +2,10 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
+	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/cli"
+	"github.com/unstoppablemango/ux/pkg/plugin/registry"
 )
 
 type GenerateOptions struct {
@@ -26,8 +28,23 @@ func NewGenerate(options GenerateOptions) *cobra.Command {
 			if err != nil {
 				cli.Fail(err)
 			}
-			if err = ux.Generate(cmd.Context(), input); err != nil {
+
+			ctx := cmd.Context()
+			plugins, err := registry.Default.List(ctx)
+			if err != nil {
 				cli.Fail(err)
+			}
+
+			caps := map[*uxv1alpha1.Capability]ux.Plugin{}
+			for _, plugin := range plugins {
+				capabilities, err := plugin.Capabilities(ctx, &uxv1alpha1.CapabilitiesRequest{})
+				if err != nil {
+					cli.Fail(err)
+				}
+
+				for _, c := range capabilities.All {
+					caps[c] = plugin
+				}
 			}
 		},
 	}
