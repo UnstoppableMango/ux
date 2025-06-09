@@ -6,6 +6,10 @@ lint:
 breaking:
   use:
     - FILE
+
 modules:
   - path: proto
     name: buf.build/unstoppablemango/ux
+
+deps:
+  - buf.build/unmango/protofs

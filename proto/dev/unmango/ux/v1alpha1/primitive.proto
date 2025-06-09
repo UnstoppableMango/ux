@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package dev.unmango.ux.v1alpha1;
 
+import "dev/unmango/file/v1alpha1/file.proto";
+
 message Capability {
   string from = 1;
   string to = 2;
@@ -11,4 +13,21 @@ message Capability {
 message Payload {
   string content_type = 1;
   bytes data = 2;
+}
+
+message File {
+  bytes data = 1;
+}
+
+message Directory {
+  repeated FsNode contents = 1;
+}
+
+message FsNode {
+  string name = 1;
+  file.v1alpha1.FileInfo info = 2;
+  oneof value {
+    File file = 3;
+    Directory dir = 4;
+  }
 }
