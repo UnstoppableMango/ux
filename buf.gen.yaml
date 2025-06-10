@@ -11,8 +11,10 @@ plugins:
     out: gen
     opt:
       - paths=source_relative
+    include_imports: true
 
   - remote: buf.build/grpc/go:v1.5.1
     out: gen
     opt:
       - paths=source_relative
+    include_imports: true

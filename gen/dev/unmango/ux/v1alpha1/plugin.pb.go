@@ -7,6 +7,7 @@
 package uxv1alpha1
 
 import (
+	v1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/file/v1alpha1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -103,8 +104,9 @@ func (x *CapabilitiesResponse) GetAll() []*Capability {
 
 type GenerateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Target        string                 `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
-	Payload       *Payload               `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Inputs        []*v1alpha1.File       `protobuf:"bytes,2,rep,name=inputs,proto3" json:"inputs,omitempty"`
+	FsUri         string                 `protobuf:"bytes,3,opt,name=fs_uri,json=fsUri,proto3" json:"fs_uri,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -139,23 +141,31 @@ func (*GenerateRequest) Descriptor() ([]byte, []int) {
 	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *GenerateRequest) GetTarget() string {
+func (x *GenerateRequest) GetId() string {
 	if x != nil {
-		return x.Target
+		return x.Id
 	}
 	return ""
 }
 
-func (x *GenerateRequest) GetPayload() *Payload {
+func (x *GenerateRequest) GetInputs() []*v1alpha1.File {
 	if x != nil {
-		return x.Payload
+		return x.Inputs
 	}
 	return nil
 }
 
+func (x *GenerateRequest) GetFsUri() string {
+	if x != nil {
+		return x.FsUri
+	}
+	return ""
+}
+
 type GenerateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Payload       *Payload               `protobuf:"bytes,1,opt,name=payload,proto3" json:"payload,omitempty"`
+	Outputs       []*v1alpha1.File       `protobuf:"bytes,1,rep,name=outputs,proto3" json:"outputs,omitempty"`
+	FsUri         string                 `protobuf:"bytes,2,opt,name=fs_uri,json=fsUri,proto3" json:"fs_uri,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -190,26 +200,35 @@ func (*GenerateResponse) Descriptor() ([]byte, []int) {
 	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GenerateResponse) GetPayload() *Payload {
+func (x *GenerateResponse) GetOutputs() []*v1alpha1.File {
 	if x != nil {
-		return x.Payload
+		return x.Outputs
 	}
 	return nil
+}
+
+func (x *GenerateResponse) GetFsUri() string {
+	if x != nil {
+		return x.FsUri
+	}
+	return ""
 }
 
 var File_dev_unmango_ux_v1alpha1_plugin_proto protoreflect.FileDescriptor
 
 const file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc = "" +
 	"\n" +
-	"$dev/unmango/ux/v1alpha1/plugin.proto\x12\x17dev.unmango.ux.v1alpha1\x1a'dev/unmango/ux/v1alpha1/primitive.proto\"\x15\n" +
+	"$dev/unmango/ux/v1alpha1/plugin.proto\x12\x17dev.unmango.ux.v1alpha1\x1a$dev/unmango/file/v1alpha1/file.proto\x1a'dev/unmango/ux/v1alpha1/primitive.proto\"\x15\n" +
 	"\x13CapabilitiesRequest\"M\n" +
 	"\x14CapabilitiesResponse\x125\n" +
-	"\x03all\x18\x01 \x03(\v2#.dev.unmango.ux.v1alpha1.CapabilityR\x03all\"e\n" +
-	"\x0fGenerateRequest\x12\x16\n" +
-	"\x06target\x18\x01 \x01(\tR\x06target\x12:\n" +
-	"\apayload\x18\x02 \x01(\v2 .dev.unmango.ux.v1alpha1.PayloadR\apayload\"N\n" +
-	"\x10GenerateResponse\x12:\n" +
-	"\apayload\x18\x01 \x01(\v2 .dev.unmango.ux.v1alpha1.PayloadR\apayload2\xdd\x01\n" +
+	"\x03all\x18\x01 \x03(\v2#.dev.unmango.ux.v1alpha1.CapabilityR\x03all\"q\n" +
+	"\x0fGenerateRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x127\n" +
+	"\x06inputs\x18\x02 \x03(\v2\x1f.dev.unmango.file.v1alpha1.FileR\x06inputs\x12\x15\n" +
+	"\x06fs_uri\x18\x03 \x01(\tR\x05fsUri\"d\n" +
+	"\x10GenerateResponse\x129\n" +
+	"\aoutputs\x18\x01 \x03(\v2\x1f.dev.unmango.file.v1alpha1.FileR\aoutputs\x12\x15\n" +
+	"\x06fs_uri\x18\x02 \x01(\tR\x05fsUri2\xdd\x01\n" +
 	"\rPluginService\x12k\n" +
 	"\fCapabilities\x12,.dev.unmango.ux.v1alpha1.CapabilitiesRequest\x1a-.dev.unmango.ux.v1alpha1.CapabilitiesResponse\x12_\n" +
 	"\bGenerate\x12(.dev.unmango.ux.v1alpha1.GenerateRequest\x1a).dev.unmango.ux.v1alpha1.GenerateResponseB\xf0\x01\n" +
@@ -234,12 +253,12 @@ var file_dev_unmango_ux_v1alpha1_plugin_proto_goTypes = []any{
 	(*GenerateRequest)(nil),      // 2: dev.unmango.ux.v1alpha1.GenerateRequest
 	(*GenerateResponse)(nil),     // 3: dev.unmango.ux.v1alpha1.GenerateResponse
 	(*Capability)(nil),           // 4: dev.unmango.ux.v1alpha1.Capability
-	(*Payload)(nil),              // 5: dev.unmango.ux.v1alpha1.Payload
+	(*v1alpha1.File)(nil),        // 5: dev.unmango.file.v1alpha1.File
 }
 var file_dev_unmango_ux_v1alpha1_plugin_proto_depIdxs = []int32{
 	4, // 0: dev.unmango.ux.v1alpha1.CapabilitiesResponse.all:type_name -> dev.unmango.ux.v1alpha1.Capability
-	5, // 1: dev.unmango.ux.v1alpha1.GenerateRequest.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
-	5, // 2: dev.unmango.ux.v1alpha1.GenerateResponse.payload:type_name -> dev.unmango.ux.v1alpha1.Payload
+	5, // 1: dev.unmango.ux.v1alpha1.GenerateRequest.inputs:type_name -> dev.unmango.file.v1alpha1.File
+	5, // 2: dev.unmango.ux.v1alpha1.GenerateResponse.outputs:type_name -> dev.unmango.file.v1alpha1.File
 	0, // 3: dev.unmango.ux.v1alpha1.PluginService.Capabilities:input_type -> dev.unmango.ux.v1alpha1.CapabilitiesRequest
 	2, // 4: dev.unmango.ux.v1alpha1.PluginService.Generate:input_type -> dev.unmango.ux.v1alpha1.GenerateRequest
 	1, // 5: dev.unmango.ux.v1alpha1.PluginService.Capabilities:output_type -> dev.unmango.ux.v1alpha1.CapabilitiesResponse
