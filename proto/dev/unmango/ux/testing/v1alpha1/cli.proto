@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package dev.unmango.ux.testing.v1alpha1;
-
-message CliInput {
-  map<string, string> sources = 1;
-  map<string, string> sinks = 2;
-}
