@@ -111,3 +111,17 @@ func (mr *MockOsMockRecorder) Stdout() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Stdout", reflect.TypeOf((*MockOs)(nil).Stdout))
 }
+
+// TempDir mocks base method.
+func (m *MockOs) TempDir() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "TempDir")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// TempDir indicates an expected call of TempDir.
+func (mr *MockOsMockRecorder) TempDir() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TempDir", reflect.TypeOf((*MockOs)(nil).TempDir))
+}

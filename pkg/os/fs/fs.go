@@ -1,21 +1,14 @@
 package fs
 
 import (
-	"context"
-
 	"github.com/spf13/afero"
+	"github.com/unstoppablemango/ux/pkg/os"
 )
 
-type key struct{}
-
-func FromContext(ctx context.Context) afero.Fs {
-	if v := ctx.Value(key{}); v != nil {
-		return v.(afero.Fs)
-	} else {
-		return afero.NewOsFs()
-	}
+func TempDir(os os.Os, prefix string) (string, error) {
+	return afero.TempDir(os.Fs(), os.TempDir(), prefix)
 }
 
-func WithContext(parent context.Context, val afero.Fs) context.Context {
-	return context.WithValue(parent, key{}, val)
+func TempFile(os os.Os, pattern string) (afero.File, error) {
+	return afero.TempFile(os.Fs(), os.TempDir(), pattern)
 }
