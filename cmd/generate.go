@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/cli"
 )
 
@@ -21,12 +20,9 @@ func NewGenerate(options GenerateOptions) *cobra.Command {
 		Use:     "generate",
 		Short:   "Code generation commands",
 		Aliases: []string{"gen"},
+		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			input, err := cli.Parse(options.Options, args)
-			if err != nil {
-				cli.Fail(err)
-			}
-			if err = ux.Generate(cmd.Context(), input); err != nil {
+			if _, err := cli.Generate(cmd.Context(), args, options); err != nil {
 				cli.Fail(err)
 			}
 		},

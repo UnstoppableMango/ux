@@ -9,7 +9,7 @@ import (
 
 var _ = Describe("Parse", func() {
 	It("should open stdin", func() {
-		input, err := cli.Parse(cli.Options{}, []string{"-"})
+		input, err := cli.Parse([]string{"-"}, cli.Options{})
 
 		Expect(err).NotTo(HaveOccurred())
 		Expect(input.Sources()).To(HaveKey("-"))
