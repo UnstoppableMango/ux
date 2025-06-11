@@ -10,6 +10,11 @@ import (
 	"github.com/unstoppablemango/ux/pkg/cli/source"
 )
 
+type OptionsParser interface {
+	Sinks() (iter.Seq2[string, ux.Sink], error)
+	Sources() (iter.Seq2[string, ux.Source], error)
+}
+
 type Options struct {
 	Inputs  []string
 	Outputs []string
