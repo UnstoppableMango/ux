@@ -18,6 +18,7 @@ type Os interface {
 	Stderr() io.Writer
 	Stdin() io.Reader
 	Stdout() io.Writer
+	TempDir() string
 }
 
 type (
@@ -43,6 +44,10 @@ func (sys) Stdin() io.Reader {
 
 func (sys) Stdout() io.Writer {
 	return os.Stdout
+}
+
+func (sys) TempDir() string {
+	return os.TempDir()
 }
 
 func FromContext(ctx context.Context) Os {

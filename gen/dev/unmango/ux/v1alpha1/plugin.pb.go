@@ -106,7 +106,7 @@ type GenerateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Inputs        []*v1alpha1.File       `protobuf:"bytes,2,rep,name=inputs,proto3" json:"inputs,omitempty"`
-	FsUri         string                 `protobuf:"bytes,3,opt,name=fs_uri,json=fsUri,proto3" json:"fs_uri,omitempty"`
+	FsAddress     string                 `protobuf:"bytes,3,opt,name=fs_address,json=fsAddress,proto3" json:"fs_address,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -155,9 +155,9 @@ func (x *GenerateRequest) GetInputs() []*v1alpha1.File {
 	return nil
 }
 
-func (x *GenerateRequest) GetFsUri() string {
+func (x *GenerateRequest) GetFsAddress() string {
 	if x != nil {
-		return x.FsUri
+		return x.FsAddress
 	}
 	return ""
 }
@@ -165,7 +165,6 @@ func (x *GenerateRequest) GetFsUri() string {
 type GenerateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Outputs       []*v1alpha1.File       `protobuf:"bytes,1,rep,name=outputs,proto3" json:"outputs,omitempty"`
-	FsUri         string                 `protobuf:"bytes,2,opt,name=fs_uri,json=fsUri,proto3" json:"fs_uri,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -207,13 +206,6 @@ func (x *GenerateResponse) GetOutputs() []*v1alpha1.File {
 	return nil
 }
 
-func (x *GenerateResponse) GetFsUri() string {
-	if x != nil {
-		return x.FsUri
-	}
-	return ""
-}
-
 var File_dev_unmango_ux_v1alpha1_plugin_proto protoreflect.FileDescriptor
 
 const file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc = "" +
@@ -221,14 +213,14 @@ const file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc = "" +
 	"$dev/unmango/ux/v1alpha1/plugin.proto\x12\x17dev.unmango.ux.v1alpha1\x1a$dev/unmango/file/v1alpha1/file.proto\x1a'dev/unmango/ux/v1alpha1/primitive.proto\"\x15\n" +
 	"\x13CapabilitiesRequest\"M\n" +
 	"\x14CapabilitiesResponse\x125\n" +
-	"\x03all\x18\x01 \x03(\v2#.dev.unmango.ux.v1alpha1.CapabilityR\x03all\"q\n" +
+	"\x03all\x18\x01 \x03(\v2#.dev.unmango.ux.v1alpha1.CapabilityR\x03all\"y\n" +
 	"\x0fGenerateRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x127\n" +
-	"\x06inputs\x18\x02 \x03(\v2\x1f.dev.unmango.file.v1alpha1.FileR\x06inputs\x12\x15\n" +
-	"\x06fs_uri\x18\x03 \x01(\tR\x05fsUri\"d\n" +
+	"\x06inputs\x18\x02 \x03(\v2\x1f.dev.unmango.file.v1alpha1.FileR\x06inputs\x12\x1d\n" +
+	"\n" +
+	"fs_address\x18\x03 \x01(\tR\tfsAddress\"M\n" +
 	"\x10GenerateResponse\x129\n" +
-	"\aoutputs\x18\x01 \x03(\v2\x1f.dev.unmango.file.v1alpha1.FileR\aoutputs\x12\x15\n" +
-	"\x06fs_uri\x18\x02 \x01(\tR\x05fsUri2\xdd\x01\n" +
+	"\aoutputs\x18\x01 \x03(\v2\x1f.dev.unmango.file.v1alpha1.FileR\aoutputs2\xdd\x01\n" +
 	"\rPluginService\x12k\n" +
 	"\fCapabilities\x12,.dev.unmango.ux.v1alpha1.CapabilitiesRequest\x1a-.dev.unmango.ux.v1alpha1.CapabilitiesResponse\x12_\n" +
 	"\bGenerate\x12(.dev.unmango.ux.v1alpha1.GenerateRequest\x1a).dev.unmango.ux.v1alpha1.GenerateResponseB\xf0\x01\n" +

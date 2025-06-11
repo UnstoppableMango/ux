@@ -19,10 +19,9 @@ message CapabilitiesResponse {
 message GenerateRequest {
   string id = 1;
   repeated file.v1alpha1.File inputs = 2;
-  string fs_uri = 3;
+  string fs_address = 3;
 }
 
 message GenerateResponse {
   repeated file.v1alpha1.File outputs = 1;
-  string fs_uri = 2;
 }
