@@ -12,8 +12,8 @@ import (
 type generator struct{}
 
 // Generate implements ux.Generator.
-func (generator) Generate(context.Context, *uxv1alpha1.GenerateRequest) (*uxv1alpha1.GenerateResponse, error) {
-	return &uxv1alpha1.GenerateResponse{}, nil
+func (generator) Generate(_ context.Context, req *uxv1alpha1.GenerateRequest) (*uxv1alpha1.GenerateResponse, error) {
+	return &uxv1alpha1.GenerateResponse{Outputs: req.Inputs}, nil
 }
 
 var Plugin = plugin.New(
