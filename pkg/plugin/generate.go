@@ -3,9 +3,9 @@ package plugin
 import (
 	"context"
 
+	filev1alpha1 "buf.build/gen/go/unmango/protofs/protocolbuffers/go/dev/unmango/file/v1alpha1"
 	"github.com/google/uuid"
 	"github.com/spf13/afero"
-	filev1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/file/v1alpha1"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	ux "github.com/unstoppablemango/ux/pkg"
 )
@@ -21,7 +21,7 @@ func Generate(ctx context.Context, name string, input ux.Input) (afero.Fs, error
 	}
 
 	id := uuid.NewString()
-	res, err := plugin.Generate(ctx, &uxv1alpha1.GenerateRequest{
+	_, err := plugin.Generate(ctx, &uxv1alpha1.GenerateRequest{
 		Id:     id,
 		Inputs: inputs,
 	})

@@ -7,7 +7,7 @@
 package uxv1alpha1
 
 import (
-	v1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/file/v1alpha1"
+	v1alpha1 "buf.build/gen/go/unmango/protofs/protocolbuffers/go/dev/unmango/file/v1alpha1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
