@@ -5,16 +5,17 @@ managed:
   override:
     - file_option: go_package_prefix
       value: github.com/unstoppablemango/ux/gen
+    - file_option: go_package_prefix
+      module: buf.build/unmango/protofs
+      value: buf.build/gen/go/unmango/protofs/protocolbuffers/go
 
 plugins:
   - remote: buf.build/protocolbuffers/go:v1.36.6
     out: gen
     opt:
       - paths=source_relative
-    include_imports: true
 
   - remote: buf.build/grpc/go:v1.5.1
     out: gen
     opt:
       - paths=source_relative
-    include_imports: true
