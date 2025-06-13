@@ -10,15 +10,15 @@ replace (
 require (
 	github.com/charmbracelet/log v0.4.2
 	github.com/spf13/afero v1.14.0
-	github.com/unmango/aferox/protofs v0.0.1
+	github.com/unmango/aferox/protofs v0.0.2
 	github.com/unstoppablemango/ux v0.0.0-00010101000000-000000000000
 	github.com/unstoppablemango/ux/sdk v0.0.0-00010101000000-000000000000
 	google.golang.org/grpc v1.73.0
 )
 
 require (
-	buf.build/gen/go/unmango/protofs/grpc/go v1.5.1-20250609000540-7e28ed63c5a8.2 // indirect
-	buf.build/gen/go/unmango/protofs/protocolbuffers/go v1.36.6-20250609000540-7e28ed63c5a8.1 // indirect
+	buf.build/gen/go/unmango/protofs/grpc/go v1.5.1-20250612165200-244dc7c30f96.2 // indirect
+	buf.build/gen/go/unmango/protofs/protocolbuffers/go v1.36.6-20250612165200-244dc7c30f96.1 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/charmbracelet/colorprofile v0.3.1 // indirect
 	github.com/charmbracelet/lipgloss v1.1.0 // indirect
