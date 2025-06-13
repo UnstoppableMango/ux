@@ -11,7 +11,7 @@ tool (
 )
 
 require (
-	buf.build/gen/go/unmango/protofs/protocolbuffers/go v1.36.6-20250612165200-244dc7c30f96.1
+	buf.build/gen/go/unmango/protofs/protocolbuffers/go v1.36.6-20250613050322-304b4fb5d9b0.1
 	github.com/adrg/xdg v0.5.3
 	github.com/charmbracelet/log v0.4.2
 	github.com/google/uuid v1.6.0
@@ -23,7 +23,7 @@ require (
 	github.com/spf13/pflag v1.0.6
 	github.com/spf13/viper v1.20.1
 	github.com/unmango/aferox v0.2.4
-	github.com/unmango/aferox/protofs v0.0.2
+	github.com/unmango/aferox/protofs v0.0.4
 	github.com/unmango/go v0.4.1
 	go.uber.org/mock v0.5.2
 	golang.org/x/mod v0.25.0
@@ -39,7 +39,7 @@ require (
 	buf.build/gen/go/bufbuild/registry/connectrpc/go v1.18.1-20250424215339-a457693b5db4.1 // indirect
 	buf.build/gen/go/bufbuild/registry/protocolbuffers/go v1.36.6-20250424215339-a457693b5db4.1 // indirect
 	buf.build/gen/go/pluginrpc/pluginrpc/protocolbuffers/go v1.36.6-20241007202033-cf42259fcbfc.1 // indirect
-	buf.build/gen/go/unmango/protofs/grpc/go v1.5.1-20250612165200-244dc7c30f96.2 // indirect
+	buf.build/gen/go/unmango/protofs/grpc/go v1.5.1-20250613050322-304b4fb5d9b0.2 // indirect
 	buf.build/go/app v0.1.0 // indirect
 	buf.build/go/bufplugin v0.9.0 // indirect
 	buf.build/go/interrupt v1.1.0 // indirect
@@ -308,6 +308,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.6.1 // indirect
+	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397 // indirect
 	mvdan.cc/gofumpt v0.8.0 // indirect
 	mvdan.cc/unparam v0.0.0-20250301125049-0df0534333a4 // indirect
 	pluginrpc.com/pluginrpc v0.5.0 // indirect
