@@ -14,7 +14,7 @@ import (
 )
 
 type Fs struct {
-	afero.ReadOnlyFs
+	aferox.ReadOnlyFs
 
 	sources map[string]ux.Source
 	sinks   map[string]ux.Sink
@@ -27,12 +27,26 @@ func NewFs(input ux.Input) afero.Fs {
 	}
 }
 
+func (fs *Fs) Name() string {
+	return "Input"
+}
+
 func (fs *Fs) Open(name string) (afero.File, error) {
 	if s, ok := fs.sources[name]; ok {
 		return NewSourceFile(name, s), nil
 	} else {
 		return nil, fmt.Errorf("not found: %s", name)
 	}
+}
+
+// OpenFile implements afero.Fs.
+func (fs *Fs) OpenFile(name string, flag int, perm os.FileMode) (afero.File, error) {
+	panic("unimplemented")
+}
+
+// Stat implements afero.Fs.
+func (fs *Fs) Stat(name string) (os.FileInfo, error) {
+	panic("unimplemented")
 }
 
 type SourceFile struct {
