@@ -2,5 +2,5 @@
 version: v2
 deps:
   - name: buf.build/unmango/protofs
-    commit: 244dc7c30f9646c0aa4ec78ff5f62191
-    digest: b5:ebc479166a6cd86f98af62383ccaffddbff058e8694bd5ed0ece38cfe359bd6f00eafc930ab8701337f3ffc800974d067700edb578484d30f9c6969e478ad7af
+    commit: 304b4fb5d9b04b05b675d73849a35d74
+    digest: b5:57f7c2fd332dc8bbcbdf6c7b2399cb09a675cd8377aa462ca09affca2d13b83aa1cf5fde7dfdc118cf8a2ff8fabf74b320652b96a01fe2a0cfcea2bb19b4e73e
