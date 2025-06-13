@@ -4,9 +4,11 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"io/fs"
 	"maps"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/spf13/afero"
 	"github.com/unmango/aferox"
@@ -78,7 +80,7 @@ func NewSourceFile(name string, source ux.Source) *SourceFile {
 }
 
 // Close implements afero.File.
-func (s *SourceFile) Close() error {
+func (s SourceFile) Close() error {
 	r, err := s.open()
 	if err != nil {
 		return nil
@@ -92,10 +94,10 @@ func (s *SourceFile) Close() error {
 }
 
 // Name implements afero.File.
-func (s *SourceFile) Name() string { return s.name }
+func (s SourceFile) Name() string { return s.name }
 
 // Read implements afero.File.
-func (s *SourceFile) Read(p []byte) (n int, err error) {
+func (s SourceFile) Read(p []byte) (n int, err error) {
 	if r, err := s.open(); err != nil {
 		return 0, err
 	} else {
@@ -104,7 +106,7 @@ func (s *SourceFile) Read(p []byte) (n int, err error) {
 }
 
 // ReadAt implements afero.File.
-func (s *SourceFile) ReadAt(p []byte, off int64) (n int, err error) {
+func (s SourceFile) ReadAt(p []byte, off int64) (n int, err error) {
 	r, err := s.open()
 	if err != nil {
 		return 0, err
@@ -118,6 +120,36 @@ func (s *SourceFile) ReadAt(p []byte, off int64) (n int, err error) {
 }
 
 // Stat implements afero.File.
-func (s *SourceFile) Stat() (os.FileInfo, error) {
+func (s SourceFile) Stat() (os.FileInfo, error) {
+	return SourceFileInfo(s), nil
+}
+
+type SourceFileInfo SourceFile
+
+// IsDir implements fs.FileInfo.
+func (s SourceFileInfo) IsDir() bool { return false }
+
+// ModTime implements fs.FileInfo.
+func (s SourceFileInfo) ModTime() time.Time {
 	panic("unimplemented")
+}
+
+// Mode implements fs.FileInfo.
+func (s SourceFileInfo) Mode() fs.FileMode {
+	panic("unimplemented")
+}
+
+// Name implements fs.FileInfo.
+func (s SourceFileInfo) Name() string {
+	return s.name
+}
+
+// Size implements fs.FileInfo.
+func (s SourceFileInfo) Size() int64 {
+	panic("unimplemented")
+}
+
+// Sys implements fs.FileInfo.
+func (s SourceFileInfo) Sys() any {
+	return s
 }
