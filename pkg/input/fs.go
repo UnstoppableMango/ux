@@ -41,12 +41,24 @@ func (fs *Fs) Open(name string) (afero.File, error) {
 
 // OpenFile implements afero.Fs.
 func (fs *Fs) OpenFile(name string, flag int, perm os.FileMode) (afero.File, error) {
-	panic("unimplemented")
+	if s, ok := fs.sources[name]; ok { // TODO: maybe flag and perm stuff
+		return NewSourceFile(name, s), nil
+	} else {
+		return nil, fmt.Errorf("not found: %s", name)
+	}
 }
 
 // Stat implements afero.Fs.
 func (fs *Fs) Stat(name string) (os.FileInfo, error) {
-	panic("unimplemented")
+	if source, ok := fs.sources[name]; ok {
+		if s, ok := source.(os.FileInfo); ok {
+			return s, nil
+		} else {
+			return nil, fmt.Errorf("stat not supported: %v", source)
+		}
+	}
+
+	return nil, fmt.Errorf("input %v does not contain source: %s", fs.sources, name)
 }
 
 type SourceFile struct {
