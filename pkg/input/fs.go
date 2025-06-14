@@ -66,13 +66,15 @@ func (fs *Fs) Stat(name string) (os.FileInfo, error) {
 type SourceFile struct {
 	aferox.ReadOnlyFile
 
-	name string
-	open func() (io.Reader, error)
+	name   string
+	source ux.Source
+	open   func() (io.Reader, error)
 }
 
 func NewSourceFile(name string, source ux.Source) *SourceFile {
 	return &SourceFile{
-		name: name,
+		name:   name,
+		source: source,
 		open: sync.OnceValues(func() (io.Reader, error) {
 			return source.Open(context.TODO())
 		}),
@@ -121,7 +123,11 @@ func (s SourceFile) ReadAt(p []byte, off int64) (n int, err error) {
 
 // Stat implements afero.File.
 func (s SourceFile) Stat() (os.FileInfo, error) {
-	return SourceFileInfo(s), nil
+	if fi, ok := s.source.(os.FileInfo); ok {
+		return fi, nil
+	} else {
+		return SourceFileInfo(s), nil
+	}
 }
 
 type SourceFileInfo SourceFile

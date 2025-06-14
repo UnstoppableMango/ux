@@ -30,12 +30,20 @@ func (f File) IsDir() bool { return false }
 
 // ModTime implements fs.FileInfo.
 func (f File) ModTime() time.Time {
-	panic("unimplemented")
+	if stat, err := os.System.Fs().Stat(f.Path()); err != nil {
+		panic(err)
+	} else {
+		return stat.ModTime()
+	}
 }
 
 // Mode implements fs.FileInfo.
 func (f File) Mode() fs.FileMode {
-	panic("unimplemented")
+	if stat, err := os.System.Fs().Stat(f.Path()); err != nil {
+		panic(err)
+	} else {
+		return stat.Mode()
+	}
 }
 
 // Name implements fs.FileInfo.
@@ -45,7 +53,11 @@ func (f File) Name() string {
 
 // Size implements fs.FileInfo.
 func (f File) Size() int64 {
-	panic("unimplemented")
+	if stat, err := os.System.Fs().Stat(f.Path()); err != nil {
+		panic(err)
+	} else {
+		return stat.Size()
+	}
 }
 
 // Sys implements fs.FileInfo.
