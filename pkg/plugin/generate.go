@@ -14,7 +14,10 @@ import (
 )
 
 func Generate(ctx context.Context, name string, input ux.Input) (afero.Fs, error) {
-	plugin := LocalBinary(name) // TODO: Infer the plugin type
+	plugin, err := Parse(name)
+	if err != nil {
+		return nil, err
+	}
 
 	inputs := []*filev1alpha1.File{}
 	for name := range input.Sources() {
