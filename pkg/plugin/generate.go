@@ -23,25 +23,25 @@ func Generate(ctx context.Context, name string, input ux.Input) (afero.Fs, error
 		})
 	}
 
-	log.Info("Creating FS listener")
+	log.Debug("Creating FS listener")
 	lis, err := fs.Listen(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	log.Info("Starting FS server")
+	log.Debug("Starting FS server")
 	output := afero.NewMemMapFs()
 	srv := fs.NewServer(output)
 	defer srv.GracefulStop()
 
 	go func() {
-		log.Info("Serving FS")
+		log.Debug("Serving FS")
 		if err := srv.Serve(lis); err != nil {
 			log.Info("FS Server returned an error", "err", err)
 		}
 	}()
 
-	log.Info("Sending generate request")
+	log.Debug("Sending generate request")
 	id := uuid.NewString()
 	res, err := plugin.Generate(ctx, &uxv1alpha1.GenerateRequest{
 		Id:        id,
@@ -52,12 +52,12 @@ func Generate(ctx context.Context, name string, input ux.Input) (afero.Fs, error
 		return nil, err
 	}
 
-	log.Info("Got outputs", "files", res.Outputs)
+	log.Debug("Got outputs", "files", res.Outputs)
 	for _, f := range res.Outputs {
 		if stat, err := output.Stat(f.Name); err != nil {
-			log.Infof("No output found at: %s", f.Name)
+			log.Debugf("No output found at: %s", f.Name)
 		} else {
-			log.Infof("Found output: %s", stat.Name())
+			log.Debugf("Found output: %s", stat.Name())
 		}
 	}
 
