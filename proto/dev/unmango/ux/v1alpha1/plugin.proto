@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package dev.unmango.ux.v1alpha1;
 
+import "dev/unmango/file/v1alpha1/file.proto";
 import "dev/unmango/ux/v1alpha1/primitive.proto";
 
 service PluginService {
@@ -16,10 +17,11 @@ message CapabilitiesResponse {
 }
 
 message GenerateRequest {
-  string target = 1;
-  Payload payload = 2;
+  string id = 1;
+  repeated file.v1alpha1.File inputs = 2;
+  string fs_address = 3;
 }
 
 message GenerateResponse {
-  Payload payload = 1;
+  repeated file.v1alpha1.File outputs = 1;
 }

@@ -10,7 +10,23 @@ import (
 
 //go:generate go tool mockgen -destination zz_generated.mock.go -package os . Os
 
+const (
+	O_RDONLY = os.O_RDONLY
+	O_WRONLY = os.O_WRONLY
+	O_RDWR   = os.O_RDWR
+	O_APPEND = os.O_APPEND
+	O_CREATE = os.O_CREATE
+	O_EXCL   = os.O_EXCL
+	O_SYNC   = os.O_SYNC
+	O_TRUNC  = os.O_TRUNC
+)
+
 var System = sys{}
+
+type (
+	FileInfo = os.FileInfo
+	FileMode = os.FileMode
+)
 
 type Os interface {
 	Fs() afero.Fs
@@ -18,6 +34,7 @@ type Os interface {
 	Stderr() io.Writer
 	Stdin() io.Reader
 	Stdout() io.Writer
+	TempDir() string
 }
 
 type (
@@ -43,6 +60,10 @@ func (sys) Stdin() io.Reader {
 
 func (sys) Stdout() io.Writer {
 	return os.Stdout
+}
+
+func (sys) TempDir() string {
+	return os.TempDir()
 }
 
 func FromContext(ctx context.Context) Os {

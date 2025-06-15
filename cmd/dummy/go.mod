@@ -8,15 +8,20 @@ replace (
 )
 
 require (
+	buf.build/gen/go/unmango/protofs/protocolbuffers/go v1.36.6-20250613050322-304b4fb5d9b0.1
+	github.com/charmbracelet/log v0.4.2
+	github.com/spf13/afero v1.14.0
+	github.com/unmango/aferox/protofs v0.0.6
 	github.com/unstoppablemango/ux v0.0.0-00010101000000-000000000000
 	github.com/unstoppablemango/ux/sdk v0.0.0-00010101000000-000000000000
+	google.golang.org/grpc v1.73.0
 )
 
 require (
+	buf.build/gen/go/unmango/protofs/grpc/go v1.5.1-20250613050322-304b4fb5d9b0.2 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/charmbracelet/colorprofile v0.3.1 // indirect
 	github.com/charmbracelet/lipgloss v1.1.0 // indirect
-	github.com/charmbracelet/log v0.4.2 // indirect
 	github.com/charmbracelet/x/ansi v0.9.2 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13 // indirect
 	github.com/charmbracelet/x/term v0.2.1 // indirect
@@ -27,7 +32,6 @@ require (
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/muesli/termenv v0.16.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
-	github.com/spf13/afero v1.14.0 // indirect
 	github.com/spf13/cobra v1.9.1 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/unmango/go v0.4.1 // indirect
@@ -37,7 +41,7 @@ require (
 	golang.org/x/net v0.41.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.26.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250505200425-f936aa4a68b2 // indirect
-	google.golang.org/grpc v1.73.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
+	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397 // indirect
 )

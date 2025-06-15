@@ -7,16 +7,16 @@ import (
 	"github.com/unstoppablemango/ux/pkg/cli/source"
 )
 
-func Parse(opts Options, args []string) (i Input, err error) {
-	if i.sources, err = opts.Sources(); err != nil {
-		return i, err
+func Parse(args []string, opts OptionsParser) (input Input, err error) {
+	if input.sources, err = opts.Sources(); err != nil {
+		return input, err
 	}
 	if slices.Contains(args, "-") {
-		i.sources = iter.Append2(i.sources, "-", source.Stdin)
+		input.sources = iter.Append2(input.sources, "-", source.Stdin)
 	}
-	if i.sinks, err = opts.Sinks(); err != nil {
-		return i, err
+	if input.sinks, err = opts.Sinks(); err != nil {
+		return input, err
 	}
 
-	return i, nil
+	return input, nil
 }

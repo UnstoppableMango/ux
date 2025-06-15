@@ -1,6 +1,7 @@
 bin/
 .make/
 *.test
+*.txt
 
 .envrc
 .vscode/*
