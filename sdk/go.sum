@@ -1,5 +1,5 @@
-buf.build/gen/go/unmango/protofs/protocolbuffers/go v1.36.6-20250612165200-244dc7c30f96.1 h1:e9I2nVPd17I17iMtZLkFHcyb+BUfkl5igKpATNAWMvw=
-buf.build/gen/go/unmango/protofs/protocolbuffers/go v1.36.6-20250612165200-244dc7c30f96.1/go.mod h1:NzOPPkj7FX3zu/xKWh45jFChv6lKd+XXUeUSIpb+C4c=
+buf.build/gen/go/unmango/protofs/protocolbuffers/go v1.36.6-20250613050322-304b4fb5d9b0.1 h1:CA2CQi87aWtYNs67Kl2QpJYvW0tUcUa5FAL2PCx7UjA=
+buf.build/gen/go/unmango/protofs/protocolbuffers/go v1.36.6-20250613050322-304b4fb5d9b0.1/go.mod h1:NzOPPkj7FX3zu/xKWh45jFChv6lKd+XXUeUSIpb+C4c=
 github.com/PuerkitoBio/purell v1.1.1/go.mod h1:c11w/QuzBsJSee3cPx9rAFu61PvFxuPbtSwDGJws/X0=
 github.com/PuerkitoBio/purell v1.2.1 h1:QsZ4TjvwiMpat6gBCBxEQI0rcS9ehtkKtSpiUnd9N28=
 github.com/PuerkitoBio/purell v1.2.1/go.mod h1:ZwHcC/82TOaovDi//J/804umJFFmbOHPngi8iYYv/Eo=
