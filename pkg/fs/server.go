@@ -31,6 +31,7 @@ func ListenAndServe(ctx context.Context, fs afero.Fs) error {
 func NewServer(source afero.Fs) *grpc.Server {
 	srv := grpc.NewServer()
 	protofsv1alpha1.RegisterFsServer(srv, source)
+	protofsv1alpha1.RegisterFileServer(srv, source)
 	return srv
 }
 

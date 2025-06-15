@@ -3,7 +3,6 @@ package plugin
 import (
 	"context"
 	"fmt"
-	"time"
 
 	filev1alpha1 "buf.build/gen/go/unmango/protofs/protocolbuffers/go/dev/unmango/file/v1alpha1"
 	"github.com/charmbracelet/log"
@@ -12,7 +11,6 @@ import (
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/fs"
-	"github.com/unstoppablemango/ux/pkg/input"
 )
 
 func Generate(ctx context.Context, name string, input ux.Input) (afero.Fs, error) {
@@ -33,7 +31,7 @@ func Generate(ctx context.Context, name string, input ux.Input) (afero.Fs, error
 
 	log.Info("Starting FS server")
 	output := afero.NewMemMapFs()
-	srv := fs.NewServer(serverFs(input, output))
+	srv := fs.NewServer(output)
 	defer srv.GracefulStop()
 
 	go func() {
@@ -43,7 +41,6 @@ func Generate(ctx context.Context, name string, input ux.Input) (afero.Fs, error
 		}
 	}()
 
-	time.Sleep(500 * time.Microsecond)
 	log.Info("Sending generate request")
 	id := uuid.NewString()
 	res, err := plugin.Generate(ctx, &uxv1alpha1.GenerateRequest{
@@ -56,18 +53,13 @@ func Generate(ctx context.Context, name string, input ux.Input) (afero.Fs, error
 	}
 
 	log.Info("Got outputs", "files", res.Outputs)
-	err = afero.Walk(output, "", func(path string, info fs.FileInfo, err error) error {
-		if err != nil {
-			return err
+	for _, f := range res.Outputs {
+		if stat, err := output.Stat(f.Name); err != nil {
+			log.Infof("No output found at: %s", f.Name)
 		} else {
-			log.Info("Found output", "path", path, "name", info.Name())
-			return nil
+			log.Infof("Found output: %s", stat.Name())
 		}
-	})
+	}
 
 	return output, err
-}
-
-func serverFs(i ux.Input, output afero.Fs) afero.Fs {
-	return afero.NewCopyOnWriteFs(input.NewFs(i), output)
 }
