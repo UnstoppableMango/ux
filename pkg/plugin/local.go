@@ -43,7 +43,7 @@ func (l LocalBinary) Capabilities(ctx context.Context, req *uxv1alpha1.Capabilit
 
 // Generate implements ux.Plugin.
 func (l LocalBinary) Generate(ctx context.Context, req *uxv1alpha1.GenerateRequest) (*uxv1alpha1.GenerateResponse, error) {
-	log.Info("Marshaling generate request")
+	log.Debug("Marshaling generate request")
 	data, err := proto.Marshal(req)
 	if err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func (l LocalBinary) Generate(ctx context.Context, req *uxv1alpha1.GenerateReque
 	cmd.Stdout = stdout
 	cmd.Stderr = stderr
 
-	log.Info("Executing plugin binary")
+	log.Debug("Executing plugin binary")
 	if err = cmd.Run(); err != nil {
 		log.Error("Plugin execution failed",
 			"stderr", stderr.String(),
@@ -64,7 +64,7 @@ func (l LocalBinary) Generate(ctx context.Context, req *uxv1alpha1.GenerateReque
 		return nil, err
 	}
 
-	log.Info("Unmarshaling response")
+	log.Debug("Unmarshaling response")
 	res := &uxv1alpha1.GenerateResponse{}
 	if err = proto.Unmarshal(stdout.Bytes(), res); err != nil {
 		return nil, err
