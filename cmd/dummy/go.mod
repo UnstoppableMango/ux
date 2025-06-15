@@ -8,6 +8,7 @@ replace (
 )
 
 require (
+	buf.build/gen/go/unmango/protofs/protocolbuffers/go v1.36.6-20250613050322-304b4fb5d9b0.1
 	github.com/charmbracelet/log v0.4.2
 	github.com/spf13/afero v1.14.0
 	github.com/unmango/aferox/protofs v0.0.6
@@ -18,7 +19,6 @@ require (
 
 require (
 	buf.build/gen/go/unmango/protofs/grpc/go v1.5.1-20250613050322-304b4fb5d9b0.2 // indirect
-	buf.build/gen/go/unmango/protofs/protocolbuffers/go v1.36.6-20250613050322-304b4fb5d9b0.1 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/charmbracelet/colorprofile v0.3.1 // indirect
 	github.com/charmbracelet/lipgloss v1.1.0 // indirect

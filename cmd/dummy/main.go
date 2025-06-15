@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 
+	filev1alpha1 "buf.build/gen/go/unmango/protofs/protocolbuffers/go/dev/unmango/file/v1alpha1"
 	"github.com/charmbracelet/log"
 	"github.com/spf13/afero"
 	protofsv1alpha1 "github.com/unmango/aferox/protofs/grpc/v1alpha1"
@@ -33,7 +34,7 @@ func (generator) Generate(_ context.Context, req *uxv1alpha1.GenerateRequest) (*
 		return nil, err
 	}
 
-	return &uxv1alpha1.GenerateResponse{Outputs: req.Inputs}, nil
+	return &uxv1alpha1.GenerateResponse{Outputs: []*filev1alpha1.File{{Name: "dummy.txt"}}}, nil
 }
 
 var Plugin = plugin.New(
