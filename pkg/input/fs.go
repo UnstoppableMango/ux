@@ -4,11 +4,9 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/fs"
 	"maps"
 	"os"
 	"sync"
-	"time"
 
 	"github.com/spf13/afero"
 	"github.com/unmango/aferox"
@@ -126,36 +124,6 @@ func (s SourceFile) Stat() (os.FileInfo, error) {
 	if fi, ok := s.source.(os.FileInfo); ok {
 		return fi, nil
 	} else {
-		return SourceFileInfo(s), nil
+		return nil, fmt.Errorf("source does not support stat: %v", s.source)
 	}
-}
-
-type SourceFileInfo SourceFile
-
-// IsDir implements fs.FileInfo.
-func (s SourceFileInfo) IsDir() bool { return false }
-
-// ModTime implements fs.FileInfo.
-func (s SourceFileInfo) ModTime() time.Time {
-	panic("unimplemented")
-}
-
-// Mode implements fs.FileInfo.
-func (s SourceFileInfo) Mode() fs.FileMode {
-	panic("unimplemented")
-}
-
-// Name implements fs.FileInfo.
-func (s SourceFileInfo) Name() string {
-	return s.name
-}
-
-// Size implements fs.FileInfo.
-func (s SourceFileInfo) Size() int64 {
-	panic("unimplemented")
-}
-
-// Sys implements fs.FileInfo.
-func (s SourceFileInfo) Sys() any {
-	return s
 }
