@@ -2,10 +2,14 @@ package plugin
 
 import (
 	"context"
+	"fmt"
 
+	protofsv1alpha1 "github.com/unmango/aferox/protofs/grpc/v1alpha1"
 	"github.com/unmango/go/option"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	ux "github.com/unstoppablemango/ux/pkg"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 type Option func(*Plugin)
@@ -44,9 +48,31 @@ func (p *Plugin) Capabilities(context.Context, *uxv1alpha1.CapabilitiesRequest) 
 }
 
 func (p *Plugin) Generate(ctx context.Context, req *uxv1alpha1.GenerateRequest) (*uxv1alpha1.GenerateResponse, error) {
-	if p.gen != nil {
-		return p.gen.Generate(ctx, req)
-	} else {
+	if p.gen == nil {
 		return nil, nil
 	}
+
+	if err := p.injectFs(req); err != nil {
+		return nil, err
+	}
+
+	return p.gen.Generate(ctx, req)
+}
+
+func (p *Plugin) injectFs(req *uxv1alpha1.GenerateRequest) error {
+	target, ok := p.gen.(FsInjector)
+	if !ok {
+		return nil
+	}
+
+	conn, err := grpc.NewClient(fmt.Sprint("unix://", req.FsAddress),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
+	if err != nil {
+		return err
+	}
+
+	target.InjectFs(protofsv1alpha1.NewFs(conn))
+
+	return nil
 }
