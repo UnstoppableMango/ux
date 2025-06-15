@@ -10,3 +10,7 @@ func ConfigVar(flags *pflag.FlagSet, p *string) {
 	flags.StringVar(p, "config", DefaultPath, "config file")
 	_ = flags.MarkHidden("config") // TODO: Doesn't do anything yet
 }
+
+func VerboseVar(flags *pflag.FlagSet, p *bool) {
+	flags.BoolVarP(p, "verbose", "v", false, "Enable verbose output")
+}

@@ -6,7 +6,8 @@ import (
 )
 
 type GlobalOptions struct {
-	Config string
+	Config  string
+	Verbose bool
 }
 
 func (opts *GlobalOptions) NewConfig() Config {
@@ -24,4 +25,5 @@ func (opts *GlobalOptions) NewConfig() Config {
 
 func (opts *GlobalOptions) ConfigVar(flags *pflag.FlagSet) {
 	ConfigVar(flags, &opts.Config)
+	VerboseVar(flags, &opts.Verbose)
 }
