@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"io"
 	"os"
+	"path/filepath"
 
 	filev1alpha1 "buf.build/gen/go/unmango/protofs/protocolbuffers/go/dev/unmango/file/v1alpha1"
 	"github.com/charmbracelet/log"
@@ -28,13 +30,32 @@ func (generator) Generate(_ context.Context, req *uxv1alpha1.GenerateRequest) (*
 		return nil, err
 	}
 
-	log.Info("Writing to FS server")
 	fs := protofsv1alpha1.NewFs(conn)
-	if err := afero.WriteFile(fs, "dummy.txt", []byte("test"), os.ModePerm); err != nil {
-		return nil, err
+	outputs := []*filev1alpha1.File{}
+	for _, input := range req.Inputs {
+		log.Infof("Attempting to open input: %s", input.Name)
+		file, err := fs.Open(input.Name)
+		if err != nil {
+			log.Infof("Failed to open input: %s", input.Name)
+			return nil, err
+		}
+
+		data, err := io.ReadAll(file)
+		if err != nil {
+			return nil, err
+		}
+
+		path := filepath.Join("output", file.Name())
+		if err = afero.WriteFile(fs, path, data, os.ModePerm); err != nil {
+			return nil, err
+		}
+
+		outputs = append(outputs, &filev1alpha1.File{
+			Name: path,
+		})
 	}
 
-	return &uxv1alpha1.GenerateResponse{Outputs: []*filev1alpha1.File{{Name: "dummy.txt"}}}, nil
+	return &uxv1alpha1.GenerateResponse{Outputs: outputs}, nil
 }
 
 var Plugin = plugin.New(

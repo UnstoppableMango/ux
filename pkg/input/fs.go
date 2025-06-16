@@ -8,6 +8,7 @@ import (
 	"os"
 	"sync"
 
+	"github.com/charmbracelet/log"
 	"github.com/spf13/afero"
 	"github.com/unmango/aferox"
 	ux "github.com/unstoppablemango/ux/pkg"
@@ -32,7 +33,9 @@ func (fs *Fs) Name() string {
 }
 
 func (fs *Fs) Open(name string) (afero.File, error) {
+	log.Infof("Attempting to open: %s, sources: %s", name, fs.sources)
 	if s, ok := fs.sources[name]; ok {
+		log.Info("Successfully opened")
 		return NewSourceFile(name, s), nil
 	} else {
 		return nil, fmt.Errorf("not found: %s", name)
