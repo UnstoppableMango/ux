@@ -16,7 +16,7 @@ require (
 	github.com/onsi/gomega v1.37.0
 	github.com/spf13/afero v1.14.0
 	github.com/spf13/cobra v1.9.1
-	github.com/unmango/aferox/protofs v0.0.6
+	github.com/unmango/aferox/protofs v0.0.7
 	github.com/unmango/go v0.4.1
 	github.com/unstoppablemango/ux v0.0.0-00010101000000-000000000000
 	google.golang.org/grpc v1.73.0

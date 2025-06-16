@@ -3,26 +3,30 @@ package plugin
 import (
 	"context"
 	"fmt"
+	"path/filepath"
 
 	filev1alpha1 "buf.build/gen/go/unmango/protofs/protocolbuffers/go/dev/unmango/file/v1alpha1"
 	"github.com/charmbracelet/log"
 	"github.com/google/uuid"
 	"github.com/spf13/afero"
+	"github.com/unmango/aferox/mapped"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/fs"
+	"github.com/unstoppablemango/ux/pkg/input"
 )
 
-func Generate(ctx context.Context, name string, input ux.Input) (afero.Fs, error) {
+func Generate(ctx context.Context, name string, in ux.Input) (afero.Fs, error) {
 	plugin, err := Parse(name)
 	if err != nil {
 		return nil, err
 	}
 
 	inputs := []*filev1alpha1.File{}
-	for name := range input.Sources() {
+	for name := range in.Sources() {
+		log.Infof("Appending input: %s", filepath.Join("input", name))
 		inputs = append(inputs, &filev1alpha1.File{
-			Name: name,
+			Name: filepath.Join("input", name),
 		})
 	}
 
@@ -34,7 +38,10 @@ func Generate(ctx context.Context, name string, input ux.Input) (afero.Fs, error
 
 	log.Debug("Starting FS server")
 	output := afero.NewMemMapFs()
-	srv := fs.NewServer(output)
+	srv := fs.NewServer(mapped.NewFs(map[string]afero.Fs{
+		"input":  input.NewFs(in),
+		"output": output,
+	}))
 	defer srv.GracefulStop()
 
 	go func() {

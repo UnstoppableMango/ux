@@ -1,8 +1,6 @@
 package plugin
 
 import (
-	"fmt"
-
 	"github.com/spf13/afero"
 	protofsv1alpha1 "github.com/unmango/aferox/protofs/grpc/v1alpha1"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
@@ -23,7 +21,7 @@ func (target *WithFs) InjectFs(fs afero.Fs) {
 }
 
 func OutputFs(req *uxv1alpha1.GenerateRequest) (afero.Fs, error) {
-	conn, err := grpc.NewClient(fmt.Sprint("unix://", req.FsAddress),
+	conn, err := grpc.NewClient(req.FsAddress,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {

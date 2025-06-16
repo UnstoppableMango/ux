@@ -11,7 +11,7 @@ require (
 	buf.build/gen/go/unmango/protofs/protocolbuffers/go v1.36.6-20250613050322-304b4fb5d9b0.1
 	github.com/charmbracelet/log v0.4.2
 	github.com/spf13/afero v1.14.0
-	github.com/unmango/aferox/protofs v0.0.6
+	github.com/unmango/aferox/protofs v0.0.7
 	github.com/unstoppablemango/ux v0.0.0-00010101000000-000000000000
 	github.com/unstoppablemango/ux/sdk v0.0.0-00010101000000-000000000000
 	google.golang.org/grpc v1.73.0

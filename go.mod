@@ -22,8 +22,8 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 	github.com/spf13/viper v1.20.1
-	github.com/unmango/aferox v0.2.4
-	github.com/unmango/aferox/protofs v0.0.6
+	github.com/unmango/aferox v0.3.0
+	github.com/unmango/aferox/protofs v0.0.7
 	github.com/unmango/go v0.4.1
 	go.uber.org/mock v0.5.2
 	golang.org/x/mod v0.25.0
