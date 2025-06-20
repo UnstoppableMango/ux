@@ -6,6 +6,7 @@ bin/
 .envrc
 .vscode/*
 !.vscode/extensions.json
+.DS_Store
 
 # Added by goreleaser init:
 dist/
