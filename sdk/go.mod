@@ -1,6 +1,6 @@
 module github.com/unstoppablemango/ux/sdk
 
-go 1.24.3
+go 1.24.4
 
 replace github.com/unstoppablemango/ux => ../
 
@@ -17,7 +17,7 @@ require (
 	github.com/spf13/afero v1.14.0
 	github.com/spf13/cobra v1.9.1
 	github.com/unmango/aferox/protofs v0.0.7
-	github.com/unmango/go v0.4.1
+	github.com/unmango/go v0.5.0
 	github.com/unstoppablemango/ux v0.0.0-00010101000000-000000000000
 	google.golang.org/grpc v1.73.0
 	google.golang.org/protobuf v1.36.6
@@ -49,7 +49,7 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/unmango/aferox/github v0.0.1 // indirect
-	github.com/unmango/devctl v0.1.8 // indirect
+	github.com/unmango/devctl v0.2.1 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	go.uber.org/mock v0.5.2 // indirect

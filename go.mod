@@ -1,6 +1,6 @@
 module github.com/unstoppablemango/ux
 
-go 1.24.3
+go 1.24.4
 
 tool (
 	github.com/bufbuild/buf/cmd/buf
@@ -24,7 +24,7 @@ require (
 	github.com/spf13/viper v1.20.1
 	github.com/unmango/aferox v0.3.0
 	github.com/unmango/aferox/protofs v0.0.7
-	github.com/unmango/go v0.4.1
+	github.com/unmango/go v0.5.0
 	go.uber.org/mock v0.5.2
 	golang.org/x/mod v0.25.0
 	google.golang.org/grpc v1.73.0
@@ -269,7 +269,7 @@ require (
 	github.com/ultraware/funlen v0.2.0 // indirect
 	github.com/ultraware/whitespace v0.2.0 // indirect
 	github.com/unmango/aferox/github v0.0.1 // indirect
-	github.com/unmango/devctl v0.1.8 // indirect
+	github.com/unmango/devctl v0.2.1 // indirect
 	github.com/uudashr/gocognit v1.2.0 // indirect
 	github.com/uudashr/iface v1.4.0 // indirect
 	github.com/vbatts/tar-split v0.12.1 // indirect
