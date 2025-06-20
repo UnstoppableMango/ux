@@ -36,6 +36,19 @@ var _ = Describe("E2e", func() {
 				HaveField("Lossy", true),
 			)))
 		})
+
+		It("should return capabilities", func(ctx context.Context) {
+			p := plugin.LocalBinary(dummyPath)
+
+			res, err := p.Capabilities(ctx, &uxv1alpha1.CapabilitiesRequest{})
+
+			Expect(err).NotTo(HaveOccurred())
+			Expect(res.All).To(ContainElement(SatisfyAll(
+				HaveField("From", "dummyA"),
+				HaveField("To", "dummyB"),
+				HaveField("Lossy", true),
+			)))
+		})
 	})
 
 	Describe("Plugin Conformance", func() {
