@@ -8,7 +8,9 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
+	"github.com/spf13/afero"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
+	"github.com/unstoppablemango/ux/pkg/fs"
 	"github.com/unstoppablemango/ux/pkg/plugin"
 )
 
@@ -24,6 +26,17 @@ var _ = Describe("E2e", func() {
 	})
 
 	Describe("Dummy", func() {
+		var dummyFs afero.Fs
+
+		BeforeEach(func(ctx context.Context) {
+			dummyFs = afero.NewMemMapFs()
+
+			go func() {
+				By("Serving a dummy filesystem")
+				_ = fs.ListenAndServe(ctx, dummyFs)
+			}()
+		})
+
 		It("should return capabilities", func(ctx context.Context) {
 			p := plugin.LocalBinary(dummyPath)
 

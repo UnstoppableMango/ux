@@ -12,6 +12,11 @@ import (
 	"google.golang.org/grpc"
 )
 
+type Server struct {
+	grpc        *grpc.Server
+	Dir, Prefix string
+}
+
 func Listen(ctx context.Context) (net.Listener, error) {
 	if sock, err := Socket(ctx, ""); err != nil {
 		return nil, err
@@ -35,6 +40,11 @@ func NewServer(source afero.Fs) *grpc.Server {
 	return srv
 }
 
+func RegisterServer(s grpc.ServiceRegistrar, source afero.Fs) {
+	protofsv1alpha1.RegisterFsServer(s, source)
+	protofsv1alpha1.RegisterFileServer(s, source)
+}
+
 func Serve(lis net.Listener, fs afero.Fs) error {
 	return NewServer(fs).Serve(lis)
 }
@@ -42,6 +52,14 @@ func Serve(lis net.Listener, fs afero.Fs) error {
 func Socket(ctx context.Context, prefix string) (string, error) {
 	os := os.FromContext(ctx)
 	if tmp, err := fs.TempDir(os, prefix); err != nil {
+		return "", err
+	} else {
+		return filepath.Join(tmp, "ux.sock"), nil
+	}
+}
+
+func TempSocket(fsys afero.Fs, dir, prefix string) (string, error) {
+	if tmp, err := afero.TempDir(fsys, dir, prefix); err != nil {
 		return "", err
 	} else {
 		return filepath.Join(tmp, "ux.sock"), nil
