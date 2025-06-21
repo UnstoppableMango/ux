@@ -22,7 +22,7 @@ func NewGenerate(options GenerateOptions) *cobra.Command {
 		Aliases: []string{"gen"},
 		Args:    cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			if _, err := cli.Generate(cmd.Context(), args, options); err != nil {
+			if _, err := cli.Generate(cmd.Context(), args, options.Options); err != nil {
 				cli.Fail(err)
 			}
 		},

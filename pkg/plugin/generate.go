@@ -11,29 +11,26 @@ import (
 	"github.com/spf13/afero"
 	"github.com/unmango/aferox/mapped"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
-	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/fs"
-	"github.com/unstoppablemango/ux/pkg/input"
+	"github.com/unstoppablemango/ux/pkg/os"
 )
 
-func Generate(ctx context.Context, name string, in ux.Input) (afero.Fs, error) {
+func Generate(ctx context.Context, name string, input []string) (afero.Fs, error) {
 	plugin, err := Parse(name)
 	if err != nil {
 		return nil, err
 	}
 
 	inputs := []*filev1alpha1.File{}
-	for name := range in.Sources() {
-		log.Infof("Appending input: %s", filepath.Join("input", name))
+	for _, name := range input {
 		inputs = append(inputs, &filev1alpha1.File{
 			Name: filepath.Join("input", name),
 		})
 	}
 
-	log.Debug("Starting FS server")
 	output := afero.NewMemMapFs()
 	srv := fs.NewServer(mapped.NewFs(map[string]afero.Fs{
-		"input":  input.NewFs(in),
+		"input":  os.FromContext(ctx).Fs(),
 		"output": output,
 	}))
 	defer srv.GracefulStop()
@@ -55,7 +52,7 @@ func Generate(ctx context.Context, name string, in ux.Input) (afero.Fs, error) {
 	res, err := plugin.Generate(ctx, &uxv1alpha1.GenerateRequest{
 		Id:        id,
 		Inputs:    inputs,
-		FsAddress: fmt.Sprintf("unix://%s", lis.Addr()),
+		FsAddress: fmt.Sprint("unix://", lis.Addr()),
 	})
 	if err != nil {
 		return nil, err

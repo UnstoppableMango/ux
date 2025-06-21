@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os/exec"
+	"path/filepath"
 
 	filev1alpha1 "buf.build/gen/go/unmango/protofs/protocolbuffers/go/dev/unmango/file/v1alpha1"
 	. "github.com/onsi/ginkgo/v2"
@@ -29,23 +30,6 @@ var _ = Describe("E2e", func() {
 	})
 
 	Describe("Dummy", func() {
-		var (
-			dummyFs afero.Fs
-			sock    string
-		)
-
-		BeforeEach(func(ctx context.Context) {
-			var err error
-			dummyFs = afero.NewMemMapFs()
-			sock, err = fs.TempSocket(os.Fs(), "", "")
-			Expect(err).NotTo(HaveOccurred())
-
-			go func() {
-				By("Serving a dummy filesystem")
-				_ = fs.ListenAndServe(dummyFs, sock)
-			}()
-		})
-
 		It("should return capabilities", func(ctx context.Context) {
 			p := plugin.LocalBinary(dummyPath)
 
@@ -60,12 +44,22 @@ var _ = Describe("E2e", func() {
 		})
 
 		It("should echo back its input", func(ctx context.Context) {
-			p := plugin.LocalBinary(dummyPath)
+			dummyFs := afero.NewMemMapFs()
+			sock, err := fs.TempSocket(os.Fs(), "", "")
+			Expect(err).NotTo(HaveOccurred())
+
+			go func() {
+				By("Serving a dummy filesystem")
+				_ = fs.ListenAndServe(dummyFs, sock)
+			}()
+
 			in, err := dummyFs.Create("input.txt")
 			Expect(err).NotTo(HaveOccurred())
 			_, err = io.WriteString(in, "testing")
 			Expect(err).NotTo(HaveOccurred())
+
 			inputs := []*filev1alpha1.File{{Name: in.Name()}}
+			p := plugin.LocalBinary(dummyPath)
 
 			res, err := p.Generate(ctx, &uxv1alpha1.GenerateRequest{
 				FsAddress: fmt.Sprint("unix://", sock),
@@ -79,6 +73,23 @@ var _ = Describe("E2e", func() {
 			data, err := io.ReadAll(out)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(data)).To(Equal("testing"))
+		})
+
+		It("should flow through ux", func() {
+			tmp := GinkgoT().TempDir()
+			inputPath := filepath.Join(tmp, "input.txt")
+			f, err := os.Fs().Create(inputPath)
+			Expect(err).NotTo(HaveOccurred())
+			_, err = io.WriteString(f, "testing")
+			Expect(err).NotTo(HaveOccurred())
+
+			cmd := exec.Command(uxPath, "generate", dummyPath, "-v", "-i", inputPath)
+			cmd.Dir = tmp
+
+			ses, err := gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
+
+			Expect(err).NotTo(HaveOccurred())
+			Eventually(ses).Should(gexec.Exit(0))
 		})
 	})
 
