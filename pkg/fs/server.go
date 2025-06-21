@@ -1,47 +1,69 @@
 package fs
 
 import (
-	"context"
 	"net"
 	"path/filepath"
 
 	"github.com/spf13/afero"
 	protofsv1alpha1 "github.com/unmango/aferox/protofs/grpc/v1alpha1"
-	"github.com/unstoppablemango/ux/pkg/os"
-	"github.com/unstoppablemango/ux/pkg/os/fs"
 	"google.golang.org/grpc"
 )
 
-func Listen(ctx context.Context) (net.Listener, error) {
-	if sock, err := Socket(ctx, ""); err != nil {
+type Server struct {
+	grpc        *grpc.Server
+	fs          afero.Fs
+	Dir, Prefix string
+}
+
+func (s *Server) GracefulStop() {
+	s.grpc.GracefulStop()
+}
+
+func (s *Server) Serve(lis net.Listener) error {
+	return s.grpc.Serve(lis)
+}
+
+func (s *Server) Listen() (net.Listener, error) {
+	if sock, err := TempSocket(s.fs, s.Dir, s.Prefix); err != nil {
 		return nil, err
 	} else {
-		return net.Listen("unix", sock)
+		return Listen(sock)
 	}
 }
 
-func ListenAndServe(ctx context.Context, fs afero.Fs) error {
-	if lis, err := Listen(ctx); err != nil {
+func Listen(sock string) (net.Listener, error) {
+	return net.Listen("unix", sock)
+}
+
+func ListenAndServe(fs afero.Fs, sock string) error {
+	if lis, err := Listen(sock); err != nil {
 		return err
 	} else {
 		return Serve(lis, fs)
 	}
 }
 
-func NewServer(source afero.Fs) *grpc.Server {
+func NewServer(fs afero.Fs) *Server {
 	srv := grpc.NewServer()
-	protofsv1alpha1.RegisterFsServer(srv, source)
-	protofsv1alpha1.RegisterFileServer(srv, source)
-	return srv
+	RegisterServer(srv, fs)
+
+	return &Server{
+		grpc: srv,
+		fs:   fs,
+	}
+}
+
+func RegisterServer(s grpc.ServiceRegistrar, source afero.Fs) {
+	protofsv1alpha1.RegisterFsServer(s, source)
+	protofsv1alpha1.RegisterFileServer(s, source)
 }
 
 func Serve(lis net.Listener, fs afero.Fs) error {
 	return NewServer(fs).Serve(lis)
 }
 
-func Socket(ctx context.Context, prefix string) (string, error) {
-	os := os.FromContext(ctx)
-	if tmp, err := fs.TempDir(os, prefix); err != nil {
+func TempSocket(fsys afero.Fs, dir, prefix string) (string, error) {
+	if tmp, err := afero.TempDir(fsys, dir, prefix); err != nil {
 		return "", err
 	} else {
 		return filepath.Join(tmp, "ux.sock"), nil

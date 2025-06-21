@@ -30,12 +30,6 @@ func Generate(ctx context.Context, name string, in ux.Input) (afero.Fs, error) {
 		})
 	}
 
-	log.Debug("Creating FS listener")
-	lis, err := fs.Listen(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	log.Debug("Starting FS server")
 	output := afero.NewMemMapFs()
 	srv := fs.NewServer(mapped.NewFs(map[string]afero.Fs{
@@ -43,6 +37,11 @@ func Generate(ctx context.Context, name string, in ux.Input) (afero.Fs, error) {
 		"output": output,
 	}))
 	defer srv.GracefulStop()
+
+	lis, err := srv.Listen()
+	if err != nil {
+		return nil, err
+	}
 
 	go func() {
 		log.Debug("Serving FS")
