@@ -82,12 +82,15 @@ var _ = Describe("E2e", func() {
 
 		It("should flow through ux", func() {
 			tmp := GinkgoT().TempDir()
+			fmt.Fprintln(GinkgoWriter, "Using tmp dir: ", tmp)
 			inputPath := filepath.Join(tmp, "input.txt")
+			fmt.Fprintln(GinkgoWriter, "Using input path: ", inputPath)
 			f, err := os.Fs().Create(inputPath)
 			Expect(err).NotTo(HaveOccurred())
 			_, err = io.WriteString(f, "testing")
 			Expect(err).NotTo(HaveOccurred())
 
+			fmt.Fprintln(GinkgoWriter, "Running command: ", uxPath, "generate", dummyPath, "-v", "-i", inputPath)
 			cmd := exec.Command(uxPath, "generate", dummyPath, "-v", "-i", inputPath)
 			cmd.Dir = tmp
 
