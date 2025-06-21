@@ -23,6 +23,12 @@ const (
 
 var System = sys{}
 
+func Fs() afero.Fs {
+	return System.Fs()
+}
+
+var Setenv = os.Setenv
+
 type (
 	FileInfo = os.FileInfo
 	FileMode = os.FileMode
