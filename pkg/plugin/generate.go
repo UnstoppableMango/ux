@@ -16,7 +16,7 @@ import (
 	"github.com/unstoppablemango/ux/pkg/server"
 )
 
-func Generate(ctx context.Context, name string, in ux.Input) (afero.Fs, error) {
+func Generate(ctx context.Context, name string, input []string) (afero.Fs, error) {
 	plugin, err := Parse(name)
 	if err != nil {
 		return nil, err
@@ -31,7 +31,6 @@ func Generate(ctx context.Context, name string, in ux.Input) (afero.Fs, error) {
 		}
 	}
 
-	log.Debug("Starting FS server")
 	output := afero.NewMemMapFs()
 	srv := server.New(server.WithInputs(inputs))
 	grpc := srv.Server()

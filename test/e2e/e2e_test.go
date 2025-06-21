@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -77,6 +78,23 @@ var _ = Describe("E2e", func() {
 			data, err := io.ReadAll(r)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(data)).To(Equal("testing"))
+		})
+
+		It("should flow through ux", func() {
+			tmp := GinkgoT().TempDir()
+			inputPath := filepath.Join(tmp, "input.txt")
+			f, err := os.Fs().Create(inputPath)
+			Expect(err).NotTo(HaveOccurred())
+			_, err = io.WriteString(f, "testing")
+			Expect(err).NotTo(HaveOccurred())
+
+			cmd := exec.Command(uxPath, "generate", dummyPath, "-v", "-i", inputPath)
+			cmd.Dir = tmp
+
+			ses, err := gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
+
+			Expect(err).NotTo(HaveOccurred())
+			Eventually(ses).Should(gexec.Exit(0))
 		})
 	})
 
