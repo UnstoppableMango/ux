@@ -23,8 +23,8 @@ func (s *Server) Serve(lis net.Listener) error {
 	return s.grpc.Serve(lis)
 }
 
-func (s *Server) Listen(fs afero.Fs) (net.Listener, error) {
-	if sock, err := TempSocket(fs, s.Dir, s.Prefix); err != nil {
+func (s *Server) Listen(socketfs afero.Fs) (net.Listener, error) {
+	if sock, err := TempSocket(socketfs, s.Dir, s.Prefix); err != nil {
 		return nil, err
 	} else {
 		return Listen(sock)
