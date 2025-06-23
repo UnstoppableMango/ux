@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/unmango/go/os"
 	ux "github.com/unstoppablemango/ux/pkg"
-	"github.com/unstoppablemango/ux/pkg/os"
 )
 
 var Stdin ux.Source = stdin{}
@@ -30,7 +30,7 @@ func (f File) IsDir() bool { return false }
 
 // ModTime implements fs.FileInfo.
 func (f File) ModTime() time.Time {
-	if stat, err := os.System.Fs().Stat(f.Path()); err != nil {
+	if stat, err := os.Stat(f.Path()); err != nil {
 		panic(err)
 	} else {
 		return stat.ModTime()
@@ -39,7 +39,7 @@ func (f File) ModTime() time.Time {
 
 // Mode implements fs.FileInfo.
 func (f File) Mode() fs.FileMode {
-	if stat, err := os.System.Fs().Stat(f.Path()); err != nil {
+	if stat, err := os.Stat(f.Path()); err != nil {
 		panic(err)
 	} else {
 		return stat.Mode()
@@ -53,7 +53,7 @@ func (f File) Name() string {
 
 // Size implements fs.FileInfo.
 func (f File) Size() int64 {
-	if stat, err := os.System.Fs().Stat(f.Path()); err != nil {
+	if stat, err := os.Stat(f.Path()); err != nil {
 		panic(err)
 	} else {
 		return stat.Size()
@@ -68,5 +68,5 @@ func (f File) Path() string {
 }
 
 func (f File) Open(ctx context.Context) (io.Reader, error) {
-	return os.FromContext(ctx).Fs().Open(f.Path())
+	return os.Open(f.Path())
 }
