@@ -4,11 +4,11 @@ import (
 	"context"
 	"io"
 
-	"github.com/unstoppablemango/ux/pkg/os"
+	"github.com/spf13/afero"
 )
 
 type File string
 
 func (f File) Open(ctx context.Context) (io.Writer, error) {
-	return os.FromContext(ctx).Fs().Open(string(f))
+	return afero.NewOsFs().Open(string(f))
 }

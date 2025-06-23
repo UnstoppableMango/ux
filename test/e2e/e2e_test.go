@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"os"
 	"os/exec"
 
 	filev1alpha1 "buf.build/gen/go/unmango/protofs/protocolbuffers/go/dev/unmango/file/v1alpha1"
@@ -13,7 +14,6 @@ import (
 	"github.com/spf13/afero"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	"github.com/unstoppablemango/ux/pkg/fs"
-	"github.com/unstoppablemango/ux/pkg/os"
 	"github.com/unstoppablemango/ux/pkg/plugin"
 )
 
@@ -37,7 +37,7 @@ var _ = Describe("E2e", func() {
 		BeforeEach(func(ctx context.Context) {
 			var err error
 			dummyFs = afero.NewMemMapFs()
-			sock, err = fs.TempSocket(os.Fs(), "", "")
+			sock, err = fs.TempSocket(afero.NewOsFs(), "", "")
 			Expect(err).NotTo(HaveOccurred())
 
 			go func() {

@@ -6,9 +6,9 @@ import (
 
 	"github.com/unmango/go/cli"
 	"github.com/unmango/go/option"
+	"github.com/unmango/go/os"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	ux "github.com/unstoppablemango/ux/pkg"
-	"github.com/unstoppablemango/ux/pkg/os"
 	"google.golang.org/protobuf/proto"
 )
 

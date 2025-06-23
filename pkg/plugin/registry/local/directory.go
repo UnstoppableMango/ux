@@ -6,11 +6,10 @@ import (
 	"io/fs"
 	"maps"
 	"path/filepath"
-	"sync"
 
 	"github.com/spf13/afero"
+	"github.com/unmango/go/os"
 	ux "github.com/unstoppablemango/ux/pkg"
-	"github.com/unstoppablemango/ux/pkg/os"
 	"github.com/unstoppablemango/ux/pkg/plugin"
 )
 
@@ -27,13 +26,13 @@ func (d Directory) Join(path string) Directory {
 }
 
 func (d Directory) List(ctx context.Context) (plugin.List, error) {
-	os := os.FromContext(ctx)
-	getwd := sync.OnceValues(func() (string, error) {
-		return os.Getwd()
-	})
+	wd, err := os.System.Getwd()
+	if err != nil {
+		return nil, err
+	}
 
 	plugins := map[string]ux.Plugin{}
-	err := afero.Walk(os.Fs(), d.Path(),
+	err = afero.Walk(afero.NewOsFs(), d.Path(),
 		func(path string, info fs.FileInfo, err error) error {
 			switch {
 			case errors.Is(err, fs.ErrNotExist):
@@ -51,11 +50,7 @@ func (d Directory) List(ctx context.Context) (plugin.List, error) {
 			}
 
 			if filepath.IsLocal(path) {
-				if wd, err := getwd(); err != nil {
-					return err
-				} else {
-					path = filepath.Join(wd, path)
-				}
+				path = filepath.Join(wd, path)
 			}
 
 			plugins[info.Name()] = plugin.LocalBinary(path)
