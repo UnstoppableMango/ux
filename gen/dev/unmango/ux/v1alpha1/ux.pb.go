@@ -21,6 +21,94 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type OpenRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          *string                `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OpenRequest) Reset() {
+	*x = OpenRequest{}
+	mi := &file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OpenRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OpenRequest) ProtoMessage() {}
+
+func (x *OpenRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OpenRequest.ProtoReflect.Descriptor instead.
+func (*OpenRequest) Descriptor() ([]byte, []int) {
+	return file_dev_unmango_ux_v1alpha1_ux_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *OpenRequest) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
+type OpenResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Data          []byte                 `protobuf:"bytes,1,opt,name=data" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OpenResponse) Reset() {
+	*x = OpenResponse{}
+	mi := &file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OpenResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OpenResponse) ProtoMessage() {}
+
+func (x *OpenResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OpenResponse.ProtoReflect.Descriptor instead.
+func (*OpenResponse) Descriptor() ([]byte, []int) {
+	return file_dev_unmango_ux_v1alpha1_ux_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *OpenResponse) GetData() []byte {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
 type WriteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          *string                `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
@@ -31,7 +119,7 @@ type WriteRequest struct {
 
 func (x *WriteRequest) Reset() {
 	*x = WriteRequest{}
-	mi := &file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes[0]
+	mi := &file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +131,7 @@ func (x *WriteRequest) String() string {
 func (*WriteRequest) ProtoMessage() {}
 
 func (x *WriteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes[0]
+	mi := &file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +144,7 @@ func (x *WriteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WriteRequest.ProtoReflect.Descriptor instead.
 func (*WriteRequest) Descriptor() ([]byte, []int) {
-	return file_dev_unmango_ux_v1alpha1_ux_proto_rawDescGZIP(), []int{0}
+	return file_dev_unmango_ux_v1alpha1_ux_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *WriteRequest) GetName() string {
@@ -81,7 +169,7 @@ type WriteResponse struct {
 
 func (x *WriteResponse) Reset() {
 	*x = WriteResponse{}
-	mi := &file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes[1]
+	mi := &file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -93,7 +181,7 @@ func (x *WriteResponse) String() string {
 func (*WriteResponse) ProtoMessage() {}
 
 func (x *WriteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes[1]
+	mi := &file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -106,19 +194,24 @@ func (x *WriteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WriteResponse.ProtoReflect.Descriptor instead.
 func (*WriteResponse) Descriptor() ([]byte, []int) {
-	return file_dev_unmango_ux_v1alpha1_ux_proto_rawDescGZIP(), []int{1}
+	return file_dev_unmango_ux_v1alpha1_ux_proto_rawDescGZIP(), []int{3}
 }
 
 var File_dev_unmango_ux_v1alpha1_ux_proto protoreflect.FileDescriptor
 
 const file_dev_unmango_ux_v1alpha1_ux_proto_rawDesc = "" +
 	"\n" +
-	" dev/unmango/ux/v1alpha1/ux.proto\x12\x17dev.unmango.ux.v1alpha1\"6\n" +
+	" dev/unmango/ux/v1alpha1/ux.proto\x12\x17dev.unmango.ux.v1alpha1\"!\n" +
+	"\vOpenRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"\"\n" +
+	"\fOpenResponse\x12\x12\n" +
+	"\x04data\x18\x01 \x01(\fR\x04data\"6\n" +
 	"\fWriteRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
 	"\x04data\x18\x02 \x01(\fR\x04data\"\x0f\n" +
-	"\rWriteResponse2c\n" +
-	"\tUxService\x12V\n" +
+	"\rWriteResponse2\xb8\x01\n" +
+	"\tUxService\x12S\n" +
+	"\x04Open\x12$.dev.unmango.ux.v1alpha1.OpenRequest\x1a%.dev.unmango.ux.v1alpha1.OpenResponse\x12V\n" +
 	"\x05Write\x12%.dev.unmango.ux.v1alpha1.WriteRequest\x1a&.dev.unmango.ux.v1alpha1.WriteResponseB\xec\x01\n" +
 	"\x1bcom.dev.unmango.ux.v1alpha1B\aUxProtoP\x01ZEgithub.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1;uxv1alpha1\xa2\x02\x03DUU\xaa\x02\x17Dev.Unmango.Ux.V1alpha1\xca\x02\x17Dev\\Unmango\\Ux\\V1alpha1\xe2\x02#Dev\\Unmango\\Ux\\V1alpha1\\GPBMetadata\xea\x02\x1aDev::Unmango::Ux::V1alpha1b\beditionsp\xe8\a"
 
@@ -134,16 +227,20 @@ func file_dev_unmango_ux_v1alpha1_ux_proto_rawDescGZIP() []byte {
 	return file_dev_unmango_ux_v1alpha1_ux_proto_rawDescData
 }
 
-var file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_dev_unmango_ux_v1alpha1_ux_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_dev_unmango_ux_v1alpha1_ux_proto_goTypes = []any{
-	(*WriteRequest)(nil),  // 0: dev.unmango.ux.v1alpha1.WriteRequest
-	(*WriteResponse)(nil), // 1: dev.unmango.ux.v1alpha1.WriteResponse
+	(*OpenRequest)(nil),   // 0: dev.unmango.ux.v1alpha1.OpenRequest
+	(*OpenResponse)(nil),  // 1: dev.unmango.ux.v1alpha1.OpenResponse
+	(*WriteRequest)(nil),  // 2: dev.unmango.ux.v1alpha1.WriteRequest
+	(*WriteResponse)(nil), // 3: dev.unmango.ux.v1alpha1.WriteResponse
 }
 var file_dev_unmango_ux_v1alpha1_ux_proto_depIdxs = []int32{
-	0, // 0: dev.unmango.ux.v1alpha1.UxService.Write:input_type -> dev.unmango.ux.v1alpha1.WriteRequest
-	1, // 1: dev.unmango.ux.v1alpha1.UxService.Write:output_type -> dev.unmango.ux.v1alpha1.WriteResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	0, // 0: dev.unmango.ux.v1alpha1.UxService.Open:input_type -> dev.unmango.ux.v1alpha1.OpenRequest
+	2, // 1: dev.unmango.ux.v1alpha1.UxService.Write:input_type -> dev.unmango.ux.v1alpha1.WriteRequest
+	1, // 2: dev.unmango.ux.v1alpha1.UxService.Open:output_type -> dev.unmango.ux.v1alpha1.OpenResponse
+	3, // 3: dev.unmango.ux.v1alpha1.UxService.Write:output_type -> dev.unmango.ux.v1alpha1.WriteResponse
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -160,7 +257,7 @@ func file_dev_unmango_ux_v1alpha1_ux_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dev_unmango_ux_v1alpha1_ux_proto_rawDesc), len(file_dev_unmango_ux_v1alpha1_ux_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

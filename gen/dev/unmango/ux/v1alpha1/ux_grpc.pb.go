@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	UxService_Open_FullMethodName  = "/dev.unmango.ux.v1alpha1.UxService/Open"
 	UxService_Write_FullMethodName = "/dev.unmango.ux.v1alpha1.UxService/Write"
 )
 
@@ -26,6 +27,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UxServiceClient interface {
+	Open(ctx context.Context, in *OpenRequest, opts ...grpc.CallOption) (*OpenResponse, error)
 	Write(ctx context.Context, in *WriteRequest, opts ...grpc.CallOption) (*WriteResponse, error)
 }
 
@@ -35,6 +37,16 @@ type uxServiceClient struct {
 
 func NewUxServiceClient(cc grpc.ClientConnInterface) UxServiceClient {
 	return &uxServiceClient{cc}
+}
+
+func (c *uxServiceClient) Open(ctx context.Context, in *OpenRequest, opts ...grpc.CallOption) (*OpenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(OpenResponse)
+	err := c.cc.Invoke(ctx, UxService_Open_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *uxServiceClient) Write(ctx context.Context, in *WriteRequest, opts ...grpc.CallOption) (*WriteResponse, error) {
@@ -51,6 +63,7 @@ func (c *uxServiceClient) Write(ctx context.Context, in *WriteRequest, opts ...g
 // All implementations must embed UnimplementedUxServiceServer
 // for forward compatibility.
 type UxServiceServer interface {
+	Open(context.Context, *OpenRequest) (*OpenResponse, error)
 	Write(context.Context, *WriteRequest) (*WriteResponse, error)
 	mustEmbedUnimplementedUxServiceServer()
 }
@@ -62,6 +75,9 @@ type UxServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedUxServiceServer struct{}
 
+func (UnimplementedUxServiceServer) Open(context.Context, *OpenRequest) (*OpenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Open not implemented")
+}
 func (UnimplementedUxServiceServer) Write(context.Context, *WriteRequest) (*WriteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Write not implemented")
 }
@@ -84,6 +100,24 @@ func RegisterUxServiceServer(s grpc.ServiceRegistrar, srv UxServiceServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&UxService_ServiceDesc, srv)
+}
+
+func _UxService_Open_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OpenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UxServiceServer).Open(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UxService_Open_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UxServiceServer).Open(ctx, req.(*OpenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _UxService_Write_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -111,6 +145,10 @@ var UxService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "dev.unmango.ux.v1alpha1.UxService",
 	HandlerType: (*UxServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Open",
+			Handler:    _UxService_Open_Handler,
+		},
 		{
 			MethodName: "Write",
 			Handler:    _UxService_Write_Handler,
