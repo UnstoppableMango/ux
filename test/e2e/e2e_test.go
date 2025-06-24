@@ -83,7 +83,7 @@ var _ = Describe("E2e", func() {
 		It("should flow through ux", func() {
 			tmp := GinkgoT().TempDir()
 			inputPath := filepath.Join(tmp, "input.txt")
-			f, err := os.Fs().Create(inputPath)
+			f, err := os.Create(inputPath)
 			Expect(err).NotTo(HaveOccurred())
 			_, err = io.WriteString(f, "testing")
 			Expect(err).NotTo(HaveOccurred())
