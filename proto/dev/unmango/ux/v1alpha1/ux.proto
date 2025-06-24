@@ -1,0 +1,14 @@
+edition = "2023";
+
+package dev.unmango.ux.v1alpha1;
+
+service UxService {
+  rpc Write(WriteRequest) returns (WriteResponse);
+}
+
+message WriteRequest {
+  string name = 1;
+  bytes data = 2;
+}
+
+message WriteResponse {}
