@@ -54,13 +54,17 @@ func (s *Server) Write(ctx context.Context, req *uxv1alpha1.WriteRequest) (*uxv1
 	return nil, nil
 }
 
+func (s *Server) Serve(lis net.Listener) error {
+	srv := grpc.NewServer()
+	uxv1alpha1.RegisterUxServiceServer(srv, s)
+
+	return srv.Serve(lis)
+}
+
 func New() *Server {
 	return &Server{output: map[string][]byte{}}
 }
 
 func Serve(lis net.Listener) error {
-	srv := grpc.NewServer()
-	uxv1alpha1.RegisterUxServiceServer(srv, New())
-
-	return srv.Serve(lis)
+	return New().Serve(lis)
 }

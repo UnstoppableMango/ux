@@ -3,6 +3,7 @@ package server_test
 import (
 	"context"
 	"fmt"
+	"io"
 	"net"
 	"path/filepath"
 
@@ -17,7 +18,7 @@ import (
 )
 
 var _ = Describe("Server", func() {
-	var s uxv1alpha1.UxServiceServer
+	var s *server.Server
 
 	BeforeEach(func() {
 		s = server.New()
@@ -29,17 +30,25 @@ var _ = Describe("Server", func() {
 		Expect(err).To(MatchError("no name in request"))
 	})
 
-	It("should work", func(ctx context.Context) {
+	It("should write data", func(ctx context.Context) {
 		_, err := s.Write(ctx, &uxv1alpha1.WriteRequest{
 			Name: ptr.To("test"),
-			Data: []byte("test"),
+			Data: []byte("testing"),
 		})
 
 		Expect(err).NotTo(HaveOccurred())
+		r, err := s.Output("test")
+		Expect(err).NotTo(HaveOccurred())
+		data, err := io.ReadAll(r)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(string(data)).To(Equal("testing"))
 	})
 
 	Describe("E2E", func() {
-		var client uxv1alpha1.UxServiceClient
+		var (
+			srv *server.Server
+			client uxv1alpha1.UxServiceClient
+		)
 
 		BeforeEach(func() {
 			tmp := GinkgoT().TempDir()
@@ -47,8 +56,10 @@ var _ = Describe("Server", func() {
 			lis, err := net.Listen("unix", sock)
 			Expect(err).NotTo(HaveOccurred())
 
+			srv = server.New()
+
 			go func() {
-				_ = server.Serve(lis)
+				_ = srv.Serve(lis)
 			}()
 
 			conn, err := grpc.NewClient(fmt.Sprint("unix://", sock),
@@ -58,13 +69,18 @@ var _ = Describe("Server", func() {
 			client = uxv1alpha1.NewUxServiceClient(conn)
 		})
 
-		It("should work", func(ctx context.Context) {
+		It("should write data", func(ctx context.Context) {
 			_, err := client.Write(ctx, &uxv1alpha1.WriteRequest{
 				Name: ptr.To("test"),
-				Data: []byte("test"),
+				Data: []byte("testing"),
 			})
 
 			Expect(err).NotTo(HaveOccurred())
+			r, err := srv.Output("test")
+			Expect(err).NotTo(HaveOccurred())
+			data, err := io.ReadAll(r)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(string(data)).To(Equal("testing"))
 		})
 	})
 })
