@@ -88,7 +88,6 @@ var _ = Describe("E2e", func() {
 			_, err = io.WriteString(f, "testing")
 			Expect(err).NotTo(HaveOccurred())
 
-			fmt.Fprintln(GinkgoWriter, "Running command: ", uxPath, "generate", dummyPath, "-v", "-i", inputPath)
 			cmd := exec.Command(uxPath, "generate", dummyPath, "-v", "-i", inputPath)
 			cmd.Dir = tmp
 
