@@ -1,20 +1,19 @@
 package e2e_test
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
 	"os"
 	"os/exec"
 
-	filev1alpha1 "buf.build/gen/go/unmango/protofs/protocolbuffers/go/dev/unmango/file/v1alpha1"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
-	"github.com/spf13/afero"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
-	"github.com/unstoppablemango/ux/pkg/fs"
 	"github.com/unstoppablemango/ux/pkg/plugin"
+	"github.com/unstoppablemango/ux/pkg/server"
 )
 
 var _ = Describe("E2e", func() {
@@ -30,19 +29,22 @@ var _ = Describe("E2e", func() {
 
 	Describe("Dummy", func() {
 		var (
-			dummyFs afero.Fs
-			sock    string
+			srv  *server.Server
+			sock string
 		)
 
 		BeforeEach(func(ctx context.Context) {
 			var err error
-			dummyFs = afero.NewMemMapFs()
-			sock, err = fs.TempSocket(afero.NewOsFs(), "", "")
+			sock, err = server.TempSocket("", "")
 			Expect(err).NotTo(HaveOccurred())
 
+			srv = server.New(
+				server.WithInput("input.txt", bytes.NewBufferString("testing")),
+			)
+
 			go func() {
-				By("Serving a dummy filesystem")
-				_ = fs.ListenAndServe(dummyFs, sock)
+				By("Serving a ux server")
+				_ = srv.ListenAndServe(sock)
 			}()
 		})
 
@@ -61,22 +63,18 @@ var _ = Describe("E2e", func() {
 
 		It("should echo back its input", func(ctx context.Context) {
 			p := plugin.LocalBinary(dummyPath)
-			in, err := dummyFs.Create("input.txt")
-			Expect(err).NotTo(HaveOccurred())
-			_, err = io.WriteString(in, "testing")
-			Expect(err).NotTo(HaveOccurred())
-			inputs := []*filev1alpha1.File{{Name: in.Name()}}
+			inputs := []string{"input.txt"}
 
 			res, err := p.Generate(ctx, &uxv1alpha1.GenerateRequest{
-				FsAddress: fmt.Sprint("unix://", sock),
-				Inputs:    inputs,
+				Address: fmt.Sprint("unix://", sock),
+				Inputs:  inputs,
 			})
 
 			Expect(err).NotTo(HaveOccurred())
-			Expect(res.Outputs).To(Equal([]*filev1alpha1.File{{Name: "output/input.txt"}}))
-			out, err := dummyFs.Open("output/input.txt")
+			Expect(res.Outputs).To(Equal([]string{"input.txt"}))
+			r, err := srv.Output("input.txt")
 			Expect(err).NotTo(HaveOccurred())
-			data, err := io.ReadAll(out)
+			data, err := io.ReadAll(r)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(data)).To(Equal("testing"))
 		})
