@@ -7,9 +7,12 @@ import (
 	"io"
 	"net"
 
+	"github.com/unmango/go/option"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	"google.golang.org/grpc"
 )
+
+type Option func(*Server)
 
 type Server struct {
 	uxv1alpha1.UnimplementedUxServiceServer
@@ -57,12 +60,23 @@ func (s *Server) Write(ctx context.Context, req *uxv1alpha1.WriteRequest) (*uxv1
 func (s *Server) Serve(lis net.Listener) error {
 	srv := grpc.NewServer()
 	uxv1alpha1.RegisterUxServiceServer(srv, s)
-
 	return srv.Serve(lis)
 }
 
-func New() *Server {
-	return &Server{output: map[string][]byte{}}
+func New(options ...Option) *Server {
+	s := &Server{
+		input:  map[string]io.Reader{},
+		output: map[string][]byte{},
+	}
+	option.ApplyAll(s, options)
+
+	return s
+}
+
+func WithInput(name string, r io.Reader) Option {
+	return func(s *Server) {
+		s.input[name] = r
+	}
 }
 
 func Serve(lis net.Listener) error {

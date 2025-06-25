@@ -1,6 +1,7 @@
 package server_test
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
@@ -18,45 +19,53 @@ import (
 )
 
 var _ = Describe("Server", func() {
-	var s *server.Server
+	const inputName string = "test-input"
+
+	var srv *server.Server
 
 	BeforeEach(func() {
-		s = server.New()
+		srv = server.New(
+			server.WithInput(inputName, bytes.NewBufferString("testing")),
+		)
 	})
 
 	It("should error when name is not provided", func(ctx context.Context) {
-		_, err := s.Write(ctx, &uxv1alpha1.WriteRequest{})
+		_, err := srv.Write(ctx, &uxv1alpha1.WriteRequest{})
 
 		Expect(err).To(MatchError("no name in request"))
 	})
 
 	It("should write data", func(ctx context.Context) {
-		_, err := s.Write(ctx, &uxv1alpha1.WriteRequest{
+		_, err := srv.Write(ctx, &uxv1alpha1.WriteRequest{
 			Name: ptr.To("test"),
 			Data: []byte("testing"),
 		})
 
 		Expect(err).NotTo(HaveOccurred())
-		r, err := s.Output("test")
+		r, err := srv.Output("test")
 		Expect(err).NotTo(HaveOccurred())
 		data, err := io.ReadAll(r)
 		Expect(err).NotTo(HaveOccurred())
 		Expect(string(data)).To(Equal("testing"))
 	})
 
+	It("should read data", func(ctx context.Context) {
+		res, err := srv.Open(ctx, &uxv1alpha1.OpenRequest{
+			Name: ptr.To(inputName),
+		})
+
+		Expect(err).NotTo(HaveOccurred())
+		Expect(res.Data).To(Equal([]byte("testing")))
+	})
+
 	Describe("E2E", func() {
-		var (
-			srv *server.Server
-			client uxv1alpha1.UxServiceClient
-		)
+		var client uxv1alpha1.UxServiceClient
 
 		BeforeEach(func() {
 			tmp := GinkgoT().TempDir()
 			sock := filepath.Join(tmp, "ux.sock")
 			lis, err := net.Listen("unix", sock)
 			Expect(err).NotTo(HaveOccurred())
-
-			srv = server.New()
 
 			go func() {
 				_ = srv.Serve(lis)
@@ -67,6 +76,12 @@ var _ = Describe("Server", func() {
 			)
 			Expect(err).NotTo(HaveOccurred())
 			client = uxv1alpha1.NewUxServiceClient(conn)
+		})
+
+		It("should error when name is not provided", func(ctx context.Context) {
+			_, err := client.Write(ctx, &uxv1alpha1.WriteRequest{})
+
+			Expect(err).To(MatchError(ContainSubstring("no name in request")))
 		})
 
 		It("should write data", func(ctx context.Context) {
@@ -81,6 +96,15 @@ var _ = Describe("Server", func() {
 			data, err := io.ReadAll(r)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(data)).To(Equal("testing"))
+		})
+
+		It("should read data", func(ctx context.Context) {
+			res, err := client.Open(ctx, &uxv1alpha1.OpenRequest{
+				Name: ptr.To(inputName),
+			})
+
+			Expect(err).NotTo(HaveOccurred())
+			Expect(res.Data).To(Equal([]byte("testing")))
 		})
 	})
 })
