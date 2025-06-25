@@ -17,6 +17,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/unmango/go v0.5.1
 	github.com/unstoppablemango/ux v0.0.0-00010101000000-000000000000
+	google.golang.org/grpc v1.73.0
 	google.golang.org/protobuf v1.36.6
 )
 
@@ -58,6 +59,5 @@ require (
 	golang.org/x/text v0.26.0 // indirect
 	golang.org/x/tools v0.34.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822 // indirect
-	google.golang.org/grpc v1.73.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
