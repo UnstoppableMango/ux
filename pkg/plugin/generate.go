@@ -6,13 +6,13 @@ import (
 	"io"
 	"maps"
 	"net"
+	"os"
 	"slices"
 
 	"github.com/charmbracelet/log"
 	"github.com/google/uuid"
 	"github.com/spf13/afero"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
-	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/server"
 )
 
@@ -23,9 +23,9 @@ func Generate(ctx context.Context, name string, input []string) (afero.Fs, error
 	}
 
 	inputs := map[string]io.Reader{}
-	for name, src := range in.Sources() {
-		if r, err := src.Open(ctx); err != nil {
-			return nil, err
+	for _, name := range input {
+		if r, err := os.Open(name); err != nil {
+			return nil, fmt.Errorf("opening input file: %w", err)
 		} else {
 			inputs[name] = r
 		}
