@@ -5,6 +5,7 @@ import (
 
 	"github.com/charmbracelet/log"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
+	"github.com/unstoppablemango/ux/sdk/client"
 	"github.com/unstoppablemango/ux/sdk/plugin"
 	"github.com/unstoppablemango/ux/sdk/plugin/cli"
 	"github.com/unstoppablemango/ux/sdk/plugin/cmd"
@@ -17,7 +18,7 @@ type generator struct{}
 // Generate implements ux.Generator.
 func (generator) Generate(ctx context.Context, req *uxv1alpha1.GenerateRequest) (*uxv1alpha1.GenerateResponse, error) {
 	log.Info("Creating new fs client", "address", req.Address)
-	conn, err := grpc.NewClient(req.Address,
+	client, err := client.FromRequest(req,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
@@ -25,7 +26,6 @@ func (generator) Generate(ctx context.Context, req *uxv1alpha1.GenerateRequest) 
 	}
 
 	outputs := []string{}
-	client := uxv1alpha1.NewUxServiceClient(conn)
 	for _, input := range req.Inputs {
 		log.Infof("Attempting to open input: %s", input)
 		res, err := client.Open(ctx, &uxv1alpha1.OpenRequest{
