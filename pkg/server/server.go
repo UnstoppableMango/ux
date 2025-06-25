@@ -5,8 +5,12 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"maps"
 	"net"
+	"os"
+	"path/filepath"
 
+	"github.com/charmbracelet/log"
 	"github.com/unmango/go/option"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	"google.golang.org/grpc"
@@ -35,6 +39,7 @@ func (s *Server) Open(ctx context.Context, req *uxv1alpha1.OpenRequest) (*uxv1al
 
 	r, ok := s.input[*req.Name]
 	if !ok {
+		log.Infof("Inputs: %v", s.input)
 		return nil, fmt.Errorf("no input named: %s", *req.Name)
 	}
 
@@ -57,10 +62,22 @@ func (s *Server) Write(ctx context.Context, req *uxv1alpha1.WriteRequest) (*uxv1
 	return nil, nil
 }
 
-func (s *Server) Serve(lis net.Listener) error {
+func (s *Server) Server() *grpc.Server {
 	srv := grpc.NewServer()
 	uxv1alpha1.RegisterUxServiceServer(srv, s)
-	return srv.Serve(lis)
+	return srv
+}
+
+func (s *Server) Serve(lis net.Listener) error {
+	return s.Server().Serve(lis)
+}
+
+func (s *Server) ListenAndServe(sock string) error {
+	if lis, err := net.Listen("unix", sock); err != nil {
+		return err
+	} else {
+		return s.Serve(lis)
+	}
 }
 
 func New(options ...Option) *Server {
@@ -79,6 +96,24 @@ func WithInput(name string, r io.Reader) Option {
 	}
 }
 
-func Serve(lis net.Listener) error {
-	return New().Serve(lis)
+func WithInputs(input map[string]io.Reader) Option {
+	return func(s *Server) {
+		maps.Copy(s.input, input)
+	}
+}
+
+func Serve(lis net.Listener, options ...Option) error {
+	return New(options...).Serve(lis)
+}
+
+func ListenAndServe(sock string, options ...Option) error {
+	return New(options...).ListenAndServe(sock)
+}
+
+func TempSocket(dir, pattern string) (string, error) {
+	if dir, err := os.MkdirTemp(dir, pattern); err != nil {
+		return "", err
+	} else {
+		return filepath.Join(dir, "ux.sock"), nil
+	}
 }

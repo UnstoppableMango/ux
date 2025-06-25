@@ -50,14 +50,5 @@ func (p *Plugin) Generate(ctx context.Context, req *uxv1alpha1.GenerateRequest) 
 		return nil, nil
 	}
 
-	if target, ok := p.gen.(FsInjector); ok {
-		log.Debug("Injecting output fs")
-		if fs, err := OutputFs(req); err != nil {
-			return nil, err
-		} else {
-			target.InjectFs(fs)
-		}
-	}
-
 	return p.gen.Generate(ctx, req)
 }

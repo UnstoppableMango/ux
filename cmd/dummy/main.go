@@ -2,14 +2,8 @@ package main
 
 import (
 	"context"
-	"io"
-	"os"
-	"path/filepath"
 
-	filev1alpha1 "buf.build/gen/go/unmango/protofs/protocolbuffers/go/dev/unmango/file/v1alpha1"
 	"github.com/charmbracelet/log"
-	"github.com/spf13/afero"
-	protofsv1alpha1 "github.com/unmango/aferox/protofs/grpc/v1alpha1"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	"github.com/unstoppablemango/ux/sdk/plugin"
 	"github.com/unstoppablemango/ux/sdk/plugin/cli"
@@ -21,38 +15,33 @@ import (
 type generator struct{}
 
 // Generate implements ux.Generator.
-func (generator) Generate(_ context.Context, req *uxv1alpha1.GenerateRequest) (*uxv1alpha1.GenerateResponse, error) {
-	log.Info("Creating new fs client", "address", req.FsAddress)
-	conn, err := grpc.NewClient(req.FsAddress,
+func (generator) Generate(ctx context.Context, req *uxv1alpha1.GenerateRequest) (*uxv1alpha1.GenerateResponse, error) {
+	log.Info("Creating new fs client", "address", req.Address)
+	conn, err := grpc.NewClient(req.Address,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
 		return nil, err
 	}
 
-	fs := protofsv1alpha1.NewFs(conn)
-	outputs := []*filev1alpha1.File{}
+	outputs := []string{}
+	client := uxv1alpha1.NewUxServiceClient(conn)
 	for _, input := range req.Inputs {
-		log.Infof("Attempting to open input: %s", input.Name)
-		file, err := fs.Open(input.Name)
-		if err != nil {
-			log.Infof("Failed to open input: %s", input.Name)
-			return nil, err
-		}
-
-		data, err := io.ReadAll(file)
-		if err != nil {
-			return nil, err
-		}
-
-		path := filepath.Join("output", file.Name())
-		if err = afero.WriteFile(fs, path, data, os.ModePerm); err != nil {
-			return nil, err
-		}
-
-		outputs = append(outputs, &filev1alpha1.File{
-			Name: path,
+		log.Infof("Attempting to open input: %s", input)
+		res, err := client.Open(ctx, &uxv1alpha1.OpenRequest{
+			Name: &input,
 		})
+		if err != nil {
+			log.Infof("Failed to open input: %s", input)
+			return nil, err
+		}
+
+		_, err = client.Write(ctx, &uxv1alpha1.WriteRequest{
+			Name: &input,
+			Data: res.Data,
+		})
+
+		outputs = append(outputs, input)
 	}
 
 	return &uxv1alpha1.GenerateResponse{Outputs: outputs}, nil
