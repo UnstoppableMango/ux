@@ -31,7 +31,8 @@ func Generate(ctx context.Context, name string, input []string, output afero.Fs)
 		}
 	}
 
-	srv := server.New(server.WithInputs(inputs))
+	in, out := afero.NewOsFs(), afero.NewOsFs()
+	srv := server.New(in, out)
 	grpc := srv.Server()
 	defer grpc.GracefulStop()
 

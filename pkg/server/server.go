@@ -1,17 +1,13 @@
 package server
 
 import (
-	"bytes"
 	"context"
 	"fmt"
-	"io"
-	"maps"
 	"net"
 	"os"
 	"path/filepath"
 
-	"github.com/charmbracelet/log"
-	"github.com/unmango/go/option"
+	"github.com/spf13/afero"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	"google.golang.org/grpc"
 )
@@ -20,16 +16,8 @@ type Option func(*Server)
 
 type Server struct {
 	uxv1alpha1.UnimplementedUxServiceServer
-	input  map[string]io.Reader
-	output map[string][]byte
-}
 
-func (s *Server) Output(name string) (io.Reader, error) {
-	if data, ok := s.output[name]; ok {
-		return bytes.NewBuffer(data), nil
-	} else {
-		return nil, fmt.Errorf("no output named: %s", name)
-	}
+	input, output afero.Fs
 }
 
 func (s *Server) Open(ctx context.Context, req *uxv1alpha1.OpenRequest) (*uxv1alpha1.OpenResponse, error) {
@@ -37,13 +25,7 @@ func (s *Server) Open(ctx context.Context, req *uxv1alpha1.OpenRequest) (*uxv1al
 		return nil, fmt.Errorf("no input name provided")
 	}
 
-	r, ok := s.input[*req.Name]
-	if !ok {
-		log.Infof("Inputs: %v", s.input)
-		return nil, fmt.Errorf("no input named: %s", *req.Name)
-	}
-
-	data, err := io.ReadAll(r)
+	data, err := afero.ReadFile(s.input, *req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +40,11 @@ func (s *Server) Write(ctx context.Context, req *uxv1alpha1.WriteRequest) (*uxv1
 		return nil, fmt.Errorf("no name in request")
 	}
 
-	s.output[*req.Name] = req.Data
+	err := afero.WriteFile(s.output, *req.Name, req.Data, os.ModePerm)
+	if err != nil {
+		return nil, err
+	}
+
 	return nil, nil
 }
 
@@ -80,34 +66,31 @@ func (s *Server) ListenAndServe(sock string) error {
 	}
 }
 
-func New(options ...Option) *Server {
-	s := &Server{
-		input:  map[string]io.Reader{},
-		output: map[string][]byte{},
-	}
-	option.ApplyAll(s, options)
-
-	return s
-}
-
-func WithInput(name string, r io.Reader) Option {
-	return func(s *Server) {
-		s.input[name] = r
+func New(input, output afero.Fs) *Server {
+	return &Server{
+		input:  input,
+		output: output,
 	}
 }
 
-func WithInputs(input map[string]io.Reader) Option {
+func WithInput(fs afero.Fs) Option {
 	return func(s *Server) {
-		maps.Copy(s.input, input)
+		s.input = fs
+	}
+}
+
+func WithOutput(fs afero.Fs) Option {
+	return func(s *Server) {
+		s.output = fs
 	}
 }
 
 func Serve(lis net.Listener, options ...Option) error {
-	return New(options...).Serve(lis)
+	return New(afero.NewOsFs(), afero.NewOsFs()).Serve(lis)
 }
 
 func ListenAndServe(sock string, options ...Option) error {
-	return New(options...).ListenAndServe(sock)
+	return New(afero.NewOsFs(), afero.NewOsFs()).ListenAndServe(sock)
 }
 
 func TempSocket(dir, pattern string) (string, error) {
