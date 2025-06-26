@@ -62,7 +62,7 @@ var _ = Describe("E2e", func() {
 			)))
 		})
 
-		It("should echo back its input", func(ctx context.Context) {
+		It("should echo back the input with a modified name", func(ctx context.Context) {
 			p := plugin.LocalBinary(dummyPath)
 			inputs := []string{"input.txt"}
 
@@ -73,8 +73,8 @@ var _ = Describe("E2e", func() {
 
 			Expect(err).NotTo(HaveOccurred())
 			Expect(res.Outputs).To(Equal([]string{"input.txt"}))
-			r, err := srv.Output("input.txt")
-			Expect(err).NotTo(HaveOccurred())
+			r, err := srv.Output("input.dummy.txt")
+			Expect(err).NotTo(HaveOccurred(), fmt.Sprint(srv))
 			data, err := io.ReadAll(r)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(data)).To(Equal("testing"))

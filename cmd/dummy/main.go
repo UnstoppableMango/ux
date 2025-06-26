@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"path/filepath"
+	"strings"
 
 	"github.com/charmbracelet/log"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
@@ -36,8 +38,10 @@ func (generator) Generate(ctx context.Context, req *uxv1alpha1.GenerateRequest) 
 			return nil, err
 		}
 
+		ext := filepath.Ext(input)
+		output := strings.ReplaceAll(input, ext, ".dummy"+ext)
 		_, err = client.Write(ctx, &uxv1alpha1.WriteRequest{
-			Name: &input,
+			Name: &output,
 			Data: res.Data,
 		})
 
