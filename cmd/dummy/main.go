@@ -45,7 +45,7 @@ func (generator) Generate(ctx context.Context, req *uxv1alpha1.GenerateRequest) 
 			Data: res.Data,
 		})
 
-		outputs = append(outputs, input)
+		outputs = append(outputs, output)
 	}
 
 	return &uxv1alpha1.GenerateResponse{Outputs: outputs}, nil

@@ -72,7 +72,7 @@ var _ = Describe("E2e", func() {
 			})
 
 			Expect(err).NotTo(HaveOccurred())
-			Expect(res.Outputs).To(Equal([]string{"input.txt"}))
+			Expect(res.Outputs).To(Equal([]string{"input.dummy.txt"}))
 			r, err := srv.Output("input.dummy.txt")
 			Expect(err).NotTo(HaveOccurred(), fmt.Sprint(srv))
 			data, err := io.ReadAll(r)
