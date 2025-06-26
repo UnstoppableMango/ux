@@ -95,6 +95,8 @@ var _ = Describe("E2e", func() {
 
 			Expect(err).NotTo(HaveOccurred())
 			Eventually(ses).Should(gexec.Exit(0))
+			outputPath := filepath.Join(tmp, "input.dummy.txt")
+			Expect(outputPath).To(BeAnExistingFile())
 		})
 	})
 
