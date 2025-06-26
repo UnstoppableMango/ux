@@ -9,7 +9,9 @@ import (
 
 // TODO: Probably refactor this
 
-func Generate(ctx context.Context, args []string, options Options) error {
+func Generate(ctx context.Context, args []string, options cliOptions) error {
 	output := afero.NewOsFs()
-	return plugin.Generate(ctx, args[0], options.Inputs, output)
+	opts := options.(Options)
+
+	return plugin.Generate(ctx, args[0], opts.Inputs, output)
 }

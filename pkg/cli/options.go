@@ -4,10 +4,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type cliOptions interface {
+	cliOptions()
+}
+
 type Options struct {
 	Inputs  []string
 	Outputs []string
 }
+
+func (Options) cliOptions() {}
 
 func Flags(cmd *cobra.Command, opts *Options) {
 	InputFlag(cmd, opts, nil)
