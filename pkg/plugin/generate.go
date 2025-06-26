@@ -16,34 +16,33 @@ import (
 	"github.com/unstoppablemango/ux/pkg/server"
 )
 
-func Generate(ctx context.Context, name string, input []string) (afero.Fs, error) {
+func Generate(ctx context.Context, name string, input []string, output afero.Fs) error {
 	plugin, err := Parse(name)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	inputs := map[string]io.Reader{}
 	for _, name := range input {
 		if r, err := os.Open(name); err != nil {
-			return nil, fmt.Errorf("opening input file: %w", err)
+			return fmt.Errorf("opening input file: %w", err)
 		} else {
 			inputs[name] = r
 		}
 	}
 
-	output := afero.NewMemMapFs()
 	srv := server.New(server.WithInputs(inputs))
 	grpc := srv.Server()
 	defer grpc.GracefulStop()
 
 	sock, err := server.TempSocket("", "")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	lis, err := net.Listen("unix", sock)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	go func() {
@@ -56,20 +55,29 @@ func Generate(ctx context.Context, name string, input []string) (afero.Fs, error
 	res, err := plugin.Generate(ctx, &uxv1alpha1.GenerateRequest{
 		Id:      id,
 		Inputs:  slices.Collect(maps.Keys(inputs)),
-		Address: fmt.Sprintf("unix://%s", lis.Addr()),
+		Address: fmt.Sprintf("unix://%s", sock),
 	})
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	log.Debug("Got outputs", "files", res.Outputs)
 	for _, name := range res.Outputs {
-		if stat, err := output.Stat(name); err != nil {
+		r, err := srv.Output(name)
+		if err != nil {
 			log.Debugf("No output found at: %s", name)
-		} else {
-			log.Debugf("Found output: %s", stat.Name())
+			continue
+		}
+
+		f, err := output.Create(name)
+		if err != nil {
+			return fmt.Errorf("creating output: %w", err)
+		}
+
+		if _, err = io.Copy(f, r); err != nil {
+			return fmt.Errorf("copying output: %w", err)
 		}
 	}
 
-	return output, err
+	return nil
 }
