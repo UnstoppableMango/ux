@@ -231,6 +231,8 @@ github.com/go-toolsmith/typep v1.1.0 h1:fIRYDyF+JywLfqzyhdiHzRop/GQDxxNhLGQ6gFUN
 github.com/go-toolsmith/typep v1.1.0/go.mod h1:fVIw+7zjdsMxDA3ITWnH1yOiw1rnTQKCsF/sk2H/qig=
 github.com/go-viper/mapstructure/v2 v2.2.1 h1:ZAaOCxANMuZx5RCeg0mBdEZk7DZasvvZIxtHqx8aGss=
 github.com/go-viper/mapstructure/v2 v2.2.1/go.mod h1:oJDH3BJKyqBA2TXFhDsKDGDTlndYOZ6rGS0BRZIxGhM=
+github.com/go-viper/mapstructure/v2 v2.3.0 h1:27XbWsHIqhbdR5TIC911OfYvgSaW93HM+dX7970Q7jk=
+github.com/go-viper/mapstructure/v2 v2.3.0/go.mod h1:oJDH3BJKyqBA2TXFhDsKDGDTlndYOZ6rGS0BRZIxGhM=
 github.com/go-xmlfmt/xmlfmt v1.1.3 h1:t8Ey3Uy7jDSEisW2K3somuMKIpzktkWptA0iFCnRUWY=
 github.com/go-xmlfmt/xmlfmt v1.1.3/go.mod h1:aUCEOzzezBEjDBbFBoSiya/gduyIiWYRP6CnSFIV8AM=
 github.com/gobwas/glob v0.2.3 h1:A4xDbljILXROh+kObIiy5kIaPYD8e96x1tgBhUI5J+Y=
@@ -249,6 +251,7 @@ github.com/golangci/gofmt v0.0.0-20250413222143-f2e10e00591b h1:Aa2SLCpcFsO9PI39
 github.com/golangci/gofmt v0.0.0-20250413222143-f2e10e00591b/go.mod h1:ivJ9QDg0XucIkmwhzCDsqcnxxlDStoTl89jDMIoNxKY=
 github.com/golangci/golangci-lint/v2 v2.1.6 h1:LXqShFfAGM5BDzEOWD2SL1IzJAgUOqES/HRBsfKjI+w=
 github.com/golangci/golangci-lint/v2 v2.1.6/go.mod h1:EPj+fgv4TeeBq3TcqaKZb3vkiV5dP4hHHKhXhEhzci8=
+github.com/golangci/golangci-lint/v2 v2.2.1/go.mod h1:Wu5txvpvWB2r+vjSNS6zn3WuCiJ7HAerKNiH+sEqWZA=
 github.com/golangci/golines v0.0.0-20250217232252-b35a6149b587 h1:RXtAfHDBWAv49/t94l3j9Iqvy6eXL/nm56EejqrZuQc=
 github.com/golangci/golines v0.0.0-20250217232252-b35a6149b587/go.mod h1:k9mmcyWKSTMcPPvQUCfRWWQ9VHJ1U9Dc0R7kaXAgtnQ=
 github.com/golangci/misspell v0.7.0 h1:4GOHr/T1lTW0hhR4tgaaV1WS/lJ+ncvYCoFKmqJsj0c=
@@ -485,6 +488,7 @@ github.com/sashamelentyev/usestdlibvars v1.29.0 h1:8J0MoRrw4/NAXtjQqTHrbW9NN+3iM
 github.com/sashamelentyev/usestdlibvars v1.29.0/go.mod h1:8PpnjHMk5VdeWlVb4wCdrB8PNbLqZ3wBZTZWkrpZZL8=
 github.com/securego/gosec/v2 v2.22.4 h1:21VdNGcKicFSv6rUDBc0cEtEl7lWyCKZxKIm0iwvrIM=
 github.com/securego/gosec/v2 v2.22.4/go.mod h1:ww5Yie7KJ3AH8XZQTletkW5zOmIse6FACs/Ys8VR3qE=
+github.com/securego/gosec/v2 v2.22.5/go.mod h1:AWfgrFsVewk5LKobsPWlygCHt8K91boVPyL6GUZG5NY=
 github.com/segmentio/asm v1.2.0 h1:9BQrFxC+YOHJlTlHGkTrFWf59nbL3XnCoFLTwDCI7ys=
 github.com/segmentio/asm v1.2.0/go.mod h1:BqMnlJP91P8d+4ibuonYZw9mfnzI9HfxselHZr5aAcs=
 github.com/segmentio/encoding v0.5.1 h1:LhmgXA5/alniiqfc4cYYrxF6DbUQ3m8MVz4/LQIU1mg=
@@ -499,6 +503,7 @@ github.com/sivchari/containedctx v1.0.3 h1:x+etemjbsh2fB5ewm5FeLNi5bUjK0V8n0RB+W
 github.com/sivchari/containedctx v1.0.3/go.mod h1:c1RDvCbnJLtH4lLcYD/GqwiBSSf4F5Qk0xld2rBqzJ4=
 github.com/sonatard/noctx v0.3.3 h1:9+wFUxZfjiCdNadFaGH55sa7Y1r6yKZiAsUVmCP+tjw=
 github.com/sonatard/noctx v0.3.3/go.mod h1:64XdbzFb18XL4LporKXp8poqZtPKbCrqQ402CV+kJas=
+github.com/sonatard/noctx v0.3.4/go.mod h1:64XdbzFb18XL4LporKXp8poqZtPKbCrqQ402CV+kJas=
 github.com/sourcegraph/conc v0.3.0 h1:OQTbbt6P72L20UqAkXXuLOj79LfEanQ+YQFNpLA9ySo=
 github.com/sourcegraph/conc v0.3.0/go.mod h1:Sdozi7LEKbFPqYX2/J+iBAM6HpqSLTASQIKqDmF7Mt0=
 github.com/sourcegraph/go-diff v0.7.0 h1:9uLlrd5T46OXs5qpp8L/MTltk0zikUGi0sNNyCpA8G0=
