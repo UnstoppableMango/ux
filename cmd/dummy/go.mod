@@ -11,7 +11,7 @@ require (
 	github.com/charmbracelet/log v0.4.2
 	github.com/unstoppablemango/ux v0.0.0-00010101000000-000000000000
 	github.com/unstoppablemango/ux/sdk v0.0.0-00010101000000-000000000000
-	google.golang.org/grpc v1.73.0
+	google.golang.org/grpc v1.75.0
 )
 
 require (
