@@ -18,7 +18,7 @@ require (
 	github.com/unmango/go v0.5.1
 	github.com/unstoppablemango/ux v0.0.0-00010101000000-000000000000
 	google.golang.org/grpc v1.73.0
-	google.golang.org/protobuf v1.36.6
+	google.golang.org/protobuf v1.36.8
 )
 
 require (
