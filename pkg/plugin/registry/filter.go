@@ -9,7 +9,7 @@ import (
 )
 
 type Filtered struct {
-	Filter   func(string, ux.Plugin) bool
+	Filter   func(string, ux.LegacyPlugin) bool
 	Registry plugin.Registry
 }
 
