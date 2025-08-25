@@ -11,12 +11,12 @@ import (
 )
 
 type SuiteOptions struct {
-	Plugin ux.Plugin
+	Plugin ux.LegacyPlugin
 }
 
 func NewSuite(opts SuiteOptions) bool {
 	return Describe("Conformance", func() {
-		var plugin ux.Plugin
+		var plugin ux.LegacyPlugin
 
 		BeforeEach(func() {
 			plugin = opts.Plugin

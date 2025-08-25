@@ -11,7 +11,7 @@ import (
 type Aggregate []plugin.Registry
 
 func (registries Aggregate) List(ctx context.Context) (plugin.List, error) {
-	plugins := map[string]ux.Plugin{}
+	plugins := map[string]ux.LegacyPlugin{}
 	for _, r := range registries {
 		if list, err := r.List(ctx); err != nil {
 			return nil, err
