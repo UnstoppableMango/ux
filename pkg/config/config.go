@@ -1,9 +1,12 @@
 package config
 
 import (
+	"context"
+	"io"
 	"path/filepath"
 
 	"github.com/adrg/xdg"
+	"github.com/google/uuid"
 	ux "github.com/unstoppablemango/ux/pkg"
 )
 
@@ -23,50 +26,41 @@ var (
 
 type Config interface{}
 
-type Option struct {
-	name    string
-	aliases []string
-}
-
-func (o *Option) Configure(opt ux.Option) {
-	opt.Name(o.name)
-	for _, alias := range o.aliases {
-		opt.Alias(alias)
-	}
-}
-
-func (o *Option) Name(value string) {
-	o.name = value
-}
-
-func (o *Option) Alias(value string) {
-	o.aliases = append(o.aliases, value)
-}
-
 type Builder struct {
-	options map[string]*Option
+	files []uuid.UUID
 }
 
-func (ux *Builder) Input(configure ux.Configure) {
-	o := &Option{}
-	configure.Configure(o)
+func (b *Builder) File() uuid.UUID {
+	id := uuid.New()
+	b.files = append(b.files, id)
+	return id
 }
 
-type all []ux.Configure
+type Context struct {
+	b *Builder
+}
 
-func (cs all) Configure(o ux.Option) {
-	for _, c := range cs {
-		c.Configure(o)
+// Context implements ux.Context.
+func (c *Context) Context() context.Context {
+	return context.TODO()
+}
+
+// Input implements ux.Context.
+func (c *Context) Input(id uuid.UUID) (io.Reader, error) {
+	panic("unimplemented")
+}
+
+// Output implements ux.Context.
+func (c *Context) Output() (io.Writer, error) {
+	panic("unimplemented")
+}
+
+func Execute(g ux.Generator) error {
+	builder := &Builder{}
+	if err := g.Configure(builder); err != nil {
+		return err
 	}
-}
 
-func All(configure ...ux.Configure) ux.Configure {
-	return all(configure)
-}
-
-func Named(b ux.Builder, name string) string {
-	return b.Input(&Option{
-		name:    name,
-		aliases: []string{},
-	})
+	ctx := &Context{builder}
+	return g.Generate(ctx)
 }
