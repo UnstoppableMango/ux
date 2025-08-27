@@ -2,6 +2,7 @@ package config
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"path/filepath"
 
@@ -27,12 +28,12 @@ var (
 type Config interface{}
 
 type Builder struct {
-	files []uuid.UUID
+	inputs map[uuid.UUID]ux.Input
 }
 
-func (b *Builder) File() uuid.UUID {
+func (b *Builder) Add(input ux.Input) uuid.UUID {
 	id := uuid.New()
-	b.files = append(b.files, id)
+	b.inputs[id] = input
 	return id
 }
 
@@ -47,6 +48,11 @@ func (c *Context) Context() context.Context {
 
 // Input implements ux.Context.
 func (c *Context) Input(id uuid.UUID) (io.Reader, error) {
+	i, ok := c.b.inputs[id]
+	if !ok {
+		return nil, fmt.Errorf("no input for id: %s", id)
+	}
+
 	panic("unimplemented")
 }
 
@@ -55,7 +61,7 @@ func (c *Context) Output() (io.Writer, error) {
 	panic("unimplemented")
 }
 
-func Execute(g ux.Generator) error {
+func Execute(g ux.Generator, args []string) error {
 	builder := &Builder{}
 	if err := g.Configure(builder); err != nil {
 		return err
