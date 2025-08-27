@@ -8,8 +8,10 @@ import (
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 )
 
-type Input interface {
-	File() uuid.UUID
+type Input interface{}
+
+type Inputs interface {
+	Add(Input) uuid.UUID
 }
 
 type Context interface {
@@ -19,7 +21,7 @@ type Context interface {
 }
 
 type Generator interface {
-	Configure(Input) error
+	Configure(Inputs) error
 	Generate(Context) error
 }
 
