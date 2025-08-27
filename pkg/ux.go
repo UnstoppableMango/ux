@@ -4,30 +4,22 @@ import (
 	"context"
 	"io"
 
+	"github.com/google/uuid"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 )
 
-type Option interface {
-	Name(string)
-	Alias(string)
-}
-
-type Configure interface {
-	Configure(Option)
-}
-
-type Builder interface {
-	Input(Configure) string
+type Input interface {
+	File() uuid.UUID
 }
 
 type Context interface {
 	Context() context.Context
-	Input(string) (io.Reader, error)
-	Output(string) (io.Writer, error)
+	Input(uuid.UUID) (io.Reader, error)
+	Output() (io.Writer, error)
 }
 
 type Generator interface {
-	Configure(Builder) error
+	Configure(Input) error
 	Generate(Context) error
 }
 
