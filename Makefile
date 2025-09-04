@@ -43,6 +43,9 @@ codegen: ${GO_CODEGEN} .make/go-generate
 ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
 
+test/e2e/testdata/petstore.yaml:
+	curl -Lo $@ https://raw.githubusercontent.com/readmeio/oas/refs/heads/main/packages/oas-examples/3.1/yaml/petstore.yaml
+
 ##@ Locks
 
 buf.lock: buf.yaml ${PROTO_SRC}
@@ -111,7 +114,7 @@ JSON_SRC := .dprint.json .github/renovate.json .vscode/extensions.json
 	$(GO) fmt $(addprefix ./,$(sort $(dir $?)))
 	@touch $@
 
-.make/ginkgo-run: ${GO_SRC}
+.make/ginkgo-run: ${GO_SRC} | test/e2e/testdata/petstore.yaml
 	$(GINKGO) $(sort $(dir $?))
 	@touch $@
 
