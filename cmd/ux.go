@@ -3,11 +3,11 @@ package cmd
 import (
 	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"
-	"github.com/unstoppablemango/ux/pkg/config"
+	"github.com/unstoppablemango/ux/pkg/cmd"
 )
 
 type UxOptions struct {
-	config.GlobalOptions
+	cmd.GlobalOptions
 }
 
 func NewUx() *cobra.Command {
