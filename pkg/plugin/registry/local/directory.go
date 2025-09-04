@@ -31,7 +31,7 @@ func (d Directory) List(ctx context.Context) (plugin.List, error) {
 		return nil, err
 	}
 
-	plugins := map[string]ux.Plugin{}
+	plugins := map[string]ux.LegacyPlugin{}
 	err = afero.Walk(afero.NewOsFs(), d.Path(),
 		func(path string, info fs.FileInfo, err error) error {
 			switch {

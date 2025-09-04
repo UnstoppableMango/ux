@@ -5,6 +5,6 @@ import (
 	ux "github.com/unstoppablemango/ux/pkg"
 )
 
-type List = iter.Seq2[string, ux.Plugin]
+type List = iter.Seq2[string, ux.LegacyPlugin]
 
-var EmptyList = List(iter.Empty2[string, ux.Plugin]())
+var EmptyList = List(iter.Empty2[string, ux.LegacyPlugin]())
