@@ -21,6 +21,52 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type Command int32
+
+const (
+	Command_COMMAND_UNSPECIFIED Command = 0
+	Command_COMMAND_GENERATE    Command = 1
+)
+
+// Enum value maps for Command.
+var (
+	Command_name = map[int32]string{
+		0: "COMMAND_UNSPECIFIED",
+		1: "COMMAND_GENERATE",
+	}
+	Command_value = map[string]int32{
+		"COMMAND_UNSPECIFIED": 0,
+		"COMMAND_GENERATE":    1,
+	}
+)
+
+func (x Command) Enum() *Command {
+	p := new(Command)
+	*p = x
+	return p
+}
+
+func (x Command) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Command) Descriptor() protoreflect.EnumDescriptor {
+	return file_dev_unmango_ux_v1alpha1_plugin_proto_enumTypes[0].Descriptor()
+}
+
+func (Command) Type() protoreflect.EnumType {
+	return &file_dev_unmango_ux_v1alpha1_plugin_proto_enumTypes[0]
+}
+
+func (x Command) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Command.Descriptor instead.
+func (Command) EnumDescriptor() ([]byte, []int) {
+	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{0}
+}
+
 type CapabilitiesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -205,6 +251,58 @@ func (x *GenerateResponse) GetOutputs() []string {
 	return nil
 }
 
+type Stdin struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Command       Command                `protobuf:"varint,1,opt,name=command,proto3,enum=dev.unmango.ux.v1alpha1.Command" json:"command,omitempty"`
+	Args          []string               `protobuf:"bytes,2,rep,name=args,proto3" json:"args,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Stdin) Reset() {
+	*x = Stdin{}
+	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Stdin) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Stdin) ProtoMessage() {}
+
+func (x *Stdin) ProtoReflect() protoreflect.Message {
+	mi := &file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Stdin.ProtoReflect.Descriptor instead.
+func (*Stdin) Descriptor() ([]byte, []int) {
+	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *Stdin) GetCommand() Command {
+	if x != nil {
+		return x.Command
+	}
+	return Command_COMMAND_UNSPECIFIED
+}
+
+func (x *Stdin) GetArgs() []string {
+	if x != nil {
+		return x.Args
+	}
+	return nil
+}
+
 var File_dev_unmango_ux_v1alpha1_plugin_proto protoreflect.FileDescriptor
 
 const file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc = "" +
@@ -218,7 +316,13 @@ const file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc = "" +
 	"\x06inputs\x18\x02 \x03(\tR\x06inputs\x12\x18\n" +
 	"\aaddress\x18\x03 \x01(\tR\aaddress\",\n" +
 	"\x10GenerateResponse\x12\x18\n" +
-	"\aoutputs\x18\x01 \x03(\tR\aoutputs2\xdd\x01\n" +
+	"\aoutputs\x18\x01 \x03(\tR\aoutputs\"W\n" +
+	"\x05Stdin\x12:\n" +
+	"\acommand\x18\x01 \x01(\x0e2 .dev.unmango.ux.v1alpha1.CommandR\acommand\x12\x12\n" +
+	"\x04args\x18\x02 \x03(\tR\x04args*8\n" +
+	"\aCommand\x12\x17\n" +
+	"\x13COMMAND_UNSPECIFIED\x10\x00\x12\x14\n" +
+	"\x10COMMAND_GENERATE\x10\x012\xdd\x01\n" +
 	"\rPluginService\x12k\n" +
 	"\fCapabilities\x12,.dev.unmango.ux.v1alpha1.CapabilitiesRequest\x1a-.dev.unmango.ux.v1alpha1.CapabilitiesResponse\x12_\n" +
 	"\bGenerate\x12(.dev.unmango.ux.v1alpha1.GenerateRequest\x1a).dev.unmango.ux.v1alpha1.GenerateResponseB\xf0\x01\n" +
@@ -236,25 +340,29 @@ func file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescGZIP() []byte {
 	return file_dev_unmango_ux_v1alpha1_plugin_proto_rawDescData
 }
 
-var file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_dev_unmango_ux_v1alpha1_plugin_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_dev_unmango_ux_v1alpha1_plugin_proto_goTypes = []any{
-	(*CapabilitiesRequest)(nil),  // 0: dev.unmango.ux.v1alpha1.CapabilitiesRequest
-	(*CapabilitiesResponse)(nil), // 1: dev.unmango.ux.v1alpha1.CapabilitiesResponse
-	(*GenerateRequest)(nil),      // 2: dev.unmango.ux.v1alpha1.GenerateRequest
-	(*GenerateResponse)(nil),     // 3: dev.unmango.ux.v1alpha1.GenerateResponse
-	(*Capability)(nil),           // 4: dev.unmango.ux.v1alpha1.Capability
+	(Command)(0),                 // 0: dev.unmango.ux.v1alpha1.Command
+	(*CapabilitiesRequest)(nil),  // 1: dev.unmango.ux.v1alpha1.CapabilitiesRequest
+	(*CapabilitiesResponse)(nil), // 2: dev.unmango.ux.v1alpha1.CapabilitiesResponse
+	(*GenerateRequest)(nil),      // 3: dev.unmango.ux.v1alpha1.GenerateRequest
+	(*GenerateResponse)(nil),     // 4: dev.unmango.ux.v1alpha1.GenerateResponse
+	(*Stdin)(nil),                // 5: dev.unmango.ux.v1alpha1.Stdin
+	(*Capability)(nil),           // 6: dev.unmango.ux.v1alpha1.Capability
 }
 var file_dev_unmango_ux_v1alpha1_plugin_proto_depIdxs = []int32{
-	4, // 0: dev.unmango.ux.v1alpha1.CapabilitiesResponse.all:type_name -> dev.unmango.ux.v1alpha1.Capability
-	0, // 1: dev.unmango.ux.v1alpha1.PluginService.Capabilities:input_type -> dev.unmango.ux.v1alpha1.CapabilitiesRequest
-	2, // 2: dev.unmango.ux.v1alpha1.PluginService.Generate:input_type -> dev.unmango.ux.v1alpha1.GenerateRequest
-	1, // 3: dev.unmango.ux.v1alpha1.PluginService.Capabilities:output_type -> dev.unmango.ux.v1alpha1.CapabilitiesResponse
-	3, // 4: dev.unmango.ux.v1alpha1.PluginService.Generate:output_type -> dev.unmango.ux.v1alpha1.GenerateResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	6, // 0: dev.unmango.ux.v1alpha1.CapabilitiesResponse.all:type_name -> dev.unmango.ux.v1alpha1.Capability
+	0, // 1: dev.unmango.ux.v1alpha1.Stdin.command:type_name -> dev.unmango.ux.v1alpha1.Command
+	1, // 2: dev.unmango.ux.v1alpha1.PluginService.Capabilities:input_type -> dev.unmango.ux.v1alpha1.CapabilitiesRequest
+	3, // 3: dev.unmango.ux.v1alpha1.PluginService.Generate:input_type -> dev.unmango.ux.v1alpha1.GenerateRequest
+	2, // 4: dev.unmango.ux.v1alpha1.PluginService.Capabilities:output_type -> dev.unmango.ux.v1alpha1.CapabilitiesResponse
+	4, // 5: dev.unmango.ux.v1alpha1.PluginService.Generate:output_type -> dev.unmango.ux.v1alpha1.GenerateResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_dev_unmango_ux_v1alpha1_plugin_proto_init() }
@@ -268,13 +376,14 @@ func file_dev_unmango_ux_v1alpha1_plugin_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc), len(file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   4,
+			NumEnums:      1,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_dev_unmango_ux_v1alpha1_plugin_proto_goTypes,
 		DependencyIndexes: file_dev_unmango_ux_v1alpha1_plugin_proto_depIdxs,
+		EnumInfos:         file_dev_unmango_ux_v1alpha1_plugin_proto_enumTypes,
 		MessageInfos:      file_dev_unmango_ux_v1alpha1_plugin_proto_msgTypes,
 	}.Build()
 	File_dev_unmango_ux_v1alpha1_plugin_proto = out.File

@@ -15,12 +15,12 @@ MOCKGEN    ?= $(GO) tool mockgen
 
 ##@ Primary Targets
 
-build: .make/buf-build bin/ux bin/dummy
+build: .make/buf-build bin/ux
 generate gen: codegen
 test: .make/ginkgo-run
 fmt format: .make/buf-fmt .make/go-fmt .make/dprint-fmt
 lint: .make/buf-lint .make/go-vet .make/golangci-lint-run
-tidy: go.sum sdk/go.sum buf.lock
+tidy: go.sum buf.lock
 docker: .make/docker-ux
 
 ##@ Source
@@ -37,9 +37,6 @@ GO_CODEGEN  := ${GO_GRPC_SRC} ${GO_PB_SRC}
 LDFLAGS := -X github.com/unstoppablemango/ux/internal.Version=${VERSION}
 bin/ux: ${GO_SRC} ## Build the ux CLI
 	$(GO) build -o $@ -ldflags='${LDFLAGS}'
-
-bin/dummy: ${GO_SRC} ## Build the dummy testing utility
-	$(GO) build -C cmd/dummy -o ${CURDIR}/$@ main.go
 
 codegen: ${GO_CODEGEN} .make/go-generate
 
@@ -122,17 +119,10 @@ JSON_SRC := .dprint.json .github/renovate.json .vscode/extensions.json
 	$(GO) generate ./...
 	@touch $@
 
-.make/go-vet: $(filter-out sdk/% cmd/dummy/%,${GO_SRC})
+.make/go-vet: ${GO_SRC}
 	$(GO) vet $(addprefix ./,$(sort $(dir $?)))
 	@touch $@
 
 .make/golangci-lint-run: ${GO_SRC}
 	$(GOLINT) run
 	@touch $@
-
-##@ SDK
-
-sdk/build: $(filter sdk/%,${GO_SRC})
-sdk/go.sum: sdk/go.mod $(filter sdk/%,${GO_SRC})
-sdk/%:
-	$(MAKE) -C sdk $*

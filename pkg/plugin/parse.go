@@ -8,7 +8,7 @@ import (
 	ux "github.com/unstoppablemango/ux/pkg"
 )
 
-func Parse(v string) (ux.Plugin, error) {
+func Parse(v string) (ux.LegacyPlugin, error) {
 	if p, err := exec.LookPath(v); err == nil {
 		return LocalBinary(p), nil
 	}

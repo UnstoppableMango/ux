@@ -5,14 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/unmango/go/cli"
-	"github.com/unstoppablemango/ux/pkg/plugin/registry"
+	"github.com/unstoppablemango/ux/pkg/plugin/legacy/registry"
 )
-
-var listCmd = NewList()
-
-func init() {
-	PluginCmd.AddCommand(listCmd)
-}
 
 func NewList() *cobra.Command {
 	return &cobra.Command{
