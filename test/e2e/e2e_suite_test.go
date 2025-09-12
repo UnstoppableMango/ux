@@ -14,8 +14,8 @@ import (
 )
 
 var (
-	gitRoot   string
-	uxPath    string
+	gitRoot string
+	uxPath  string
 )
 
 func TestE2e(t *testing.T) {

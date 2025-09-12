@@ -26,11 +26,11 @@ message GenerateResponse {
 }
 
 enum Command {
-	COMMAND_UNSPECIFIED = 0;
+  COMMAND_UNSPECIFIED = 0;
   COMMAND_GENERATE = 1;
 }
 
 message Stdin {
-	Command command = 1;
-	repeated string args = 2;
+  Command command = 1;
+  repeated string args = 2;
 }
