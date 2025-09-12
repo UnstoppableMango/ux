@@ -7,7 +7,6 @@ import (
 	"iter"
 
 	"github.com/charmbracelet/log"
-	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 )
 
 type Spec interface {
@@ -54,9 +53,4 @@ func Pick(plugins iter.Seq[Plugin], source, target Spec) (Generator, error) {
 	}
 
 	return nil, fmt.Errorf("no generator for source; %s, target: %s", source, target)
-}
-
-type LegacyPlugin interface {
-	Capabilities(context.Context, *uxv1alpha1.CapabilitiesRequest) (*uxv1alpha1.CapabilitiesResponse, error)
-	Generate(context.Context, *uxv1alpha1.GenerateRequest) (*uxv1alpha1.GenerateResponse, error)
 }

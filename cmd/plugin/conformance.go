@@ -23,10 +23,15 @@ func NewConformance() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			log := log.With("cmd", "conformance")
 
+			p, err := plugin.LocalFile(args[0])
+			if err != nil {
+				cli.Fail(err)
+			}
+
 			log.Debug("Initializing suite")
 			t := conformance.T{}
 			conformance.NewSuite(conformance.SuiteOptions{
-				Plugin: plugin.LocalBinary(args[0]),
+				Plugin: p,
 			})
 
 			log.Debug("Creating temp dir")
