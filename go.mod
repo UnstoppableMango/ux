@@ -24,7 +24,7 @@ require (
 	github.com/unmango/aferox v0.3.1
 	github.com/unmango/go v0.5.1
 	golang.org/x/mod v0.27.0
-	google.golang.org/grpc v1.75.0
+	google.golang.org/grpc v1.75.1
 	google.golang.org/protobuf v1.36.8
 	k8s.io/utils v0.0.0-20250820121507-0af2bda4dd1d
 )
