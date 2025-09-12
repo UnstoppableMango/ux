@@ -3,7 +3,7 @@ package local_test
 import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/unstoppablemango/ux/pkg/plugin/registry/local"
+	"github.com/unstoppablemango/ux/pkg/plugin/legacy/registry/local"
 )
 
 var _ = Describe("Local", func() {

@@ -7,11 +7,11 @@ import (
 	"github.com/unstoppablemango/ux/pkg/plugin"
 )
 
-type Decorator func(plugin.Registry) plugin.Registry
+type Decorator func(plugin.LegacyRegistry) plugin.LegacyRegistry
 
 type B iter.Seq[Decorator]
 
-func (decorators B) Apply(registry plugin.Registry) plugin.Registry {
+func (decorators B) Apply(registry plugin.LegacyRegistry) plugin.LegacyRegistry {
 	for decorate := range decorators {
 		registry = decorate(registry)
 	}

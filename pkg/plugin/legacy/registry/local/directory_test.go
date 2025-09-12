@@ -8,7 +8,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/unstoppablemango/ux/pkg/plugin"
-	"github.com/unstoppablemango/ux/pkg/plugin/registry/local"
+	"github.com/unstoppablemango/ux/pkg/plugin/legacy/registry/local"
 )
 
 var _ = Describe("Directory", func() {

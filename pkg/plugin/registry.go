@@ -4,6 +4,6 @@ import (
 	"context"
 )
 
-type Registry interface {
+type LegacyRegistry interface {
 	List(context.Context) (List, error)
 }

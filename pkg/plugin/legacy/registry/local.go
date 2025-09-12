@@ -2,8 +2,8 @@ package registry
 
 import (
 	"github.com/unstoppablemango/ux/pkg/config"
-	"github.com/unstoppablemango/ux/pkg/plugin/registry/builder"
-	"github.com/unstoppablemango/ux/pkg/plugin/registry/local"
+	"github.com/unstoppablemango/ux/pkg/plugin/legacy/registry/builder"
+	"github.com/unstoppablemango/ux/pkg/plugin/legacy/registry/local"
 )
 
 var common = builder.From(IgnoreNotFound)

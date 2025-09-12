@@ -6,7 +6,7 @@ import (
 
 type Options struct {
 	DisableDefault bool
-	Registries     []plugin.Registry
+	Registries     []plugin.LegacyRegistry
 }
 
 type Option func(*Options)

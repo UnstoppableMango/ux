@@ -9,7 +9,7 @@ import (
 	"github.com/unmango/go/iter"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	"github.com/unstoppablemango/ux/pkg/plugin"
-	"github.com/unstoppablemango/ux/pkg/plugin/registry/list"
+	"github.com/unstoppablemango/ux/pkg/plugin/legacy/registry/list"
 )
 
 func Capabilities(ctx context.Context, options ...list.Option) (plugin.CapMap, error) {

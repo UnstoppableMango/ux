@@ -9,8 +9,8 @@ import (
 )
 
 type Filtered struct {
-	Filter   func(string, ux.Plugin) bool
-	Registry plugin.Registry
+	Filter   func(string, ux.LegacyPlugin) bool
+	Registry plugin.LegacyRegistry
 }
 
 func (r Filtered) List(ctx context.Context) (plugin.List, error) {
