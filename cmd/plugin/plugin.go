@@ -2,7 +2,14 @@ package plugin
 
 import "github.com/spf13/cobra"
 
-var PluginCmd = New()
+var Cmd = New()
+
+func init() {
+	Cmd.AddCommand(
+		NewConformance(),
+		NewList(),
+	)
+}
 
 func New() *cobra.Command {
 	return &cobra.Command{

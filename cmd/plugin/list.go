@@ -8,12 +8,6 @@ import (
 	"github.com/unstoppablemango/ux/pkg/plugin/legacy/registry"
 )
 
-var listCmd = NewList()
-
-func init() {
-	PluginCmd.AddCommand(listCmd)
-}
-
 func NewList() *cobra.Command {
 	return &cobra.Command{
 		Use:     "list",

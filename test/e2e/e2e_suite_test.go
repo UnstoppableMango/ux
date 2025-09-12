@@ -16,7 +16,6 @@ import (
 var (
 	gitRoot   string
 	uxPath    string
-	dummyPath string
 )
 
 func TestE2e(t *testing.T) {
@@ -30,9 +29,6 @@ var _ = BeforeSuite(func(ctx context.Context) {
 	gitRoot = cwd
 
 	uxPath, err = gexec.Build(filepath.Join(cwd, "main.go"))
-	Expect(err).NotTo(HaveOccurred())
-
-	dummyPath, err = gexec.Build("main.go", "-C", filepath.Join(cwd, "cmd/dummy"))
 	Expect(err).NotTo(HaveOccurred())
 })
 
