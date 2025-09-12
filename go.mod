@@ -25,7 +25,7 @@ require (
 	github.com/unmango/go v0.5.1
 	golang.org/x/mod v0.27.0
 	google.golang.org/grpc v1.75.0
-	google.golang.org/protobuf v1.36.8
+	google.golang.org/protobuf v1.36.9
 	k8s.io/utils v0.0.0-20250820121507-0af2bda4dd1d
 )
 
