@@ -45,12 +45,12 @@ func Generate(ctx context.Context, work Workspace, target Spec, input Input) err
 
 func Pick(plugins iter.Seq[Plugin], source, target Spec) (Generator, error) {
 	for p := range plugins {
-		if g, err := p.Generator(source, target); err != nil {
+		if g, err := p.Generator(source, target); err == nil {
 			return g, nil
 		} else {
 			log.Debug("No generator", "plugin", p, "source", source, "target", target)
 		}
 	}
 
-	return nil, fmt.Errorf("no generator for source; %s, target: %s", source, target)
+	return nil, fmt.Errorf("no generator for source: %s, target: %s", source, target)
 }

@@ -5,16 +5,22 @@ import (
 	"context"
 	"fmt"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/charmbracelet/log"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	ux "github.com/unstoppablemango/ux/pkg"
+	"github.com/unstoppablemango/ux/pkg/spec"
 	"google.golang.org/protobuf/proto"
 )
 
 type generator struct {
 	source, target ux.Spec
 	path           string
+}
+
+func (g generator) String() string {
+	return fmt.Sprintf("%#v", g)
 }
 
 // Generate implements ux.Generator.
@@ -54,4 +60,26 @@ func (g generator) Generate(ctx context.Context, i ux.Input) error {
 
 func Generator(path string, source, target ux.Spec) ux.Generator {
 	return generator{source, target, path}
+}
+
+type Plugin string
+
+func (p Plugin) String() string {
+	return string(p)
+}
+
+func (p Plugin) Path() string {
+	return p.String()
+}
+
+func (p Plugin) BinName() string {
+	return filepath.Base(p.String())
+}
+
+func (p Plugin) Generator(source, target ux.Spec) (ux.Generator, error) {
+	if spec.BinName(source, target) == p.BinName() {
+		return Generator(string(p), source, target), nil
+	} else {
+		return nil, fmt.Errorf("unsupported: %s -> %s", source, target)
+	}
 }

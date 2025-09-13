@@ -8,6 +8,7 @@ func init() {
 	Cmd.AddCommand(
 		NewConformance(),
 		NewList(),
+		NewPick(),
 	)
 }
 

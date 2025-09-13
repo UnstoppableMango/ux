@@ -20,7 +20,7 @@ func (t Token) Matches(v string) bool {
 	return v == t.String()
 }
 
-func BinName(source, target Token) string {
+func BinName(source, target ux.Spec) string {
 	return fmt.Sprintf("%s2%s", source, target)
 }
 

@@ -8,6 +8,7 @@ import (
 
 	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/plugin"
+	"github.com/unstoppablemango/ux/pkg/plugin/cli"
 )
 
 type LocalFile string
@@ -17,7 +18,7 @@ func (f LocalFile) String() string {
 }
 
 func (f LocalFile) Load(context.Context) (ux.Plugin, error) {
-	return nil, fmt.Errorf("not implemented")
+	return cli.Plugin(f), nil
 }
 
 func FromDirEntry(root string, entry fs.DirEntry) (plugin.Source, error) {
