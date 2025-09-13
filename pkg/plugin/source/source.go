@@ -29,6 +29,8 @@ func FromDirEntry(root string, entry fs.DirEntry) (plugin.Source, error) {
 	}
 }
 
+// TODO: Rename this, way too confusing as-is
+
 func Cli(root, name string) (plugin.Source, error) {
 	if !plugin.BinPattern.MatchString(name) {
 		return nil, fmt.Errorf("%s does not match pattern %s", name, plugin.BinPattern)

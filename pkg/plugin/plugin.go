@@ -54,3 +54,11 @@ func LocalFile(path string) (ux.Plugin, error) {
 		return localfile{path, info}, nil
 	}
 }
+
+type Parser interface {
+	Parse(string) (ux.Plugin, error)
+}
+
+func Parse(name string, parser Parser) (ux.Plugin, error) {
+	return parser.Parse(name)
+}

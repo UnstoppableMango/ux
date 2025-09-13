@@ -8,7 +8,9 @@ func init() {
 	Cmd.AddCommand(
 		NewConformance(),
 		NewList(),
+		NewParse(),
 		NewPick(),
+		NewRun(),
 	)
 }
 
