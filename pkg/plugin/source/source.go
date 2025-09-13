@@ -24,11 +24,15 @@ func (f LocalFile) Load(context.Context) (ux.Plugin, error) {
 func FromDirEntry(root string, entry fs.DirEntry) (plugin.Source, error) {
 	if entry.IsDir() {
 		return nil, fmt.Errorf("not a file: %s", entry.Name())
+	} else {
+		return Cli(root, entry.Name())
+	}
+}
+
+func Cli(root, name string) (plugin.Source, error) {
+	if !plugin.BinPattern.MatchString(name) {
+		return nil, fmt.Errorf("%s does not match pattern %s", name, plugin.BinPattern)
 	}
 
-	if !plugin.BinPattern.MatchString(entry.Name()) {
-		return nil, fmt.Errorf("%s does not match pattern %s", entry.Name(), plugin.BinPattern)
-	}
-
-	return LocalFile(filepath.Join(root, entry.Name())), nil
+	return LocalFile(filepath.Join(root, name)), nil
 }

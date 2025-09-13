@@ -29,7 +29,7 @@ PROTO_SRC   != $(BUF) ls-files
 GRPC_PROTO  := $(filter %/plugin.proto %/ux.proto,${PROTO_SRC})
 GO_SRC      != $(DEVCTL) list --go
 GO_PB_SRC   := ${PROTO_SRC:proto/%.proto=gen/%.pb.go}
-GO_GRPC_SRC := ${GRPC_PROTO:proto/%.proto=gen/%_grpc.pb.go}
+# GO_GRPC_SRC := ${GRPC_PROTO:proto/%.proto=gen/%_grpc.pb.go}
 GO_CODEGEN  := ${GO_GRPC_SRC} ${GO_PB_SRC}
 
 ##@ Artifacts
@@ -37,6 +37,9 @@ GO_CODEGEN  := ${GO_GRPC_SRC} ${GO_PB_SRC}
 LDFLAGS := -X github.com/unstoppablemango/ux/internal.Version=${VERSION}
 bin/ux: ${GO_SRC} ## Build the ux CLI
 	$(GO) build -o $@ -ldflags='${LDFLAGS}'
+
+bin/dummy: ${GO_SRC} ## Build the dummy CLI
+	$(GO) build -o $@ ./cmd/dummy
 
 codegen: ${GO_CODEGEN} .make/go-generate
 
