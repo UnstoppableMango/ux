@@ -18,6 +18,10 @@ var (
 	BinPattern = regexp.MustCompile(`^([\w\-]+2[\w\-]+)|(ux-[\w\-]+)$`)
 )
 
+type Selector interface {
+	Select(iter.Seq[ux.Plugin]) (ux.Plugin, error)
+}
+
 type Source interface {
 	Load(context.Context) (ux.Plugin, error)
 }
@@ -61,4 +65,17 @@ type Parser interface {
 
 func Parse(name string, parser Parser) (ux.Plugin, error) {
 	return parser.Parse(name)
+}
+
+func ForGenerator(g ux.Generator) ux.Plugin {
+	return withGenerator{g}
+}
+
+type withGenerator struct {
+	g ux.Generator
+}
+
+// Generator implements ux.Plugin.
+func (p withGenerator) Generator(ux.Spec, ux.Spec) (ux.Generator, error) {
+	return p.g, nil
 }
