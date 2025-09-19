@@ -10,7 +10,6 @@ import (
 	"github.com/charmbracelet/log"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	ux "github.com/unstoppablemango/ux/pkg"
-	"github.com/unstoppablemango/ux/pkg/spec"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -77,9 +76,13 @@ func (p Plugin) BinName() string {
 }
 
 func (p Plugin) Generator(source, target ux.Spec) (ux.Generator, error) {
-	if spec.BinName(source, target) == p.BinName() {
-		return Generator(string(p), source, target), nil
+	if BinName(source, target) == p.BinName() {
+		return Generator(p.String(), source, target), nil
 	} else {
 		return nil, fmt.Errorf("unsupported: %s -> %s", source, target)
 	}
+}
+
+func BinName(source, target ux.Spec) string {
+	return fmt.Sprintf("%s2%s", source, target)
 }

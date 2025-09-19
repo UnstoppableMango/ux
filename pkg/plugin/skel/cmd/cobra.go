@@ -6,17 +6,17 @@ import (
 	"github.com/unstoppablemango/ux/pkg/plugin/skel"
 )
 
-func CobraRun(skel *skel.Cli) func(*cobra.Command, []string) {
-	return func(cmd *cobra.Command, _ []string) {
-		if err := skel.ExecuteContext(cmd.Context()); err != nil {
+func CobraRunFunc(funcs skel.UxFuncs) func(*cobra.Command, []string) {
+	return func(cmd *cobra.Command, args []string) {
+		if err := skel.PluginMainOs(funcs, cmd.InOrStdin(), args); err != nil {
 			cli.Fail(err)
 		}
 	}
 }
 
-func NewCobra(name string, skel *skel.Cli) *cobra.Command {
+func NewCobra(name string, funcs skel.UxFuncs) *cobra.Command {
 	return &cobra.Command{
 		Use: name,
-		Run: CobraRun(skel),
+		Run: CobraRunFunc(funcs),
 	}
 }

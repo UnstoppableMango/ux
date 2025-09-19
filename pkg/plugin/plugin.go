@@ -38,7 +38,10 @@ type localfile struct {
 // Generator implements ux.Plugin.
 func (l localfile) Generator(source, target ux.Spec) (ux.Generator, error) {
 	a, b, ok := strings.Cut(l.info.Name(), "2")
-	if ok && spec.Match(source, spec.Token(a)) && spec.Match(target, spec.Token(b)) {
+	sourceMatches := spec.Match(source, spec.Token(a))
+	targetMatches := spec.Match(target, spec.Token(b))
+
+	if ok && sourceMatches && targetMatches {
 		return cli.Generator(l.path, source, target), nil
 	}
 

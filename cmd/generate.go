@@ -11,9 +11,10 @@ import (
 
 func NewGenerate() *cobra.Command {
 	return &cobra.Command{
-		Use:   "generate [ARGS...]",
-		Short: "Generate code",
-		Args:  cobra.MinimumNArgs(2),
+		Use:     "generate [ARGS...]",
+		Short:   "Generate code",
+		Aliases: []string{"gen"},
+		Args:    cobra.MinimumNArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
 			target := spec.Token(args[0])
 			input, err := input.Parse(args[1])

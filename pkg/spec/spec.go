@@ -1,8 +1,6 @@
 package spec
 
 import (
-	"fmt"
-
 	ux "github.com/unstoppablemango/ux/pkg"
 )
 
@@ -18,10 +16,6 @@ func (t Token) Token() Token {
 
 func (t Token) Matches(v string) bool {
 	return v == t.String()
-}
-
-func BinName(source, target ux.Spec) string {
-	return fmt.Sprintf("%s2%s", source, target)
 }
 
 func Match(a, b ux.Spec) bool {

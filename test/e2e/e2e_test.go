@@ -24,7 +24,7 @@ var _ = Describe("E2e", func() {
 			out := filepath.Join(tmp, "petstore.go")
 			CopyTestdata(tmp)
 
-			cmd := exec.Command(uxPath, "alpha", "gen", "go", "petstore.yml")
+			cmd := exec.Command(uxPath, "gen", "go", "petstore.yml")
 			cmd.Dir = tmp
 
 			ses := Run(cmd)
