@@ -26,6 +26,7 @@ type Command int32
 const (
 	Command_COMMAND_UNSPECIFIED Command = 0
 	Command_COMMAND_GENERATE    Command = 1
+	Command_COMMAND_EXECUTE     Command = 2
 )
 
 // Enum value maps for Command.
@@ -33,10 +34,12 @@ var (
 	Command_name = map[int32]string{
 		0: "COMMAND_UNSPECIFIED",
 		1: "COMMAND_GENERATE",
+		2: "COMMAND_EXECUTE",
 	}
 	Command_value = map[string]int32{
 		"COMMAND_UNSPECIFIED": 0,
 		"COMMAND_GENERATE":    1,
+		"COMMAND_EXECUTE":     2,
 	}
 )
 
@@ -126,10 +129,11 @@ const file_dev_unmango_ux_v1alpha1_plugin_proto_rawDesc = "" +
 	"$dev/unmango/ux/v1alpha1/plugin.proto\x12\x17dev.unmango.ux.v1alpha1\"W\n" +
 	"\x05Stdin\x12:\n" +
 	"\acommand\x18\x01 \x01(\x0e2 .dev.unmango.ux.v1alpha1.CommandR\acommand\x12\x12\n" +
-	"\x04args\x18\x02 \x03(\tR\x04args*8\n" +
+	"\x04args\x18\x02 \x03(\tR\x04args*M\n" +
 	"\aCommand\x12\x17\n" +
 	"\x13COMMAND_UNSPECIFIED\x10\x00\x12\x14\n" +
-	"\x10COMMAND_GENERATE\x10\x01B\xf0\x01\n" +
+	"\x10COMMAND_GENERATE\x10\x01\x12\x13\n" +
+	"\x0fCOMMAND_EXECUTE\x10\x02B\xf0\x01\n" +
 	"\x1bcom.dev.unmango.ux.v1alpha1B\vPluginProtoP\x01ZEgithub.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1;uxv1alpha1\xa2\x02\x03DUU\xaa\x02\x17Dev.Unmango.Ux.V1alpha1\xca\x02\x17Dev\\Unmango\\Ux\\V1alpha1\xe2\x02#Dev\\Unmango\\Ux\\V1alpha1\\GPBMetadata\xea\x02\x1aDev::Unmango::Ux::V1alpha1b\x06proto3"
 
 var (

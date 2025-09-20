@@ -5,6 +5,7 @@ package dev.unmango.ux.v1alpha1;
 enum Command {
   COMMAND_UNSPECIFIED = 0;
   COMMAND_GENERATE = 1;
+  COMMAND_EXECUTE = 2;
 }
 
 message Stdin {

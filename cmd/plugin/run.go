@@ -5,7 +5,6 @@ import (
 	"github.com/unmango/go/cli"
 	"github.com/unstoppablemango/ux/pkg/plugin"
 	"github.com/unstoppablemango/ux/pkg/plugin/parser"
-	"github.com/unstoppablemango/ux/pkg/spec"
 )
 
 func NewRun() *cobra.Command {
@@ -19,16 +18,7 @@ func NewRun() *cobra.Command {
 				cli.Fail(err)
 			}
 
-			// Temporary requirement
-			source := spec.Token(args[1])
-			target := spec.Token(args[2])
-
-			g, err := p.Generator(source, target)
-			if err != nil {
-				cli.Fail(err)
-			}
-
-			if err := g.Generate(cmd.Context(), nil); err != nil {
+			if err := p.Execute(args); err != nil {
 				cli.Fail(err)
 			}
 		},

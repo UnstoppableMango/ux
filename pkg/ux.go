@@ -23,6 +23,7 @@ type Generator interface {
 }
 
 type Plugin interface {
+	Execute(args []string) error
 	Generator(source, target Spec) (Generator, error)
 }
 

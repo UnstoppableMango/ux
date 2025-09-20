@@ -2,6 +2,8 @@ package parser
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/charmbracelet/log"
 	ux "github.com/unstoppablemango/ux/pkg"
@@ -13,7 +15,9 @@ var (
 	NoOp plugin.Parser = Func(noOp)
 
 	Default = FirstSuccesful([]plugin.Parser{
+		ExactCli("dummy"),
 		Func(LocalFile),
+		Func(LocalFileName),
 	})
 )
 
@@ -41,10 +45,34 @@ func (parsers FirstSuccesful) Parse(name string) (ux.Plugin, error) {
 	return nil, fmt.Errorf("no parser satisfied: %s", name)
 }
 
-func LocalFile(v string) (ux.Plugin, error) {
-	if plugin.BinPattern.MatchString(v) {
+type ExactCli string
+
+func (s ExactCli) Parse(v string) (ux.Plugin, error) {
+	if string(s) == v {
 		return cli.Plugin(v), nil
 	} else {
+		return nil, fmt.Errorf("%s did not exactly match %s", s, v)
+	}
+}
+
+func LocalFile(v string) (ux.Plugin, error) {
+	if plugin.BinPattern.MatchString(v) {
+		return ExistingFile(v)
+	} else {
 		return nil, fmt.Errorf("%s did not satisfy %s", v, plugin.BinPattern)
+	}
+}
+
+func LocalFileName(v string) (ux.Plugin, error) {
+	return LocalFile(filepath.Base(v))
+}
+
+func ExistingFile(v string) (ux.Plugin, error) {
+	if stat, err := os.Stat(v); err != nil {
+		return nil, err
+	} else if stat.IsDir() {
+		return nil, fmt.Errorf("not a file: %s", v)
+	} else {
+		return cli.Plugin(v), nil
 	}
 }
