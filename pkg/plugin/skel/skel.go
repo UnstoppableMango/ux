@@ -1,6 +1,7 @@
 package skel
 
 import (
+	"bytes"
 	"io"
 	"os"
 
@@ -36,7 +37,19 @@ func PluginMainOs(funcs UxFuncs, stdin io.Reader, args []string) error {
 }
 
 func PluginMain(funcs UxFuncs) {
-	if err := PluginMainOs(funcs, os.Stdin, os.Args[1:]); err != nil {
+	stat, err := os.Stdin.Stat()
+	if err != nil {
+		cli.Fail(err)
+	}
+
+	var stdin io.Reader
+	if (stat.Mode() & os.ModeCharDevice) == 0 {
+		stdin = os.Stdin
+	} else {
+		stdin = &bytes.Buffer{}
+	}
+
+	if err := PluginMainOs(funcs, stdin, os.Args[1:]); err != nil {
 		cli.Fail(err)
 	}
 }
