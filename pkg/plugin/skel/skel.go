@@ -36,7 +36,7 @@ func PluginMainOs(funcs UxFuncs, stdin io.Reader, args []string) error {
 }
 
 func PluginMain(funcs UxFuncs) {
-	if err := PluginMainOs(funcs, os.Stdin, os.Args); err != nil {
+	if err := PluginMainOs(funcs, os.Stdin, os.Args[1:]); err != nil {
 		cli.Fail(err)
 	}
 }

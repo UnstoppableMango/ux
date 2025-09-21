@@ -19,6 +19,7 @@ import (
 var (
 	gitRoot   string
 	uxPath    string
+	dummyPath string
 
 	//go:embed testdata
 	testdata embed.FS
@@ -35,6 +36,9 @@ var _ = BeforeSuite(func(ctx context.Context) {
 	gitRoot = cwd
 
 	uxPath, err = gexec.Build(filepath.Join(cwd, "main.go"))
+	Expect(err).NotTo(HaveOccurred())
+
+	dummyPath, err = gexec.Build(filepath.Join(cwd, "cmd", "dummy", "main.go"))
 	Expect(err).NotTo(HaveOccurred())
 })
 

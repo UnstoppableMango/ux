@@ -8,9 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/charmbracelet/log"
-	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	ux "github.com/unstoppablemango/ux/pkg"
-	"google.golang.org/protobuf/proto"
 )
 
 type generator struct {
@@ -64,17 +62,17 @@ func BinName(source, target ux.Spec) string {
 func execute(ctx context.Context, path string, args []string) error {
 	log := log.FromContext(ctx).With("cmd", path)
 
-	cmd := exec.CommandContext(ctx, path)
-	stdin := &uxv1alpha1.Stdin{
-		Command: uxv1alpha1.Command_COMMAND_GENERATE,
-		Args:    args,
-	}
+	cmd := exec.CommandContext(ctx, path, args...)
+	// stdin := &uxv1alpha1.Stdin{
+	// 	Command: uxv1alpha1.Command_COMMAND_GENERATE,
+	// 	Args:    args,
+	// }
 
-	if data, err := proto.Marshal(stdin); err != nil {
-		return fmt.Errorf("mashaling input message: %w", err)
-	} else {
-		cmd.Stdin = bytes.NewBuffer(data)
-	}
+	// if data, err := proto.Marshal(stdin); err != nil {
+	// 	return fmt.Errorf("marshaling input message: %w", err)
+	// } else {
+	// 	cmd.Stdin = bytes.NewBuffer(data)
+	// }
 
 	stderr, stdout := &bytes.Buffer{}, &bytes.Buffer{}
 	cmd.Stderr = stderr
@@ -86,10 +84,10 @@ func execute(ctx context.Context, path string, args []string) error {
 	}
 
 	if stdout.Len() > 0 {
-		log.Infof("stdout: %s", stdout)
+		log.Infof("Plugin stdout: %s", stdout)
 	}
 	if stderr.Len() > 0 {
-		log.Infof("stderr: %s", stderr)
+		log.Infof("Plugin stderr: %s", stderr)
 	}
 
 	return nil

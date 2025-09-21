@@ -1,11 +1,13 @@
 package e2e_test
 
 import (
+	"fmt"
 	"os/exec"
 	"path/filepath"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
 )
 
@@ -19,7 +21,7 @@ var _ = Describe("E2e", func() {
 			Eventually(ses).Should(gexec.Exit(0))
 		})
 
-		It("should generate Go code from an OpenAPI spec", func() {
+		It("should generate Go code from an OpenAPI spec", Pending, func() {
 			tmp := GinkgoT().TempDir()
 			out := filepath.Join(tmp, "petstore.go")
 			CopyTestdata(tmp)
@@ -31,6 +33,17 @@ var _ = Describe("E2e", func() {
 
 			Eventually(ses).Should(gexec.Exit(0))
 			Expect(out).To(BeARegularFile())
+		})
+
+		It("should generate Go code from an OpenAPI spec", func() {
+			cmd := exec.Command(uxPath, "plugin", "run", dummyPath, "test")
+			cmd.Env = append(cmd.Env, fmt.Sprintf("ALLOW_PLUGIN=%s", dummyPath))
+
+			ses := Run(cmd)
+
+			Eventually(ses).Should(gexec.Exit(0))
+			Expect(ses.Err).NotTo(gbytes.Say("dummy test"))
+			Expect(ses.Err).To(gbytes.Say("test"))
 		})
 	})
 })

@@ -11,11 +11,14 @@ import (
 	"github.com/unstoppablemango/ux/pkg/plugin/cli"
 )
 
+// This is all incredibly weird, but I'm honing in on how I want it to work
+
 var (
 	NoOp plugin.Parser = Func(noOp)
 
 	Default = FirstSuccesful([]plugin.Parser{
 		ExactCli("dummy"),
+		EnvVarCli("ALLOW_PLUGIN"),
 		Func(LocalFile),
 		Func(LocalFileName),
 	})
@@ -74,5 +77,19 @@ func ExistingFile(v string) (ux.Plugin, error) {
 		return nil, fmt.Errorf("not a file: %s", v)
 	} else {
 		return cli.Plugin(v), nil
+	}
+}
+
+type EnvVarCli string
+
+func (e EnvVarCli) String() string {
+	return string(e)
+}
+
+func (name EnvVarCli) Parse(v string) (ux.Plugin, error) {
+	if env, ok := os.LookupEnv(name.String()); ok && v == env {
+		return cli.Plugin(env), nil
+	} else {
+		return nil, fmt.Errorf("%s did not match %s found in %s", v, env, name)
 	}
 }

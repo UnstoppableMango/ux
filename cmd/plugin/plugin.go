@@ -9,7 +9,6 @@ func init() {
 		NewConformance(),
 		NewList(),
 		NewParse(),
-		NewPick(),
 		NewRun(),
 	)
 }
