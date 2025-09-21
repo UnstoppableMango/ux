@@ -15,14 +15,14 @@ require (
 	github.com/charmbracelet/log v0.4.2
 	github.com/google/go-github/v74 v74.0.0
 	github.com/mattn/go-isatty v0.0.20
-	github.com/onsi/ginkgo/v2 v2.25.3
-	github.com/onsi/gomega v1.38.2
-	github.com/spf13/cobra v1.10.1
-	github.com/spf13/pflag v1.0.10
-	github.com/spf13/viper v1.21.0
-	github.com/unmango/go v0.8.0
+	github.com/onsi/ginkgo/v2 v2.25.1
+	github.com/onsi/gomega v1.38.1
+	github.com/spf13/cobra v1.9.1
+	github.com/spf13/pflag v1.0.7
+	github.com/spf13/viper v1.20.1
+	github.com/unmango/go v0.5.1
 	golang.org/x/mod v0.28.0
-	google.golang.org/protobuf v1.36.9
+	google.golang.org/protobuf v1.36.8
 )
 
 require (
