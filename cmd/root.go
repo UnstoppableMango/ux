@@ -9,6 +9,7 @@ var rootCmd = NewUx()
 
 func init() {
 	rootCmd.AddCommand(
+		NewGenerate(),
 		plugin.Cmd,
 	)
 }

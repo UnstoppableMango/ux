@@ -2,6 +2,9 @@ package e2e_test
 
 import (
 	"context"
+	"embed"
+	"io/fs"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"testing"
@@ -14,8 +17,12 @@ import (
 )
 
 var (
-	gitRoot string
-	uxPath  string
+	gitRoot   string
+	uxPath    string
+	dummyPath string
+
+	//go:embed testdata
+	testdata embed.FS
 )
 
 func TestE2e(t *testing.T) {
@@ -30,6 +37,9 @@ var _ = BeforeSuite(func(ctx context.Context) {
 
 	uxPath, err = gexec.Build(filepath.Join(cwd, "main.go"))
 	Expect(err).NotTo(HaveOccurred())
+
+	dummyPath, err = gexec.Build(filepath.Join(cwd, "cmd", "dummy", "main.go"))
+	Expect(err).NotTo(HaveOccurred())
 })
 
 var _ = AfterSuite(func() {
@@ -43,4 +53,10 @@ func Run(cmd *exec.Cmd) *gexec.Session {
 	Expect(err).NotTo(HaveOccurred())
 
 	return ses
+}
+
+func CopyTestdata(dest string) {
+	sub, err := fs.Sub(testdata, "testdata")
+	Expect(err).NotTo(HaveOccurred())
+	Expect(os.CopyFS(dest, sub)).To(Succeed())
 }

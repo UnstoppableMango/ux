@@ -29,7 +29,7 @@ PROTO_SRC   != $(BUF) ls-files
 GRPC_PROTO  := $(filter %/plugin.proto %/ux.proto,${PROTO_SRC})
 GO_SRC      != $(DEVCTL) list --go
 GO_PB_SRC   := ${PROTO_SRC:proto/%.proto=gen/%.pb.go}
-GO_GRPC_SRC := ${GRPC_PROTO:proto/%.proto=gen/%_grpc.pb.go}
+# GO_GRPC_SRC := ${GRPC_PROTO:proto/%.proto=gen/%_grpc.pb.go}
 GO_CODEGEN  := ${GO_GRPC_SRC} ${GO_PB_SRC}
 
 ##@ Artifacts
@@ -38,10 +38,16 @@ LDFLAGS := -X github.com/unstoppablemango/ux/internal.Version=${VERSION}
 bin/ux: ${GO_SRC} ## Build the ux CLI
 	$(GO) build -o $@ -ldflags='${LDFLAGS}'
 
+bin/dummy: ${GO_SRC} ## Build the dummy CLI
+	$(GO) build -o $@ ./cmd/dummy
+
 codegen: ${GO_CODEGEN} .make/go-generate
 
 ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
+
+test/e2e/testdata/petstore.yaml:
+	curl -Lo $@ https://raw.githubusercontent.com/readmeio/oas/refs/heads/main/packages/oas-examples/3.1/yaml/petstore.yaml
 
 ##@ Locks
 
@@ -111,7 +117,7 @@ JSON_SRC := .dprint.json .github/renovate.json .vscode/extensions.json
 	$(GO) fmt $(addprefix ./,$(sort $(dir $?)))
 	@touch $@
 
-.make/ginkgo-run: ${GO_SRC}
+.make/ginkgo-run: ${GO_SRC} | test/e2e/testdata/petstore.yaml
 	$(GINKGO) $(sort $(dir $?))
 	@touch $@
 

@@ -1,37 +1,42 @@
 package skel
 
 import (
-	"context"
 	"io"
 	"os"
 
-	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
-	"google.golang.org/protobuf/proto"
+	"github.com/unmango/go/cli"
 )
 
-type Cli struct {
-	Generate func(context.Context, []string) error
+type CmdArgs struct {
+	Args      []string
+	StdinData []byte
 }
 
-func (p *Cli) Execute() error {
-	return p.ExecuteContext(context.Background())
+type UxFuncs struct {
+	Generate func(*CmdArgs) error
+	Execute  func(*CmdArgs) error
 }
 
-func (p *Cli) ExecuteContext(ctx context.Context) error {
-	data, err := io.ReadAll(os.Stdin)
+func PluginMainOs(funcs UxFuncs, stdin io.Reader, args []string) error {
+	stdinData, err := io.ReadAll(stdin)
 	if err != nil {
 		return err
 	}
 
-	var stdin uxv1alpha1.Stdin
-	if err := proto.Unmarshal(data, &stdin); err != nil {
-		return err
+	cmdArgs := &CmdArgs{
+		Args:      args,
+		StdinData: stdinData,
 	}
 
-	switch stdin.Command {
-	case uxv1alpha1.Command_COMMAND_GENERATE:
-		return p.Generate(ctx, stdin.Args)
-	default:
+	if funcs.Execute != nil {
+		return funcs.Execute(cmdArgs)
+	} else {
 		return nil
+	}
+}
+
+func PluginMain(funcs UxFuncs) {
+	if err := PluginMainOs(funcs, os.Stdin, os.Args[1:]); err != nil {
+		cli.Fail(err)
 	}
 }

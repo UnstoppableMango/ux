@@ -1,6 +1,8 @@
 package registry
 
 import (
+	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"slices"
@@ -12,26 +14,70 @@ import (
 )
 
 var (
-	Default plugin.Registry = Compact(Aggregate(
-		Must(FromEnv("PATH")),
-		Must(CwdBin()),
+	Default = Compact(Aggregate(
+		FromEnv("PATH"),
+		CwdBin(),
+		LocalFile("dummy"),
 	))
+
+	Empty plugin.Registry = aggregate{}
 )
 
-func CwdBin() (plugin.Registry, error) {
+func CwdBin() plugin.Registry {
 	if wd, err := os.Getwd(); err != nil {
-		return nil, err
+		return Error(err)
 	} else {
 		return LocalDir(filepath.Join(wd, "bin"))
 	}
 }
 
-func LocalDir(dir string) (plugin.Registry, error) {
+func LocalDir(dir string) plugin.Registry {
 	if entries, err := os.ReadDir(dir); err != nil {
-		return nil, err
+		return Error(err)
 	} else {
-		return dirEntries{dir, entries}, nil
+		return dirEntries{dir, entries}
 	}
+}
+
+func Error(err error) plugin.Registry {
+	return errored{err}
+}
+
+type errored struct{ error }
+
+// List implements plugin.Registry.
+func (errored) List() iter.Seq[plugin.Source] {
+	return iter.Empty[plugin.Source]()
+}
+
+type withErr struct {
+	reg plugin.Registry
+	err error
+}
+
+func (w withErr) Equal(reg plugin.Registry) bool {
+	return w.reg == reg
+}
+
+func (w withErr) String() string {
+	return fmt.Sprintf("%#v", w)
+}
+
+// List implements plugin.Registry.
+func (w withErr) List() iter.Seq[plugin.Source] {
+	return w.reg.List()
+}
+
+func WithErr(registry plugin.Registry, err error) plugin.Registry {
+	if hasErr, ok := registry.(withErr); ok {
+		err = errors.Join(err, hasErr.err)
+	}
+
+	return withErr{registry, err}
+}
+
+func LocalFile(path string) plugin.Registry {
+	return Singleton(source.LocalFile(path))
 }
 
 type dirEntries struct {
@@ -51,22 +97,18 @@ func (d dirEntries) List() iter.Seq[plugin.Source] {
 	}
 }
 
-func FromEnv(name string) (plugin.Registry, error) {
+func FromEnv(name string) plugin.Registry {
 	var sources []plugin.Registry
 	for _, dir := range filepath.SplitList(os.Getenv(name)) {
-		if s, err := LocalDir(dir); err != nil {
-			return nil, err
-		} else {
-			sources = append(sources, s)
-		}
+		sources = append(sources, LocalDir(dir))
 	}
 
-	return aggregate(sources), nil
+	return aggregate(sources)
 }
 
 type aggregate []plugin.Registry
 
-// List implements plugin.Source.
+// List implements plugin.Registry.
 func (a aggregate) List() iter.Seq[plugin.Source] {
 	return iter.Bind(slices.Values(a), ListSources)
 }
@@ -81,6 +123,17 @@ func Append(source plugin.Registry, elem ...plugin.Registry) plugin.Registry {
 	} else {
 		return aggregate(append(elem, source))
 	}
+}
+
+type singleton struct{ plugin.Source }
+
+func Singleton(source plugin.Source) plugin.Registry {
+	return singleton{source}
+}
+
+// List implements plugin.Registry.
+func (a singleton) List() iter.Seq[plugin.Source] {
+	return iter.Singleton[plugin.Source](a)
 }
 
 func Must(registry plugin.Registry, err error) plugin.Registry {

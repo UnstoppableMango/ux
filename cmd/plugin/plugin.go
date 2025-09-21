@@ -8,6 +8,8 @@ func init() {
 	Cmd.AddCommand(
 		NewConformance(),
 		NewList(),
+		NewParse(),
+		NewRun(),
 	)
 }
 

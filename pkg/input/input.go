@@ -6,11 +6,14 @@ import (
 	"io"
 	"io/fs"
 	"os"
-	"path/filepath"
 
 	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/spec"
 )
+
+var parsers = []Parser{
+	ParserFunc(parseLocalFile),
+}
 
 type String string
 
@@ -35,16 +38,4 @@ func (l localfile) Open() (io.Reader, error) {
 // Spec implements ux.Input.
 func (l localfile) Spec(context.Context) (ux.Spec, error) {
 	return spec.Token(l.given), nil
-}
-
-func Parse(v string) (ux.Input, error) {
-	if filepath.IsAbs(v) || filepath.IsLocal(v) {
-		if info, err := os.Stat(v); err != nil {
-			return nil, err
-		} else {
-			return localfile{v, info}, nil
-		}
-	}
-
-	return String(v), nil
 }

@@ -2,32 +2,10 @@ syntax = "proto3";
 
 package dev.unmango.ux.v1alpha1;
 
-import "dev/unmango/ux/v1alpha1/primitive.proto";
-
-service PluginService {
-  rpc Capabilities(CapabilitiesRequest) returns (CapabilitiesResponse);
-  rpc Generate(GenerateRequest) returns (GenerateResponse);
-}
-
-message CapabilitiesRequest {}
-
-message CapabilitiesResponse {
-  repeated Capability all = 1;
-}
-
-message GenerateRequest {
-  string id = 1;
-  repeated string inputs = 2;
-  string address = 3;
-}
-
-message GenerateResponse {
-  repeated string outputs = 1;
-}
-
 enum Command {
   COMMAND_UNSPECIFIED = 0;
   COMMAND_GENERATE = 1;
+  COMMAND_EXECUTE = 2;
 }
 
 message Stdin {
