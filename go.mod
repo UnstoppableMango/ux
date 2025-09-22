@@ -20,7 +20,7 @@ require (
 	github.com/sahilm/fuzzy v0.1.1
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.10
-	github.com/spf13/viper v1.20.1
+	github.com/spf13/viper v1.21.0
 	github.com/unmango/go v0.5.1
 	golang.org/x/mod v0.28.0
 	google.golang.org/protobuf v1.36.9
