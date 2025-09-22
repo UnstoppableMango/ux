@@ -16,7 +16,7 @@ import (
 var (
 	NoOp plugin.Parser = Func(noOp)
 
-	Default = FirstSuccesful([]plugin.Parser{
+	Default plugin.Parser = FirstSuccesful([]plugin.Parser{
 		ExactCli("dummy"),
 		EnvVarCli("ALLOW_PLUGIN"),
 		Func(LocalFile),
