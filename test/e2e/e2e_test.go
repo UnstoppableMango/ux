@@ -35,7 +35,7 @@ var _ = Describe("E2e", func() {
 			Expect(out).To(BeARegularFile())
 		})
 
-		It("should generate Go code from an OpenAPI spec", func() {
+		It("should execute the dummy plugin", func() {
 			cmd := exec.Command(uxPath, "plugin", "run", dummyPath, "test")
 			cmd.Env = append(cmd.Env, fmt.Sprintf("ALLOW_PLUGIN=%s", dummyPath))
 
@@ -44,6 +44,15 @@ var _ = Describe("E2e", func() {
 			Eventually(ses).Should(gexec.Exit(0))
 			Expect(ses.Err).NotTo(gbytes.Say("dummy test"))
 			Expect(ses.Err).To(gbytes.Say("test"))
+		})
+
+		It("should search for the dummy plugin", func() {
+			cmd := exec.Command(uxPath, "plugin", "search", "dummy")
+
+			ses := Run(cmd)
+
+			Eventually(ses).Should(gexec.Exit(0))
+			Expect(ses.Out).To(gbytes.Say("dummy"))
 		})
 	})
 })

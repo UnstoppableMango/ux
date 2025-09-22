@@ -10,6 +10,7 @@ func init() {
 		NewList(),
 		NewParse(),
 		NewRun(),
+		NewSearch(),
 	)
 }
 
