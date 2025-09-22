@@ -23,7 +23,7 @@ require (
 	github.com/spf13/viper v1.20.1
 	github.com/unmango/go v0.5.1
 	golang.org/x/mod v0.28.0
-	google.golang.org/protobuf v1.36.8
+	google.golang.org/protobuf v1.36.9
 )
 
 require (
