@@ -19,21 +19,17 @@ func GitHub(client *github.Client, owner, repo string) plugin.Registry {
 	return &githubRepo{client, owner, repo}
 }
 
-func (g githubRepo) List() iter.Seq[plugin.Source] {
-	ctx := context.TODO()
-	releases, _, err := g.listReleases(ctx)
-	if err != nil {
-		// TODO: This whole thing is a terrible idea
-		log.Error("Failed to list releases", "err", err)
-		return iter.Empty[plugin.Source]()
-	}
-
+func (g githubRepo) Sources() iter.Seq[plugin.Source] {
 	return func(yield func(plugin.Source) bool) {
-		for _, rel := range releases {
-			if gh, err := source.GitHubRelease(g.client, rel); err != nil {
-				log.Debug("Skipping GitHub Release", "err", err)
-			} else if !yield(gh) {
-				return
+		if releases, _, err := g.listReleases(context.TODO()); err != nil {
+			log.Error("Failed to list releases", "err", err)
+		} else {
+			for _, rel := range releases {
+				if gh, err := source.GitHubRelease(g.client, rel); err != nil {
+					log.Debug("Skipping GitHub Release", "err", err)
+				} else if !yield(gh) {
+					return
+				}
 			}
 		}
 	}

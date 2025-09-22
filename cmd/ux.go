@@ -22,7 +22,7 @@ func NewUx() *cobra.Command {
 		},
 	}
 
-	opts.ConfigVar(cmd.PersistentFlags())
+	opts.ApplyFlags(cmd.PersistentFlags())
 
 	return cmd
 }

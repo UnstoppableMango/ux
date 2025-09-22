@@ -24,7 +24,7 @@ func (opts *GlobalOptions) NewConfig() config.Config {
 	return viper
 }
 
-func (opts *GlobalOptions) ConfigVar(flags *pflag.FlagSet) {
+func (opts *GlobalOptions) ApplyFlags(flags *pflag.FlagSet) {
 	ConfigVar(flags, &opts.Config)
 	VerboseVar(flags, &opts.Verbose)
 }

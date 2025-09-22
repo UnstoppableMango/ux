@@ -21,7 +21,7 @@ type Source interface {
 }
 
 type Registry interface {
-	List() iter.Seq[Source]
+	Sources() iter.Seq[Source]
 }
 
 type Parser interface {
