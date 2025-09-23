@@ -663,6 +663,8 @@ github.com/ultraware/whitespace v0.2.0 h1:TYowo2m9Nfj1baEQBjuHzvMRbp19i+RCcRYrSW
 github.com/ultraware/whitespace v0.2.0/go.mod h1:XcP1RLD81eV4BW8UhQlpaR+SDc2givTvyI8a586WjW8=
 github.com/unmango/aferox v0.3.1 h1:SpV0wgCEtPVtCvi2vteVSEkV9yM2ll57ep0hzPkZ+ec=
 github.com/unmango/aferox v0.3.1/go.mod h1:+r0J+wjEcgk+fWzPN5cefaRiSt/GSX2lKCe+3SufDes=
+github.com/unmango/aferox v0.3.2 h1:ZvcYv0+vMB1bw8EpT/gH7+GL+8Pbdt3ugyK/9qd5bfI=
+github.com/unmango/aferox v0.3.2/go.mod h1:VVLwHTHYTTbocI8rY3OmV35L4bdm8AzKa+gegxu4d+A=
 github.com/unmango/aferox/github v0.0.1 h1:RbW0a7N7mDk5TkhxcEtDt9voaVYRoWKmfNql/bunIvU=
 github.com/unmango/aferox/github v0.0.1/go.mod h1:SZzx1l0WkKOO6+7Mc6UpJ4nuMYEiZiiaTOsejpwzndY=
 github.com/unmango/devctl v0.3.0 h1:kRpNo6OpMNwtTNbh0Ukmh2lnuPvTJHxOgCiCpB0UvY8=

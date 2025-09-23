@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/go-github/v78/github"
+	gh "github.com/unmango/aferox/github"
 	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/plugin"
 )
@@ -16,6 +17,7 @@ type githubRelease struct {
 
 // Load implements plugin.Source.
 func (g *githubRelease) Load(context.Context) (ux.Plugin, error) {
+	fs := gh.NewFs(g.client)
 	panic("unimplemented")
 }
 
