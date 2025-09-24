@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"path/filepath"
 
 	"github.com/charmbracelet/log"
 	"github.com/unmango/go/iter"
 
 	ux "github.com/unstoppablemango/ux/pkg"
+	"github.com/unstoppablemango/ux/pkg/plugin"
 	"github.com/unstoppablemango/ux/pkg/plugin/registry"
 )
 
@@ -22,7 +24,7 @@ type workspace struct {
 func (w workspace) Plugins() iter.Seq[ux.Plugin] {
 	ctx := context.Background()
 	return func(yield func(ux.Plugin) bool) {
-		for s := range registry.Default.List() {
+		for s := range w.Registry().Sources() {
 			if p, err := s.Load(ctx); err != nil {
 				log.Debug("Failed to load plugin", "err", err)
 			} else if !yield(p) {
@@ -30,6 +32,12 @@ func (w workspace) Plugins() iter.Seq[ux.Plugin] {
 			}
 		}
 	}
+}
+
+func (w workspace) Registry() plugin.Registry {
+	return registry.Append(registry.Default,
+		registry.LocalDir(filepath.Join(w.path, "bin")),
+	)
 }
 
 func Cwd() (ux.Workspace, error) {
@@ -43,9 +51,9 @@ func Cwd() (ux.Workspace, error) {
 func Dir(path string) (ux.Workspace, error) {
 	if info, err := os.Stat(path); err != nil {
 		return nil, fmt.Errorf("dir workspace: %w", err)
-	} else if info.IsDir() {
-		return workspace{path, info}, nil
-	} else {
+	} else if !info.IsDir() {
 		return nil, fmt.Errorf("no workspace at %s", path)
+	} else {
+		return workspace{path, info}, nil
 	}
 }

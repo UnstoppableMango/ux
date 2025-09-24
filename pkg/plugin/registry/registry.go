@@ -1,23 +1,20 @@
 package registry
 
 import (
-	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 	"slices"
 
-	"github.com/charmbracelet/log"
 	"github.com/unmango/go/iter"
 	"github.com/unstoppablemango/ux/pkg/plugin"
 	"github.com/unstoppablemango/ux/pkg/plugin/source"
 )
 
 var (
-	Default = Compact(Aggregate(
-		FromEnv("PATH"),
+	Default = Compact(Merge(
+		EnvList("PATH"),
 		CwdBin(),
-		LocalFile("dummy"),
+		Cli("dummy"),
 	))
 
 	Empty plugin.Registry = aggregate{}
@@ -25,7 +22,7 @@ var (
 
 func CwdBin() plugin.Registry {
 	if wd, err := os.Getwd(); err != nil {
-		return Error(err)
+		return Errored(err)
 	} else {
 		return LocalDir(filepath.Join(wd, "bin"))
 	}
@@ -33,51 +30,25 @@ func CwdBin() plugin.Registry {
 
 func LocalDir(dir string) plugin.Registry {
 	if entries, err := os.ReadDir(dir); err != nil {
-		return Error(err)
+		return Errored(err)
 	} else {
 		return dirEntries{dir, entries}
 	}
 }
 
-func Error(err error) plugin.Registry {
+func Errored(err error) plugin.Registry {
 	return errored{err}
 }
 
 type errored struct{ error }
 
-// List implements plugin.Registry.
-func (errored) List() iter.Seq[plugin.Source] {
+// Sources implements plugin.Registry.
+func (errored) Sources() iter.Seq[plugin.Source] {
 	return iter.Empty[plugin.Source]()
 }
 
-type withErr struct {
-	reg plugin.Registry
-	err error
-}
-
-func (w withErr) Equal(reg plugin.Registry) bool {
-	return w.reg == reg
-}
-
-func (w withErr) String() string {
-	return fmt.Sprintf("%#v", w)
-}
-
-// List implements plugin.Registry.
-func (w withErr) List() iter.Seq[plugin.Source] {
-	return w.reg.List()
-}
-
-func WithErr(registry plugin.Registry, err error) plugin.Registry {
-	if hasErr, ok := registry.(withErr); ok {
-		err = errors.Join(err, hasErr.err)
-	}
-
-	return withErr{registry, err}
-}
-
-func LocalFile(path string) plugin.Registry {
-	return Singleton(source.LocalFile(path))
+func Cli(path string) plugin.Registry {
+	return Source(source.Cli(path))
 }
 
 type dirEntries struct {
@@ -85,19 +56,19 @@ type dirEntries struct {
 	entries []os.DirEntry
 }
 
-func (d dirEntries) List() iter.Seq[plugin.Source] {
-	return func(yield func(plugin.Source) bool) {
-		for _, e := range d.entries {
-			if s, err := source.FromDirEntry(d.root, e); err != nil {
-				log.Debug("Skipping entry", "err", err)
-			} else if !yield(s) {
-				return
-			}
-		}
-	}
+func (d dirEntries) Sources() iter.Seq[plugin.Source] {
+	return iter.Map(d.Entries(), d.Source)
 }
 
-func FromEnv(name string) plugin.Registry {
+func (d dirEntries) Source(e os.DirEntry) plugin.Source {
+	return source.DirEntry(d.root, e)
+}
+
+func (d dirEntries) Entries() iter.Seq[os.DirEntry] {
+	return slices.Values(d.entries)
+}
+
+func EnvList(name string) plugin.Registry {
 	var sources []plugin.Registry
 	for _, dir := range filepath.SplitList(os.Getenv(name)) {
 		sources = append(sources, LocalDir(dir))
@@ -108,13 +79,13 @@ func FromEnv(name string) plugin.Registry {
 
 type aggregate []plugin.Registry
 
-// List implements plugin.Registry.
-func (a aggregate) List() iter.Seq[plugin.Source] {
+// Sources implements plugin.Registry.
+func (a aggregate) Sources() iter.Seq[plugin.Source] {
 	return iter.Bind(slices.Values(a), ListSources)
 }
 
-func Aggregate(sources ...plugin.Registry) plugin.Registry {
-	return aggregate(sources)
+func Merge(registries ...plugin.Registry) plugin.Registry {
+	return aggregate(registries)
 }
 
 func Append(source plugin.Registry, elem ...plugin.Registry) plugin.Registry {
@@ -127,12 +98,12 @@ func Append(source plugin.Registry, elem ...plugin.Registry) plugin.Registry {
 
 type singleton struct{ plugin.Source }
 
-func Singleton(source plugin.Source) plugin.Registry {
+func Source(source plugin.Source) plugin.Registry {
 	return singleton{source}
 }
 
-// List implements plugin.Registry.
-func (a singleton) List() iter.Seq[plugin.Source] {
+// Sources implements plugin.Registry.
+func (a singleton) Sources() iter.Seq[plugin.Source] {
 	return iter.Singleton[plugin.Source](a)
 }
 
@@ -144,17 +115,17 @@ func Must(registry plugin.Registry, err error) plugin.Registry {
 	}
 }
 
+// ListSources is an aesthetic wrapper around r.Sources()
 func ListSources(r plugin.Registry) iter.Seq[plugin.Source] {
-	return r.List()
+	return r.Sources()
 }
 
 type compact struct {
 	src plugin.Registry
 }
 
-func (r compact) List() iter.Seq[plugin.Source] {
-	// TODO: wtf
-	return slices.Values(slices.Compact(slices.Collect(r.src.List())))
+func (r compact) Sources() iter.Seq[plugin.Source] {
+	return iter.Compact(r.src.Sources())
 }
 
 func Compact(registry plugin.Registry) plugin.Registry {
