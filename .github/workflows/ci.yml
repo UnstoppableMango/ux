@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ux-runners
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
 
@@ -21,7 +21,7 @@ jobs:
       - run: make test
 
   lint:
-    runs-on: ux-runners
+    runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v5
@@ -39,7 +39,7 @@ jobs:
           install-mode: none
 
   dprint:
-    runs-on: ux-runners
+    runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     env:
       # renovate: datasource=github-tags depName=dprint/dprint
@@ -51,7 +51,7 @@ jobs:
           dprint-version: ${{ env.DPRINT_VERSION }}
 
   docker:
-    runs-on: ux-runners
+    runs-on: ubuntu-latest
     steps:
       - uses: docker/setup-buildx-action@v3
 
@@ -95,7 +95,7 @@ jobs:
           sbom: ${{ github.event_name != 'pull_request' }}
 
   clean:
-    runs-on: ux-runners
+    runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v5
