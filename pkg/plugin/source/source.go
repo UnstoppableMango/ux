@@ -12,13 +12,13 @@ import (
 	"github.com/unstoppablemango/ux/pkg/plugin/cli"
 )
 
-type LocalFile string
+type Cli string
 
-func (f LocalFile) String() string {
+func (f Cli) String() string {
 	return string(f)
 }
 
-func (f LocalFile) Load(context.Context) (ux.Plugin, error) {
+func (f Cli) Load(context.Context) (ux.Plugin, error) {
 	return cli.Plugin(f), nil
 }
 

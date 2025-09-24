@@ -35,7 +35,7 @@ func (w workspace) Plugins() iter.Seq[ux.Plugin] {
 }
 
 func (w workspace) Registry() plugin.Registry {
-	return registry.Aggregate(
+	return registry.Append(registry.Default,
 		registry.LocalDir(filepath.Join(w.path, "bin")),
 	)
 }

@@ -1,8 +1,6 @@
 package registry
 
 import (
-	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 	"slices"
@@ -13,10 +11,10 @@ import (
 )
 
 var (
-	Default = Compact(Aggregate(
-		FromEnv("PATH"),
+	Default = Compact(Merge(
+		EnvList("PATH"),
 		CwdBin(),
-		LocalFile("dummy"),
+		Cli("dummy"),
 	))
 
 	Empty plugin.Registry = aggregate{}
@@ -49,34 +47,8 @@ func (errored) Sources() iter.Seq[plugin.Source] {
 	return iter.Empty[plugin.Source]()
 }
 
-type withErr struct {
-	reg plugin.Registry
-	err error
-}
-
-func (w withErr) Equal(reg plugin.Registry) bool {
-	return w.reg == reg
-}
-
-func (w withErr) String() string {
-	return fmt.Sprintf("%#v", w)
-}
-
-// Sources implements plugin.Registry.
-func (w withErr) Sources() iter.Seq[plugin.Source] {
-	return w.reg.Sources()
-}
-
-func WithErr(registry plugin.Registry, err error) plugin.Registry {
-	if hasErr, ok := registry.(withErr); ok {
-		err = errors.Join(err, hasErr.err)
-	}
-
-	return withErr{registry, err}
-}
-
-func LocalFile(path string) plugin.Registry {
-	return Singleton(source.LocalFile(path))
+func Cli(path string) plugin.Registry {
+	return Source(source.Cli(path))
 }
 
 type dirEntries struct {
@@ -96,7 +68,7 @@ func (d dirEntries) Entries() iter.Seq[os.DirEntry] {
 	return slices.Values(d.entries)
 }
 
-func FromEnv(name string) plugin.Registry {
+func EnvList(name string) plugin.Registry {
 	var sources []plugin.Registry
 	for _, dir := range filepath.SplitList(os.Getenv(name)) {
 		sources = append(sources, LocalDir(dir))
@@ -112,8 +84,8 @@ func (a aggregate) Sources() iter.Seq[plugin.Source] {
 	return iter.Bind(slices.Values(a), ListSources)
 }
 
-func Aggregate(sources ...plugin.Registry) plugin.Registry {
-	return aggregate(sources)
+func Merge(registries ...plugin.Registry) plugin.Registry {
+	return aggregate(registries)
 }
 
 func Append(source plugin.Registry, elem ...plugin.Registry) plugin.Registry {
@@ -126,7 +98,7 @@ func Append(source plugin.Registry, elem ...plugin.Registry) plugin.Registry {
 
 type singleton struct{ plugin.Source }
 
-func Singleton(source plugin.Source) plugin.Registry {
+func Source(source plugin.Source) plugin.Registry {
 	return singleton{source}
 }
 
