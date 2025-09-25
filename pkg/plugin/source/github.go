@@ -3,28 +3,48 @@ package source
 import (
 	"context"
 	"fmt"
+	"net/http"
 
 	"github.com/google/go-github/v78/github"
-	gh "github.com/unmango/aferox/github"
 	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/plugin"
 )
 
-type githubRelease struct {
-	client  *github.Client
-	release *github.RepositoryRelease
+type githubAsset struct {
+	client      *github.Client
+	owner, repo string
+	asset       *github.ReleaseAsset
 }
 
 // Load implements plugin.Source.
-func (g *githubRelease) Load(context.Context) (ux.Plugin, error) {
-	fs := gh.NewFs(g.client)
-	panic("unimplemented")
+func (g *githubAsset) Load(ctx context.Context) (ux.Plugin, error) {
+	r, _, err := g.client.Repositories.DownloadReleaseAsset(ctx,
+		g.owner,
+		g.repo,
+		g.asset.GetID(),
+		http.DefaultClient,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer r.Close()
+
+	return reader{r}.Load(ctx)
 }
 
-func GitHubRelease(client *github.Client, release *github.RepositoryRelease) (plugin.Source, error) {
-	if !plugin.BinPattern.MatchString(release.GetName()) {
-		return nil, fmt.Errorf("release %s does not match %s", release.GetName(), plugin.BinPattern)
+func Asset(
+	client *github.Client,
+	owner, repo string,
+	asset *github.ReleaseAsset,
+) (plugin.Source, error) {
+	if !plugin.BinPattern.MatchString(asset.GetName()) {
+		return nil, fmt.Errorf("release %s does not match %s", asset.GetName(), plugin.BinPattern)
 	}
 
-	return &githubRelease{client, release}, nil
+	return &githubAsset{
+		client: client,
+		owner:  owner,
+		repo:   repo,
+		asset:  asset,
+	}, nil
 }

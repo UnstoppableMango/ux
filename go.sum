@@ -661,12 +661,10 @@ github.com/ultraware/funlen v0.2.0 h1:gCHmCn+d2/1SemTdYMiKLAHFYxTYz7z9VIDRaTGyLk
 github.com/ultraware/funlen v0.2.0/go.mod h1:ZE0q4TsJ8T1SQcjmkhN/w+MceuatI6pBFSxxyteHIJA=
 github.com/ultraware/whitespace v0.2.0 h1:TYowo2m9Nfj1baEQBjuHzvMRbp19i+RCcRYrSWoFa+g=
 github.com/ultraware/whitespace v0.2.0/go.mod h1:XcP1RLD81eV4BW8UhQlpaR+SDc2givTvyI8a586WjW8=
-github.com/unmango/aferox v0.3.1 h1:SpV0wgCEtPVtCvi2vteVSEkV9yM2ll57ep0hzPkZ+ec=
-github.com/unmango/aferox v0.3.1/go.mod h1:+r0J+wjEcgk+fWzPN5cefaRiSt/GSX2lKCe+3SufDes=
 github.com/unmango/aferox v0.3.2 h1:ZvcYv0+vMB1bw8EpT/gH7+GL+8Pbdt3ugyK/9qd5bfI=
 github.com/unmango/aferox v0.3.2/go.mod h1:VVLwHTHYTTbocI8rY3OmV35L4bdm8AzKa+gegxu4d+A=
-github.com/unmango/aferox/github v0.0.1 h1:RbW0a7N7mDk5TkhxcEtDt9voaVYRoWKmfNql/bunIvU=
-github.com/unmango/aferox/github v0.0.1/go.mod h1:SZzx1l0WkKOO6+7Mc6UpJ4nuMYEiZiiaTOsejpwzndY=
+github.com/unmango/aferox/github v0.0.3 h1:MMuaRyXvCzXUrYFbp+yPxBtX2kFUZXM19i+weF82gTw=
+github.com/unmango/aferox/github v0.0.3/go.mod h1:ewQFKAL3UnIIh4A+h6oJjzvOoZovGDasglXwZElYfh0=
 github.com/unmango/devctl v0.3.0 h1:kRpNo6OpMNwtTNbh0Ukmh2lnuPvTJHxOgCiCpB0UvY8=
 github.com/unmango/devctl v0.3.0/go.mod h1:CDhYFGq3laPpu+MHWt98ZR/39vOLO0ztNfPgsfSH7cs=
 github.com/unmango/go v0.10.2 h1:blMGCkMkisDkDvvCUT70lKcOqbV4Ha53Kq2IscMUTsM=

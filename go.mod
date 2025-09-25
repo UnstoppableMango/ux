@@ -1,6 +1,6 @@
 module github.com/unstoppablemango/ux
 
-go 1.24.4
+go 1.25.1
 
 tool (
 	github.com/bufbuild/buf/cmd/buf
@@ -23,6 +23,7 @@ require (
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.21.0
+	github.com/unmango/aferox/github v0.0.3
 	github.com/unmango/go v0.10.2
 	golang.org/x/mod v0.30.0
 	google.golang.org/protobuf v1.36.10
@@ -157,7 +158,6 @@ require (
 	github.com/google/cel-go v0.26.1 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/go-containerregistry v0.20.6 // indirect
-	github.com/google/go-github/v72 v72.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/pprof v0.0.0-20251007162407-5df77e3f7d1d // indirect
 	github.com/google/uuid v1.6.0 // indirect
@@ -271,7 +271,6 @@ require (
 	github.com/ultraware/funlen v0.2.0 // indirect
 	github.com/ultraware/whitespace v0.2.0 // indirect
 	github.com/unmango/aferox v0.3.2 // indirect
-	github.com/unmango/aferox/github v0.0.2 // indirect
 	github.com/unmango/devctl v0.3.0 // indirect
 	github.com/uudashr/gocognit v1.2.0 // indirect
 	github.com/uudashr/iface v1.4.1 // indirect
