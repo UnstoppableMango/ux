@@ -3,10 +3,12 @@ package source
 import (
 	"context"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
 
+	"github.com/spf13/afero"
 	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/plugin"
 	"github.com/unstoppablemango/ux/pkg/plugin/cli"
@@ -65,4 +67,20 @@ func (e envVar) Load(context.Context) (ux.Plugin, error) {
 
 func EnvVar(name string, parser plugin.Parser) plugin.Source {
 	return envVar{parser, name}
+}
+
+type reader struct{ io.Reader }
+
+func (r reader) Load(context.Context) (ux.Plugin, error) {
+	tmp, err := os.MkdirTemp("", "")
+	if err != nil {
+		return nil, err
+	}
+
+	fs := afero.NewOsFs()
+	if err := afero.WriteReader(fs, tmp, r); err != nil {
+		return nil, err
+	}
+
+	afero.TempFile()
 }
