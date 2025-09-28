@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	"slices"
 
 	"github.com/charmbracelet/log"
 	"github.com/google/go-github/v75/github"
@@ -20,14 +21,11 @@ func Repository(client *github.Client, owner, repo string) plugin.Registry {
 }
 
 func (g githubRepo) Sources() iter.Seq[plugin.Source] {
-	return func(yield func(plugin.Source) bool) {
-		if releases, _, err := g.listReleases(context.TODO()); err != nil {
-			log.Error("Failed to list releases", "err", err)
-		} else {
-			for _, rel := range releases {
-				g.sources(rel)(yield)
-			}
-		}
+	if releases, _, err := g.listReleases(context.TODO()); err != nil {
+		log.Error("Failed to list releases", "err", err)
+		return iter.Empty[plugin.Source]()
+	} else {
+		return iter.Bind(slices.Values(releases), g.sources)
 	}
 }
 
@@ -66,7 +64,7 @@ func (g githubRelease) Sources() iter.Seq[plugin.Source] {
 }
 
 func (g githubRelease) source(asset *github.ReleaseAsset) (plugin.Source, error) {
-	return source.Asset(g.client, g.owner, g.repo, asset)
+	return source.GitHubAsset(g.client, g.owner, g.repo, asset)
 }
 
 func (g githubRelease) listAssets(ctx context.Context) ([]*github.ReleaseAsset, *github.Response, error) {
