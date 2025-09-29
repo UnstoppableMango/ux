@@ -44,15 +44,15 @@ func (g *asset) Load(ctx context.Context) (ux.Plugin, error) {
 
 	name := g.asset.GetName()
 	path := filepath.Join(tmp, name)
-
-	switch filepath.Ext(name) {
-	case ".tar.gz":
-		return writeTarGz(fs, path, r) // TODO
-	case ".tar":
-		return writeTar(fs, path, tar.NewReader(r))
-	default:
-		return writeBin(fs, path, r)
+	bin, err := binReader(path, r)
+	if err != nil {
+		return nil, err
 	}
+	if err := afero.WriteReader(g.fs, path, bin); err != nil {
+		return nil, err
+	}
+
+	return cli.Plugin(path), nil
 }
 
 func Asset(
@@ -73,26 +73,18 @@ func Asset(
 	}, nil
 }
 
-func writeTarGz(fs afero.Fs, path string, r io.Reader) (ux.Plugin, error) {
-	if gzip, err := gzip.NewReader(r); err != nil {
-		return nil, err
-	} else {
-		return writeTar(fs, path, tar.NewReader(gzip))
-	}
-}
-
-func writeTar(fs afero.Fs, path string, r *tar.Reader) (ux.Plugin, error) {
-	if h, err := r.Next(); err != nil {
-		return nil, err
-	} else {
-		return writeBin(fs, path, r) // TODO
-	}
-}
-
-func writeBin(fs afero.Fs, path string, r io.Reader) (ux.Plugin, error) {
-	if err := afero.WriteReader(fs, path, r); err != nil {
-		return nil, err
-	} else {
-		return cli.Plugin(path), nil
+func binReader(name string, r io.Reader) (io.Reader, error) {
+	switch filepath.Ext(name) {
+	case ".tar.gz":
+		if r, err := gzip.NewReader(r); err != nil {
+			return nil, err
+		} else {
+			// TODO: Find the matching header
+			return tar.NewReader(r), nil
+		}
+	case ".tar":
+		return tar.NewReader(r), nil
+	default:
+		return r, nil
 	}
 }
