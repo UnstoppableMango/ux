@@ -26,12 +26,16 @@ docker: .make/docker-ux
 
 ##@ Source
 
+CS_DOMAIN    := Plugins Plugins.CommandLine
+CS_NS        := ${CS_DOMAIN:%=UnMango.Ux.%}
+
 PROTO_SRC   != $(BUF) ls-files
 GRPC_PROTO  := $(filter %/plugin.proto %/ux.proto,${PROTO_SRC})
 GO_SRC      != $(DEVCTL) list --go
 GO_PB_SRC   := ${PROTO_SRC:proto/%.proto=gen/%.pb.go}
 # GO_GRPC_SRC := ${GRPC_PROTO:proto/%.proto=gen/%_grpc.pb.go}
 GO_CODEGEN  := ${GO_GRPC_SRC} ${GO_PB_SRC}
+CS_PROJ_SRC := $(join ${CS_NS:%=src/%},${CS_NS:%=/%.csproj})
 CS_SRC      != $(DEVCTL) list --cs
 
 ##@ Artifacts
@@ -103,7 +107,7 @@ bin/ginkgo: go.mod ## Optional bin install
 		--build-arg LDFLAGS='${LDFLAGS}'
 	@touch $@
 
-.make/dotnet-build: ${CS_SRC} src/UnMango.Ux.Plugins/UnMango.Ux.Plugins.csproj
+.make/dotnet-build: ${CS_SRC} ${CS_PROJ_SRC}
 	$(DOTNET) build
 	@touch $@
 
