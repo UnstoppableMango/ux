@@ -5,6 +5,7 @@ bin/
 *.dummy*
 
 .envrc
+.direnv/
 .vscode/*
 !.vscode/extensions.json
 .DS_Store
