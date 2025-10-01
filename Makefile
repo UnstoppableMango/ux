@@ -12,7 +12,9 @@ DPRINT     ?= ${CURDIR}/bin/dprint
 GINKGO     ?= $(GO) tool ginkgo
 GOLINT     ?= $(GO) tool golangci-lint
 GORELEASER ?= goreleaser
+GOMOD2NIX  ?= gomod2nix
 MOCKGEN    ?= $(GO) tool mockgen
+NIX        ?= nix
 
 ##@ Primary Targets
 
@@ -21,7 +23,7 @@ generate gen: codegen
 test: .make/ginkgo-run
 fmt format: .make/buf-fmt .make/go-fmt .make/dotnet-format .make/dprint-fmt
 lint: .make/buf-lint .make/go-vet .make/golangci-lint-run
-tidy: go.sum buf.lock
+tidy update: go.sum buf.lock flake.lock gomod2nix.toml
 docker: .make/docker-ux
 nuget: .make/dotnet-pack
 
@@ -60,6 +62,13 @@ test/e2e/testdata/petstore.yaml:
 
 buf.lock: buf.yaml ${PROTO_SRC}
 	$(BUF) dep update
+
+flake.lock: flake.nix
+	$(NIX) flake update
+	@touch $@
+
+gomod2nix.toml: go.mod
+	$(GOMOD2NIX)
 
 go.sum: go.mod ${GO_SRC}
 	$(GO) mod tidy

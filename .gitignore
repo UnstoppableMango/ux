@@ -15,3 +15,6 @@ nupkgs/
 
 # Added by goreleaser init:
 dist/
+
+# Added by gomod2nix:
+/gomod2nix-template
