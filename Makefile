@@ -7,6 +7,7 @@ GO         ?= go
 BUF        ?= $(GO) tool buf
 DEVCTL     ?= $(GO) tool devctl
 DOCKER     ?= docker
+DOTNET     ?= dotnet
 DPRINT     ?= ${CURDIR}/bin/dprint
 GINKGO     ?= $(GO) tool ginkgo
 GOLINT     ?= $(GO) tool golangci-lint
@@ -15,7 +16,7 @@ MOCKGEN    ?= $(GO) tool mockgen
 
 ##@ Primary Targets
 
-build: .make/buf-build bin/ux
+build: .make/buf-build .make/dotnet-build bin/ux
 generate gen: codegen
 test: .make/ginkgo-run
 fmt format: .make/buf-fmt .make/go-fmt .make/dprint-fmt
@@ -31,6 +32,7 @@ GO_SRC      != $(DEVCTL) list --go
 GO_PB_SRC   := ${PROTO_SRC:proto/%.proto=gen/%.pb.go}
 # GO_GRPC_SRC := ${GRPC_PROTO:proto/%.proto=gen/%_grpc.pb.go}
 GO_CODEGEN  := ${GO_GRPC_SRC} ${GO_PB_SRC}
+CS_SRC      != $(DEVCTL) list --cs
 
 ##@ Artifacts
 
@@ -101,12 +103,16 @@ bin/ginkgo: go.mod ## Optional bin install
 		--build-arg LDFLAGS='${LDFLAGS}'
 	@touch $@
 
+.make/dotnet-build: ${CS_SRC} src/UnMango.Ux.Plugins/UnMango.Ux.Plugins.csproj
+	$(DOTNET) build
+	@touch $@
+
 .make/dprint/install.sh:
 	@mkdir -p $(dir $@)
 	curl -fsSL https://dprint.dev/install.sh -o $@
 	@chmod +x $@
 
-JSON_SRC := .dprint.json .github/renovate.json .vscode/extensions.json
+JSON_SRC := global.json .dprint.json .github/renovate.json .vscode/extensions.json
 # MD_SRC   := README.md
 
 .make/dprint-fmt: ${JSON_SRC} ${MD_SRC} | bin/dprint
