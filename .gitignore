@@ -7,6 +7,7 @@ obj/
 nupkgs/
 
 .envrc
+.direnv/
 .vscode/*
 !.vscode/extensions.json
 .DS_Store
