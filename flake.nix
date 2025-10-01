@@ -32,6 +32,7 @@
           dontBuild = true;
           src = ./.;
           doCheck = true;
+					buildInputs = [ pkgs.git ];
           nativeBuildInputs = with pkgs; [
             go
             writableTmpDirAsHomeHook
