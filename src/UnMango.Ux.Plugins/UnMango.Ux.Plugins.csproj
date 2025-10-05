@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2025.2.2" />
+    <PackageReference Include="MinVer" Version="6.0.0" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
