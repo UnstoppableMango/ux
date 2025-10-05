@@ -19,7 +19,7 @@ MOCKGEN    ?= $(GO) tool mockgen
 build: .make/buf-build .make/dotnet-build bin/ux
 generate gen: codegen
 test: .make/ginkgo-run
-fmt format: .make/buf-fmt .make/go-fmt .make/dprint-fmt
+fmt format: .make/buf-fmt .make/go-fmt .make/dotnet-format .make/dprint-fmt
 lint: .make/buf-lint .make/go-vet .make/golangci-lint-run
 tidy: go.sum buf.lock
 docker: .make/docker-ux
@@ -109,6 +109,10 @@ bin/ginkgo: go.mod ## Optional bin install
 
 .make/dotnet-build: ${CS_SRC} ${CS_PROJ_SRC}
 	$(DOTNET) build
+	@touch $@
+
+.make/dotnet-format: ${CS_SRC}
+	$(DOTNET) format
 	@touch $@
 
 .make/dprint/install.sh:

@@ -24,4 +24,3 @@ public static class UxFuncsExtensions
 	public static void Configure(this UxFuncs funcs, Command command)
 		=> command.SetAction(funcs);
 }
-
