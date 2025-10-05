@@ -35,15 +35,26 @@ var _ = Describe("E2e", func() {
 			Expect(out).To(BeARegularFile())
 		})
 
-		It("should execute the dummy plugin", func() {
-			cmd := exec.Command(uxPath, "plugin", "run", dummyPath, "test")
-			cmd.Env = append(cmd.Env, fmt.Sprintf("ALLOW_PLUGIN=%s", dummyPath))
+		It("should execute the Go dummy plugin", func() {
+			cmd := exec.Command(uxPath, "plugin", "run", goDummyPath, "test")
+			cmd.Env = append(cmd.Env, fmt.Sprintf("ALLOW_PLUGIN=%s", goDummyPath))
 
 			ses := Run(cmd)
 
 			Eventually(ses).Should(gexec.Exit(0))
-			Expect(ses.Err).NotTo(gbytes.Say("dummy test"))
+			Expect(ses.Err).NotTo(gbytes.Say(goDummyPath))
 			Expect(ses.Err).To(gbytes.Say("test"))
+		})
+
+		It("should execute the C# dummy plugin", func() {
+			cmd := exec.Command(uxPath, "plugin", "run", csDummyPath, "test")
+			cmd.Env = append(cmd.Env, fmt.Sprintf("ALLOW_PLUGIN=%s", csDummyPath))
+
+			ses := Run(cmd)
+
+			Eventually(ses).Should(gexec.Exit(0))
+			Expect(ses.Err).NotTo(gbytes.Say(csDummyPath))
+			Expect(ses.Err).To(gbytes.Say(`["test"]`))
 		})
 
 		It("should search for the dummy plugin", func() {
