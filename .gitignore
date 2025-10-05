@@ -4,6 +4,7 @@ obj/
 *.test
 *.txt
 *.dummy*
+nupkgs/
 
 .envrc
 .vscode/*
