@@ -7,7 +7,7 @@ import (
 )
 
 func execute(args *skel.CmdArgs) error {
-	fmt.Println("executed with: ", args.Args)
+	fmt.Println("executed with:", args.Args)
 	return nil
 }
 

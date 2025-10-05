@@ -12,14 +12,16 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
+	"github.com/unstoppablemango/ux/test/util"
 
 	"github.com/unmango/go/vcs/git"
 )
 
 var (
-	gitRoot   string
-	uxPath    string
-	dummyPath string
+	gitRoot     string
+	uxPath      string
+	goDummyPath string
+	csDummyPath string
 
 	//go:embed testdata
 	testdata embed.FS
@@ -38,12 +40,16 @@ var _ = BeforeSuite(func(ctx context.Context) {
 	uxPath, err = gexec.Build(filepath.Join(cwd, "main.go"))
 	Expect(err).NotTo(HaveOccurred())
 
-	dummyPath, err = gexec.Build(filepath.Join(cwd, "cmd", "dummy", "main.go"))
+	goDummyPath, err = gexec.Build(filepath.Join(cwd, "cmd", "dummy", "main.go"))
+	Expect(err).NotTo(HaveOccurred())
+
+	csDummyPath, err = util.BuildCsharpDummy(filepath.Join(cwd, "examples", "csharp", "Dummy"))
 	Expect(err).NotTo(HaveOccurred())
 })
 
 var _ = AfterSuite(func() {
 	gexec.CleanupBuildArtifacts()
+	util.CleanupCsharpDummy()
 })
 
 func Run(cmd *exec.Cmd) *gexec.Session {

@@ -10,7 +10,7 @@ import (
 func NewRun() *cobra.Command {
 	return &cobra.Command{
 		Use:   "run [NAME] [ARGS...]",
-		Short: "plugin.Parse(NAME).Execute(ARGS...)",
+		Short: "plugin.Parse(NAME, parser.Default).Execute(ARGS...)",
 		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			p, err := plugin.Parse(args[0], parser.Default)
@@ -18,7 +18,7 @@ func NewRun() *cobra.Command {
 				cli.Fail(err)
 			}
 
-			if err := p.Execute(args); err != nil {
+			if err := p.Execute(args[1:]); err != nil {
 				cli.Fail(err)
 			}
 		},

@@ -7,6 +7,7 @@ GO         ?= go
 BUF        ?= $(GO) tool buf
 DEVCTL     ?= $(GO) tool devctl
 DOCKER     ?= docker
+DOTNET     ?= dotnet
 DPRINT     ?= ${CURDIR}/bin/dprint
 GINKGO     ?= $(GO) tool ginkgo
 GOLINT     ?= $(GO) tool golangci-lint
@@ -15,15 +16,18 @@ MOCKGEN    ?= $(GO) tool mockgen
 
 ##@ Primary Targets
 
-build: .make/buf-build bin/ux
+build: .make/buf-build .make/dotnet-build bin/ux
 generate gen: codegen
 test: .make/ginkgo-run
-fmt format: .make/buf-fmt .make/go-fmt .make/dprint-fmt
+fmt format: .make/buf-fmt .make/go-fmt .make/dotnet-format .make/dprint-fmt
 lint: .make/buf-lint .make/go-vet .make/golangci-lint-run
 tidy: go.sum buf.lock
 docker: .make/docker-ux
 
 ##@ Source
+
+CS_DOMAIN    := Plugins Plugins.CommandLine
+CS_NS        := ${CS_DOMAIN:%=UnMango.Ux.%}
 
 PROTO_SRC   != $(BUF) ls-files
 GRPC_PROTO  := $(filter %/plugin.proto %/ux.proto,${PROTO_SRC})
@@ -31,6 +35,8 @@ GO_SRC      != $(DEVCTL) list --go
 GO_PB_SRC   := ${PROTO_SRC:proto/%.proto=gen/%.pb.go}
 # GO_GRPC_SRC := ${GRPC_PROTO:proto/%.proto=gen/%_grpc.pb.go}
 GO_CODEGEN  := ${GO_GRPC_SRC} ${GO_PB_SRC}
+CS_PROJ_SRC := $(join ${CS_NS:%=src/%},${CS_NS:%=/%.csproj})
+CS_SRC      != $(DEVCTL) list --cs
 
 ##@ Artifacts
 
@@ -101,12 +107,20 @@ bin/ginkgo: go.mod ## Optional bin install
 		--build-arg LDFLAGS='${LDFLAGS}'
 	@touch $@
 
+.make/dotnet-build: ${CS_SRC} ${CS_PROJ_SRC}
+	$(DOTNET) build
+	@touch $@
+
+.make/dotnet-format: ${CS_SRC}
+	$(DOTNET) format
+	@touch $@
+
 .make/dprint/install.sh:
 	@mkdir -p $(dir $@)
 	curl -fsSL https://dprint.dev/install.sh -o $@
 	@chmod +x $@
 
-JSON_SRC := .dprint.json .github/renovate.json .vscode/extensions.json
+JSON_SRC := global.json .dprint.json .github/renovate.json .vscode/extensions.json
 # MD_SRC   := README.md
 
 .make/dprint-fmt: ${JSON_SRC} ${MD_SRC} | bin/dprint
