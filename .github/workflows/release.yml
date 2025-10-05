@@ -42,3 +42,33 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ github.token }}
+
+  nuget:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - run: dotnet pack --configuration Release --output nupkgs
+
+      - name: Authenticate to GitHub Packages
+        if: github.event_name != 'pull_request'
+        run: |
+          dotnet nuget add source \
+            --username ${{ github.repository_owner }} \
+            --password ${{ secrets.GITHUB_TOKEN }} \
+            --store-password-in-clear-text \
+            --name github \
+            "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+
+      - name: Publish to GitHub Packages
+        if: github.event_name != 'pull_request'
+        run: |
+          dotnet nuget push "nupkgs/UnMango.Ux.*.nupkg" \
+            --source github \
+            --skip-duplicate

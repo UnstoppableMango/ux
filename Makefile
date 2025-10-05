@@ -23,6 +23,7 @@ fmt format: .make/buf-fmt .make/go-fmt .make/dotnet-format .make/dprint-fmt
 lint: .make/buf-lint .make/go-vet .make/golangci-lint-run
 tidy: go.sum buf.lock
 docker: .make/docker-ux
+nuget: .make/dotnet-pack
 
 ##@ Source
 
@@ -113,6 +114,10 @@ bin/ginkgo: go.mod ## Optional bin install
 
 .make/dotnet-format: ${CS_SRC}
 	$(DOTNET) format
+	@touch $@
+
+.make/dotnet-pack: ${CS_SRC}
+	$(DOTNET) pack --output nupkgs
 	@touch $@
 
 .make/dprint/install.sh:
