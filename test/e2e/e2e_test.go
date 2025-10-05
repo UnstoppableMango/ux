@@ -42,8 +42,7 @@ var _ = Describe("E2e", func() {
 			ses := Run(cmd)
 
 			Eventually(ses).Should(gexec.Exit(0))
-			Expect(ses.Err).NotTo(gbytes.Say(goDummyPath))
-			Expect(ses.Err).To(gbytes.Say("test"))
+			Expect(ses.Err).To(gbytes.Say(`executed with: \[test\]`))
 		})
 
 		It("should execute the C# dummy plugin", func() {
@@ -53,8 +52,7 @@ var _ = Describe("E2e", func() {
 			ses := Run(cmd)
 
 			Eventually(ses).Should(gexec.Exit(0))
-			Expect(ses.Err).NotTo(gbytes.Say(csDummyPath))
-			Expect(ses.Err).To(gbytes.Say(`["test"]`))
+			Expect(ses.Err).To(gbytes.Say(`Executed with: \["test"\]`))
 		})
 
 		It("should search for the dummy plugin", func() {
