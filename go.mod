@@ -15,7 +15,7 @@ require (
 	github.com/charmbracelet/log v0.4.2
 	github.com/google/go-github/v75 v75.0.0
 	github.com/mattn/go-isatty v0.0.20
-	github.com/onsi/ginkgo/v2 v2.25.3
+	github.com/onsi/ginkgo/v2 v2.26.0
 	github.com/onsi/gomega v1.38.2
 	github.com/sahilm/fuzzy v0.1.1
 	github.com/spf13/cobra v1.10.1
