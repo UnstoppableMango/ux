@@ -11,7 +11,7 @@ import (
 
 func NewGenerate() *cobra.Command {
 	return &cobra.Command{
-		Use:     "generate [ARGS...]",
+		Use:     "generate [TARGET] [INPUT] [ARGS...]",
 		Short:   "Generate code",
 		Aliases: []string{"gen"},
 		Args:    cobra.MinimumNArgs(2),
