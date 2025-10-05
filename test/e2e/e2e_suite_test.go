@@ -43,12 +43,13 @@ var _ = BeforeSuite(func(ctx context.Context) {
 	goDummyPath, err = gexec.Build(filepath.Join(cwd, "cmd", "dummy", "main.go"))
 	Expect(err).NotTo(HaveOccurred())
 
-	csDummyPath, err = util.BuildCsharpDummy(ctx)
+	csDummyPath, err = util.BuildCsharpDummy(filepath.Join(cwd, "examples", "csharp", "Dummy"))
 	Expect(err).NotTo(HaveOccurred())
 })
 
 var _ = AfterSuite(func() {
 	gexec.CleanupBuildArtifacts()
+	util.CleanupCsharpDummy()
 })
 
 func Run(cmd *exec.Cmd) *gexec.Session {

@@ -6,21 +6,13 @@ namespace UnMango.Ux.Plugins.CommandLine;
 [PublicAPI]
 public static class UxFuncsExtensions
 {
-	public static ValueTask RunAsync(this UxFuncs funcs, ParseResult parseResult, CancellationToken cancellationToken)
-		=> funcs.RunAsync(parseResult.UnmatchedTokens, cancellationToken);
+	public static ValueTask<int> RunAsync(
+		this UxFuncs funcs,
+		ParseResult parseResult,
+		Stream stdin,
+		CancellationToken cancellationToken = default
+	) => funcs.RunAsync(parseResult.UnmatchedTokens, stdin, cancellationToken);
 
-	public static RootCommand RootCommand(this UxFuncs funcs) {
-		var command = new RootCommand();
-		funcs.Configure(command);
-		return command;
-	}
-
-	public static Command Command(this UxFuncs funcs, string name, string? description = null) {
-		var command = new Command(name, description);
-		funcs.Configure(command);
-		return command;
-	}
-
-	public static void Configure(this UxFuncs funcs, Command command)
-		=> command.SetAction(funcs);
+	public static void Configure(this UxFuncs funcs, Command command, Stream stdin)
+		=> command.SetAction(funcs, stdin);
 }

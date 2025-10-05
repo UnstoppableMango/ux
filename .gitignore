@@ -9,6 +9,7 @@ obj/
 .vscode/*
 !.vscode/extensions.json
 .DS_Store
+*.user
 
 # Added by goreleaser init:
 dist/

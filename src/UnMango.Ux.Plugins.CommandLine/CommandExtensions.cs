@@ -6,7 +6,7 @@ namespace UnMango.Ux.Plugins.CommandLine;
 [PublicAPI]
 public static class CommandExtensions
 {
-	public static void SetAction(this Command command, UxFuncs funcs)
+	public static void SetAction(this Command command, UxFuncs funcs, Stream stdin)
 		=> command.SetAction((parseResult, cancellationToken)
-			=> funcs.RunAsync(parseResult, cancellationToken).AsTask());
+			=> funcs.RunAsync(parseResult, stdin, cancellationToken).AsTask());
 }
