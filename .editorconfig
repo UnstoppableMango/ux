@@ -7,3 +7,9 @@ trim_trailing_whitespace = true
 
 [*.{yaml,yml}]
 indent_style = space
+
+[*.cs]
+csharp_new_line_before_open_brace = namespace, types
+csharp_new_line_before_catch = false
+csharp_new_line_before_else = false
+csharp_indent_switch_labels = false
