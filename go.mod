@@ -14,6 +14,7 @@ require (
 	github.com/adrg/xdg v0.5.3
 	github.com/charmbracelet/log v0.4.2
 	github.com/google/go-github/v75 v75.0.0
+	github.com/google/go-github/v76 v76.0.0
 	github.com/mattn/go-isatty v0.0.20
 	github.com/onsi/ginkgo/v2 v2.26.0
 	github.com/onsi/gomega v1.38.2
