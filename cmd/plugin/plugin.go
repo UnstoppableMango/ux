@@ -1,11 +1,15 @@
 package plugin
 
-import "github.com/spf13/cobra"
+import (
+	"github.com/spf13/cobra"
+	"github.com/unstoppablemango/ux/cmd/plugin/cli"
+)
 
 var Cmd = New()
 
 func init() {
 	Cmd.AddCommand(
+		cli.Cmd,
 		NewConformance(),
 		NewList(),
 		NewParse(),

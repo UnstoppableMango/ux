@@ -9,6 +9,10 @@ import (
 	"github.com/charmbracelet/log"
 )
 
+type Context interface {
+	Context() context.Context
+}
+
 type Spec interface {
 	fmt.Stringer
 }
