@@ -18,11 +18,11 @@ let
   goEnv = mkGoEnv { pwd = ./.; };
 in
 pkgs.mkShell {
-  packages = [
-		pkgs.docker
-		pkgs.git
-		pkgs.gnumake
-		pkgs.buf
+  packages = with pkgs; [
+		docker
+		git
+		gnumake
+		buf
     goEnv
     gomod2nix
   ];

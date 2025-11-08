@@ -25,7 +25,6 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
-        callPackage = pkgs.callPackage;
         # Simple test check added to nix flake check
         go-test = pkgs.stdenvNoCC.mkDerivation {
           name = "go-test";
@@ -34,15 +33,18 @@
           doCheck = true;
           nativeBuildInputs = with pkgs; [
             go
+						git
             writableTmpDirAsHomeHook
           ];
           checkPhase = ''
+						export PATH="${pkgs.git}/bin:$PATH"
             go tool ginkgo run -r
           '';
           installPhase = ''
             mkdir "$out"
           '';
         };
+
         # Simple lint check added to nix flake check
         go-lint = pkgs.stdenvNoCC.mkDerivation {
           name = "go-lint";
@@ -63,13 +65,15 @@
         };
       in
       {
+				formatter = pkgs.nixfmt-tree;
+
         checks = {
           inherit go-test go-lint;
         };
-        packages.default = callPackage ./. {
+        packages.default = pkgs.callPackage ./. {
           inherit (gomod2nix.legacyPackages.${system}) buildGoApplication;
         };
-        devShells.default = callPackage ./shell.nix {
+        devShells.default = pkgs.callPackage ./shell.nix {
           inherit (gomod2nix.legacyPackages.${system}) mkGoEnv gomod2nix;
         };
       }
