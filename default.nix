@@ -10,10 +10,11 @@
       ];
     }
   ),
+  lib,
   buildGoApplication ? pkgs.buildGoApplication,
 }:
 
-buildGoApplication {
+buildGoApplication rec {
   pname = "ux";
   version = "0.0.12";
   src = ./.;
@@ -24,7 +25,23 @@ buildGoApplication {
     dotnetCorePackages.sdk_10_0
   ];
 
+  ldflags = [
+    "-X github.com/unstoppablemango/ux/internal.Version=${version}"
+  ];
+
   checkPhase = ''
     go test ./... -ginkgo.label-filter="!E2E"
   '';
+
+  meta = {
+    description = "Universal codegen CLI";
+    homepage = "https://github.com/UnstoppableMango/ux";
+    license = lib.licenses.mit;
+    maintainers = [
+      {
+        name = "UnstoppableMangoo";
+        email = "erik.rasmussen@unmango.dev";
+      }
+    ];
+  };
 }
