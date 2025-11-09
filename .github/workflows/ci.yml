@@ -115,3 +115,17 @@ jobs:
 
       - run: make generate
       - run: git diff --exit-code
+
+  gomod2nix:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - run: make gomod2nix.toml
+      - run: git diff --exit-code gomod2nix.toml

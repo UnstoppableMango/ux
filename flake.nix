@@ -11,6 +11,10 @@
         flake-utils.follows = "flake-utils";
       };
     };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -19,6 +23,7 @@
       nixpkgs,
       flake-utils,
       gomod2nix,
+      treefmt-nix,
     }:
     (flake-utils.lib.eachDefaultSystem (
       system:
@@ -26,7 +31,15 @@
         pkgs = nixpkgs.legacyPackages.${system};
       in
       {
-        formatter = pkgs.nixfmt-tree;
+        formatter = treefmt-nix.lib.mkWrapper pkgs {
+          projectRootFile = "flake.nix";
+          programs = {
+            nixfmt.enable = true;
+            dprint.enable = true;
+            gofmt.enable = true;
+            buf.enable = true;
+          };
+        };
         packages.default = pkgs.callPackage ./. {
           inherit (gomod2nix.legacyPackages.${system}) buildGoApplication;
         };
