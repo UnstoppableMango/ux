@@ -28,6 +28,23 @@ jobs:
 
       - run: make test
 
+  nix:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: cachix/install-nix-action@v31.8.2
+        with:
+          github_access_token: ${{ github.token }}
+
+      - uses: cachix/cachix-action@v16
+        with:
+          name: unstoppablemango
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - run: nix build
+
   lint:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
@@ -45,18 +62,6 @@ jobs:
       - uses: golangci/golangci-lint-action@v9
         with:
           install-mode: none
-
-  dprint:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    env:
-      # renovate: datasource=github-tags depName=dprint/dprint
-      DPRINT_VERSION: 0.50.2
-    steps:
-      - uses: actions/checkout@v5
-      - uses: dprint/check@v2.3
-        with:
-          dprint-version: ${{ env.DPRINT_VERSION }}
 
   docker:
     runs-on: ubuntu-latest
@@ -101,6 +106,18 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           provenance: ${{ github.event_name != 'pull_request' }}
           sbom: ${{ github.event_name != 'pull_request' }}
+
+  dprint:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    env:
+      # renovate: datasource=github-tags depName=dprint/dprint
+      DPRINT_VERSION: 0.50.2
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dprint/check@v2.3
+        with:
+          dprint-version: ${{ env.DPRINT_VERSION }}
 
   clean:
     runs-on: ubuntu-latest
