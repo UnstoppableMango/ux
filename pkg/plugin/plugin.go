@@ -12,6 +12,11 @@ var (
 	BinPattern = regexp.MustCompile(`^([\w\-]+2[\w\-]+)|(ux-[\w\-]+)$`)
 )
 
+type Ux interface {
+	InputFile() string
+	OutputPath() string
+}
+
 type Selector interface {
 	Select(iter.Seq[ux.Plugin]) (ux.Plugin, error)
 }
