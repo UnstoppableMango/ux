@@ -25,6 +25,6 @@ buildGoApplication {
   ];
 
   checkPhase = ''
-    		go test ./... -ginkgo.label-filter="!E2E"
-    	'';
+    go test ./... -ginkgo.label-filter="!E2E"
+  '';
 }
