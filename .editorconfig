@@ -14,11 +14,14 @@ resharper_method_or_operator_body = expression_body
 resharper_place_expr_method_on_single_line = true
 resharper_wrap_before_primary_constructor_declaration_rpar = false
 
-[*.{yaml,yml}]
-indent_style = space
-
 [*.cs]
 csharp_new_line_before_open_brace = namespace, types
 csharp_new_line_before_catch = false
 csharp_new_line_before_else = false
 csharp_indent_switch_labels = false
+
+[*.{yaml,yml}]
+indent_style = space
+
+[*.nix]
+indent_style = space

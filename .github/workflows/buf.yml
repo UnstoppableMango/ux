@@ -23,3 +23,7 @@ jobs:
         with:
           token: ${{ secrets.BUF_TOKEN }}
           version: ${{ env.BUF_VERSION }}
+
+          # IDK shits borked atm
+          # https://github.com/UnstoppableMango/ux/actions/runs/19203807313/job/54896076476
+          push: false

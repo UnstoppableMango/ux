@@ -63,7 +63,7 @@ func BuildCsharpDummy(dummyPath string) (string, error) {
 	cmd.Stdout, cmd.Stderr = stdout, stderr
 
 	if err := cmd.Run(); err != nil {
-		return "", fmt.Errorf("%w: %s", err, stderr)
+		return "", fmt.Errorf("%w:\nstdout: %s\nstderr: %s", err, stdout, stderr)
 	}
 
 	return filepath.Join(tmpDir, "Dummy"), nil
