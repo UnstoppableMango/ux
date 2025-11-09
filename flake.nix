@@ -28,7 +28,7 @@
     (flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = nixpkgs.legacyPackages.${system} // gomod2nix.legacyPackages.${system};
       in
       {
         formatter = treefmt-nix.lib.mkWrapper pkgs {
@@ -41,10 +41,10 @@
           };
         };
         packages.default = pkgs.callPackage ./. {
-          inherit (gomod2nix.legacyPackages.${system}) buildGoApplication;
+          inherit (pkgs) buildGoApplication;
         };
         devShells.default = pkgs.callPackage ./shell.nix {
-          inherit (gomod2nix.legacyPackages.${system}) mkGoEnv gomod2nix;
+          inherit (pkgs) mkGoEnv gomod2nix;
         };
       }
     ));
