@@ -29,6 +29,13 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        ux = pkgs.callPackage ./. {
+          inherit (gomod2nix.legacyPackages.${system}) buildGoApplication;
+        };
+        uxApp = {
+          type = "app";
+          program = ux + "/bin/ux";
+        };
       in
       {
         formatter = treefmt-nix.lib.mkWrapper pkgs {
@@ -40,9 +47,13 @@
             buf.enable = true;
           };
         };
-        packages.default = pkgs.callPackage ./. {
-          inherit (gomod2nix.legacyPackages.${system}) buildGoApplication;
-        };
+
+        packages.ux = ux;
+        packages.default = ux;
+
+        apps.ux = uxApp;
+        apps.default = uxApp;
+
         devShells.default = pkgs.callPackage ./shell.nix {
           inherit (gomod2nix.legacyPackages.${system}) mkGoEnv gomod2nix;
         };

@@ -15,7 +15,7 @@
 
 buildGoApplication {
   pname = "ux";
-  version = "0.0.11";
+  version = "0.0.12";
   src = ./.;
   modules = ./gomod2nix.toml;
 
