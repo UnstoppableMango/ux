@@ -86,7 +86,7 @@ go.sum: go.mod ${GO_SRC}
 	cd $(dir $@) && $(GINKGO) generate $(notdir $@)
 
 .envrc: hack/example.envrc ## Generate a recommended .envrc
-	cp $< $@ && chmod a=,u=r $@
+	cp $< $@ && chmod a=,u=rw $@
 
 export GOBIN := ${CURDIR}/bin
 
@@ -169,3 +169,8 @@ JSON_SRC := global.json .dprint.json .github/renovate.json .vscode/extensions.js
 .make/golangci-lint-run: ${GO_SRC}
 	$(GOLINT) run
 	@touch $@
+
+.PHONY: nix
+nix: ## Switch to a Nix based environment
+	cp hack/nix.envrc .envrc && chmod a=,u=rw .envrc
+

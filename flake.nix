@@ -35,6 +35,7 @@
         uxApp = {
           type = "app";
           program = ux + "/bin/ux";
+          meta = ux.meta;
         };
       in
       {
