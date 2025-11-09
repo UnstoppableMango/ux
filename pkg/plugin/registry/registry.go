@@ -7,6 +7,7 @@ import (
 
 	"github.com/unmango/go/iter"
 	"github.com/unstoppablemango/ux/pkg/plugin"
+	"github.com/unstoppablemango/ux/pkg/plugin/registry/github"
 	"github.com/unstoppablemango/ux/pkg/plugin/source"
 )
 
@@ -15,6 +16,7 @@ var (
 		EnvList("PATH"),
 		CwdBin(),
 		Cli("dummy"),
+		github.Repository(github.DefaultClient, "UnstoppableMango", "openapi2go"),
 	))
 
 	Empty plugin.Registry = aggregate{}
