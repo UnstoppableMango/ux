@@ -37,6 +37,11 @@ buildGoApplication rec {
     description = "Universal codegen CLI";
     homepage = "https://github.com/UnstoppableMango/ux";
     license = lib.licenses.mit;
-    maintainers = [ "UnstoppableMango" ];
+    maintainers = [
+      {
+        name = "UnstoppableMangoo";
+        email = "erik.rasmussen@unmango.dev";
+      }
+    ];
   };
 }
