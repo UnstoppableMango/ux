@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/charmbracelet/log"
-	"github.com/google/go-github/v75/github"
+	"github.com/google/go-github/v78/github"
 	"github.com/unmango/go/iter"
 	"github.com/unstoppablemango/ux/pkg/plugin"
 	"github.com/unstoppablemango/ux/pkg/plugin/source"
