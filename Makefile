@@ -21,7 +21,7 @@ NIX        ?= nix
 build: .make/buf-build .make/dotnet-build bin/ux
 generate gen: codegen
 test: .make/ginkgo-run
-fmt format: .make/buf-fmt .make/go-fmt .make/dotnet-format .make/dprint-fmt .make/nix-fmt
+fmt format: .make/buf-fmt .make/go-fmt .make/dotnet-format .make/dprint-fmt
 lint: .make/buf-lint .make/go-vet .make/golangci-lint-run
 tidy update: go.sum buf.lock flake.lock gomod2nix.toml
 docker: .make/docker-ux
