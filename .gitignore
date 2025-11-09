@@ -5,6 +5,7 @@ obj/
 *.txt
 *.dummy*
 nupkgs/
+result
 
 .envrc
 .direnv/
@@ -12,6 +13,7 @@ nupkgs/
 !.vscode/extensions.json
 .DS_Store
 *.user
+.idea/
 
 # Added by goreleaser init:
 dist/

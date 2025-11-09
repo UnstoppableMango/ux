@@ -12,7 +12,7 @@ DPRINT     ?= ${CURDIR}/bin/dprint
 GINKGO     ?= $(GO) tool ginkgo
 GOLINT     ?= $(GO) tool golangci-lint
 GORELEASER ?= goreleaser
-GOMOD2NIX  ?= gomod2nix
+GOMOD2NIX  ?= $(GO) tool gomod2nix
 MOCKGEN    ?= $(GO) tool mockgen
 NIX        ?= nix
 
@@ -21,7 +21,7 @@ NIX        ?= nix
 build: .make/buf-build .make/dotnet-build bin/ux
 generate gen: codegen
 test: .make/ginkgo-run
-fmt format: .make/buf-fmt .make/go-fmt .make/dotnet-format .make/dprint-fmt
+fmt format: .make/buf-fmt .make/go-fmt .make/dotnet-format .make/dprint-fmt .make/nix-fmt
 lint: .make/buf-lint .make/go-vet .make/golangci-lint-run
 tidy update: go.sum buf.lock flake.lock gomod2nix.toml
 docker: .make/docker-ux
@@ -40,6 +40,7 @@ GO_PB_SRC   := ${PROTO_SRC:proto/%.proto=gen/%.pb.go}
 GO_CODEGEN  := ${GO_GRPC_SRC} ${GO_PB_SRC}
 CS_PROJ_SRC := $(join ${CS_NS:%=src/%},${CS_NS:%=/%.csproj})
 CS_SRC      != $(DEVCTL) list --cs
+NIX_SRC     := $(wildcard *.nix)
 
 ##@ Artifacts
 
@@ -57,6 +58,10 @@ ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 
 test/e2e/testdata/petstore.yaml:
 	curl -Lo $@ https://raw.githubusercontent.com/readmeio/oas/refs/heads/main/packages/oas-examples/3.1/yaml/petstore.yaml
+
+.PHONY: result
+result:
+	$(NIX) build
 
 ##@ Locks
 
@@ -143,6 +148,10 @@ JSON_SRC := global.json .dprint.json .github/renovate.json .vscode/extensions.js
 
 .make/go-fmt: ${GO_SRC}
 	$(GO) fmt $(addprefix ./,$(sort $(dir $?)))
+	@touch $@
+
+.make/nix-fmt: ${NIX_SRC}
+	$(NIX) fmt
 	@touch $@
 
 .make/ginkgo-run: ${GO_SRC} | test/e2e/testdata/petstore.yaml

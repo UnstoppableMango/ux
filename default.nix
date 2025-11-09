@@ -18,4 +18,13 @@ buildGoApplication {
   version = "0.0.11";
   src = ./.;
   modules = ./gomod2nix.toml;
+
+  nativeBuildInputs = with pkgs; [
+    git
+    dotnetCorePackages.sdk_10_0
+  ];
+
+  checkPhase = ''
+    		go test ./... -ginkgo.label-filter="!E2E"
+    	'';
 }

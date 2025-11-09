@@ -19,10 +19,10 @@ let
 in
 pkgs.mkShell {
   packages = with pkgs; [
-		docker
-		git
-		gnumake
-		buf
+    docker
+    git
+    gnumake
+    buf
     goEnv
     gomod2nix
   ];
