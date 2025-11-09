@@ -1,8 +1,6 @@
 package plugin
 
 import (
-	"fmt"
-
 	ux "github.com/unstoppablemango/ux/pkg"
 )
 
@@ -12,14 +10,10 @@ func (s String) String() string {
 	return string(s)
 }
 
-func (s String) Execute(args []string) error {
-	if p, err := s.Plugin(); err != nil {
-		return fmt.Errorf("executing %s: %w", s, err)
-	} else {
-		return p.Execute(args)
-	}
+func (s String) IsBin() bool {
+	return BinPattern.MatchString(s.String())
 }
 
-func (s String) Plugin() (ux.Plugin, error) {
-	return Parse(s.String(), nil)
+func (s String) Parse(parser Parser) (ux.Plugin, error) {
+	return parser.Parse(s.String())
 }
