@@ -59,10 +59,10 @@ func BinName(source, target ux.Spec) string {
 	return fmt.Sprintf("%s2%s", source, target)
 }
 
-func execute(ctx context.Context, path string, args []string) error {
-	log := log.FromContext(ctx).With("cmd", path)
+func execute(ctx context.Context, name string, args []string) error {
+	log := log.FromContext(ctx).With("cmd", name)
 
-	cmd := exec.CommandContext(ctx, path, args...)
+	cmd := exec.CommandContext(ctx, name, args...)
 	// stdin := &uxv1alpha1.Stdin{
 	// 	Command: uxv1alpha1.Command_COMMAND_GENERATE,
 	// 	Args:    args,

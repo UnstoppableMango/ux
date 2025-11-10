@@ -761,8 +761,8 @@ schema = 3
     version = "v0.3.0"
     hash = "sha256-FqgcX5fkI4udyzbGL9IlSd+r6WltLeF7lDbRGiISm3o="
   [mod."github.com/unmango/go"]
-    version = "v0.9.0"
-    hash = "sha256-c/Ud4O52yl8QG7o/koDvLHT/APv7yYkM4IApvlwRm5I="
+    version = "v0.10.0"
+    hash = "sha256-FYRN356uY/1H7hYxd2b6xCP+Mjt54ZY79mXj7IJCYzM="
   [mod."github.com/uudashr/gocognit"]
     version = "v1.2.0"
     hash = "sha256-C4EsT9FchhzgLmDlQSRF1q1pzqIFHnLqM3VERDWSnug="
