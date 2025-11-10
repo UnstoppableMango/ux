@@ -6,21 +6,9 @@ import (
 	"github.com/charmbracelet/log"
 	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/plugin"
-	"github.com/unstoppablemango/ux/pkg/plugin/cli"
 )
 
-var (
-	NoOp          plugin.Parser = Func(noOp)
-	LocalFile     plugin.Parser = Func(cli.ParseLocalFile)
-	LocalFileName plugin.Parser = Func(cli.ParseLocalFileName)
-
-	Default plugin.Parser = FirstSuccesful([]plugin.Parser{
-		cli.Exact("dummy"),
-		cli.EnvVar("ALLOW_PLUGIN"),
-		LocalFile,
-		LocalFileName,
-	})
-)
+var NoOp plugin.Parser = Func(noOp)
 
 type Func func(plugin.String) (ux.Plugin, error)
 

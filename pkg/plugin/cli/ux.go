@@ -39,7 +39,7 @@ func PluginMain(build func(plugin.Ux) decl.Plugin) {
 	}
 }
 
-func Invoke(ctx context.Context, p plugin.String, input, output string) error {
+func Invoke(ctx context.Context, p plugin.String, args []string) error {
 	os := os.FromContext(ctx)
 	dir, err := os.MkdirTemp("", "")
 	if err != nil {
@@ -47,6 +47,15 @@ func Invoke(ctx context.Context, p plugin.String, input, output string) error {
 	}
 
 	stdout, stderr := &bytes.Buffer{}, &bytes.Buffer{}
+	input, output := "", ""
+
+	// TODO: Support more than just input/output args
+	if len(args) > 0 {
+		input = args[0]
+	}
+	if len(args) > 1 {
+		output = args[1]
+	}
 
 	cmd := exec.CommandContext(ctx, p.String())
 	cmd.Stdout, cmd.Stderr = stdout, stderr
@@ -56,7 +65,9 @@ func Invoke(ctx context.Context, p plugin.String, input, output string) error {
 		fmt.Sprintf("UX_OUTPUT_PATH=%s", output),
 	}
 
-	err = cmd.Run()
+	if err = cmd.Run(); err != nil {
+		return fmt.Errorf("executing plugin %q: %w", p, err)
+	}
 
 	if stdout.Len() > 0 {
 		fmt.Println(stdout)
