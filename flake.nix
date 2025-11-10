@@ -29,14 +29,15 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        ux = pkgs.callPackage ./. {
+        cli = pkgs.callPackage ./. {
           inherit (gomod2nix.legacyPackages.${system}) buildGoApplication;
         };
-        uxApp = {
+        app = {
           type = "app";
-          program = ux + "/bin/ux";
-          meta = ux.meta;
+          program = cli + "/bin/ux";
+          meta = cli.meta;
         };
+        container = pkgs.callPackage ./container.nix { ux = cli; };
       in
       {
         formatter = treefmt-nix.lib.mkWrapper pkgs {
@@ -49,11 +50,13 @@
           };
         };
 
-        packages.ux = ux;
-        packages.default = ux;
+        packages = {
+          inherit cli container;
+          default = cli;
+        };
 
-        apps.ux = uxApp;
-        apps.default = uxApp;
+        apps.ux = app;
+        apps.default = app;
 
         devShells.default = pkgs.callPackage ./shell.nix {
           inherit (gomod2nix.legacyPackages.${system}) mkGoEnv gomod2nix;
