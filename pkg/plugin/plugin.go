@@ -30,11 +30,11 @@ type Registry interface {
 }
 
 type Parser interface {
-	Parse(string) (ux.Plugin, error)
+	Parse(String) (ux.Plugin, error)
 }
 
 func Parse(name string, parser Parser) (ux.Plugin, error) {
-	return parser.Parse(name)
+	return parser.Parse(String(name))
 }
 
 func ForGenerator(g ux.Generator) ux.Plugin {

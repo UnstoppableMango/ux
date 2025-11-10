@@ -12,7 +12,9 @@ import (
 	"github.com/unstoppablemango/ux/pkg/plugin/decl"
 )
 
-var Fail = cli.Fail
+var (
+	Fail = cli.Fail
+)
 
 type Ux struct{ os.Os }
 
@@ -37,15 +39,16 @@ func PluginMain(build func(plugin.Ux) decl.Plugin) {
 	}
 }
 
-func Invoke(ctx context.Context, name, input, output string) error {
-	dir, err := os.System.MkdirTemp("", "")
+func Invoke(ctx context.Context, p plugin.String, input, output string) error {
+	os := os.FromContext(ctx)
+	dir, err := os.MkdirTemp("", "")
 	if err != nil {
 		return err
 	}
 
 	stdout, stderr := &bytes.Buffer{}, &bytes.Buffer{}
 
-	cmd := exec.CommandContext(ctx, name)
+	cmd := exec.CommandContext(ctx, p.String())
 	cmd.Stdout, cmd.Stderr = stdout, stderr
 	cmd.Dir = dir
 	cmd.Env = []string{

@@ -59,7 +59,7 @@ func (e envVar) Load(context.Context) (ux.Plugin, error) {
 	if env, ok := os.LookupEnv(e.name); !ok {
 		return nil, fmt.Errorf("%s not set", e.name)
 	} else {
-		return e.Parse(env)
+		return plugin.Parse(env, e)
 	}
 }
 
