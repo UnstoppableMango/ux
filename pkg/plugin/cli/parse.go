@@ -6,7 +6,15 @@ import (
 	"github.com/unmango/go/os"
 	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/plugin"
+	"github.com/unstoppablemango/ux/pkg/plugin/parser"
 )
+
+var Parser plugin.Parser = parser.FirstSuccesful{
+	parser.Func(ParseExistingFile),
+	parser.Func(ParseLocalFile),
+	Exact("dummy"),
+	EnvVar("ALLOW_PLUGIN"),
+}
 
 func ParseExistingFile(v plugin.String) (ux.Plugin, error) {
 	if stat, err := v.Stat(os.System); err != nil {
@@ -14,7 +22,7 @@ func ParseExistingFile(v plugin.String) (ux.Plugin, error) {
 	} else if stat.IsDir() {
 		return nil, fmt.Errorf("not a file: %s", v)
 	} else {
-		return Plugin(v), nil
+		return Plugin{Name: v.String()}, nil
 	}
 }
 
@@ -34,7 +42,7 @@ type Exact string
 
 func (s Exact) Parse(v plugin.String) (ux.Plugin, error) {
 	if plugin.String(s) == v {
-		return Plugin(v), nil
+		return Plugin{Name: v.String()}, nil
 	} else {
 		return nil, fmt.Errorf("%s did not exactly match %s", s, v)
 	}
@@ -48,7 +56,7 @@ func (e EnvVar) String() string {
 
 func (name EnvVar) Parse(v plugin.String) (ux.Plugin, error) {
 	if env, ok := os.System.LookupEnv(name.String()); ok && v.String() == env {
-		return Plugin(env), nil
+		return Plugin{Name: env}, nil
 	} else {
 		return nil, fmt.Errorf("%s did not match %s found in %s", v, env, name)
 	}

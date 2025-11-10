@@ -29,10 +29,12 @@ func Generator(path string, source, target ux.Spec) ux.Generator {
 	return generator{source, target, path}
 }
 
-type Plugin string
+type Plugin struct {
+	Name string
+}
 
 func (p Plugin) String() string {
-	return string(p)
+	return p.Name
 }
 
 func (p Plugin) Path() string {

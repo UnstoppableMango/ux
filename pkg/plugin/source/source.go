@@ -19,7 +19,7 @@ func (f Cli) String() string {
 }
 
 func (f Cli) Load(context.Context) (ux.Plugin, error) {
-	return cli.Plugin(f), nil
+	return cli.Plugin{Name: f.String()}, nil
 }
 
 type dirEntry struct {
@@ -39,7 +39,7 @@ func (e dirEntry) Load(context.Context) (ux.Plugin, error) {
 		return nil, fmt.Errorf("%s does not match %s", e.Name(), plugin.BinPattern)
 	}
 
-	return cli.Plugin(e.Path()), nil
+	return plugin.Parse(e.Path(), cli.Parser)
 }
 
 func (e dirEntry) Path() string {

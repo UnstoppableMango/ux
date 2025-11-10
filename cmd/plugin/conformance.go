@@ -10,8 +10,7 @@ import (
 	"github.com/onsi/ginkgo/v2/types"
 	"github.com/onsi/gomega"
 	"github.com/spf13/cobra"
-	"github.com/unmango/go/cli"
-	pcli "github.com/unstoppablemango/ux/pkg/plugin/cli"
+	"github.com/unstoppablemango/ux/pkg/plugin/cli"
 	"github.com/unstoppablemango/ux/pkg/plugin/conformance"
 )
 
@@ -26,7 +25,7 @@ func NewConformance() *cobra.Command {
 			log.Debug("Initializing suite")
 			t := conformance.T{}
 			conformance.NewSuite(conformance.SuiteOptions{
-				Plugin: pcli.Plugin(args[0]),
+				Plugin: cli.Plugin{Name: args[0]},
 			})
 
 			log.Debug("Creating temp dir")
