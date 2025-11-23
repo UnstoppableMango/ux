@@ -22,6 +22,7 @@ pkgs.mkShell {
     docker
     git
     gnumake
+    shellcheck
     buf
     goEnv
     gomod2nix
