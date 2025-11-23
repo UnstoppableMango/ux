@@ -19,12 +19,12 @@ let
 in
 pkgs.mkShell {
   packages = with pkgs; [
+    buf
     docker
     git
     gnumake
-    shellcheck
-    buf
     goEnv
     gomod2nix
+    shellcheck
   ];
 }
