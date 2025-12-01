@@ -23,7 +23,7 @@ require (
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.21.0
 	github.com/unmango/go v0.10.0
-	golang.org/x/mod v0.29.0
+	golang.org/x/mod v0.30.0
 	google.golang.org/protobuf v1.36.10
 )
 
