@@ -33,7 +33,7 @@ func TestE2e(t *testing.T) {
 }
 
 var _ = BeforeSuite(func(ctx context.Context) {
-	cwd, err := git.Root(ctx)
+	cwd, err := git.RootContext(ctx)
 	Expect(err).NotTo(HaveOccurred())
 	gitRoot = cwd
 
