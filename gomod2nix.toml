@@ -359,8 +359,8 @@ schema = 3
     version = "v0.0.0-20250413222143-f2e10e00591b"
     hash = "sha256-2dJkmu15LILoKuvx8WaxEaPgQiOlz98L8KhHPBFInl0="
   [mod."github.com/golangci/golangci-lint/v2"]
-    version = "v2.6.1"
-    hash = "sha256-ySWp4iL7Vkgf+uOsSE7MoOLTXaiATBVoiqXbwG4+aLM="
+    version = "v2.6.2"
+    hash = "sha256-tp5dWzQJQWBPI91N6BY2pbUWTB+UMAjlrIIKoi0p8j4="
   [mod."github.com/golangci/golines"]
     version = "v0.0.0-20250217232252-b35a6149b587"
     hash = "sha256-EMNsFSAbYCmKW1gHqfJjLsdI8Xv2x1K5rdAxxm8P7RQ="
@@ -509,11 +509,11 @@ schema = 3
     version = "v0.5.0"
     hash = "sha256-MrNduVmttSjanjQbF51VRCiJuiPJBqihUt6WVrLhyno="
   [mod."github.com/maratori/testableexamples"]
-    version = "v1.0.0"
-    hash = "sha256-u5DXexMhqJsB5iy3HWifpkIn+DUYynEjyDyou2BnHxY="
+    version = "v1.0.1"
+    hash = "sha256-MroQ2sseA4L7AFq862u87f84RfP+VTX+dBGZxlGfsAI="
   [mod."github.com/maratori/testpackage"]
-    version = "v1.1.1"
-    hash = "sha256-ste+0nRmwQ/2W244WsRC40VsKG2TfTo3upGhT94yb0k="
+    version = "v1.1.2"
+    hash = "sha256-+fvihfrszI1u8ouGce8UBofRwyjNEM61uAHYbt82CZg="
   [mod."github.com/matoous/godox"]
     version = "v1.1.0"
     hash = "sha256-ZNTftxu+wIvUX9fmNH96i8m2GU8z13FzW0jXXd5gBqM="
@@ -761,8 +761,8 @@ schema = 3
     version = "v0.3.0"
     hash = "sha256-FqgcX5fkI4udyzbGL9IlSd+r6WltLeF7lDbRGiISm3o="
   [mod."github.com/unmango/go"]
-    version = "v0.10.0"
-    hash = "sha256-FYRN356uY/1H7hYxd2b6xCP+Mjt54ZY79mXj7IJCYzM="
+    version = "v0.10.2"
+    hash = "sha256-VGyCQlsvTD2fab+y1SNx4ifxrkOaRBQRe5fFHNqwj+4="
   [mod."github.com/uudashr/gocognit"]
     version = "v1.2.0"
     hash = "sha256-C4EsT9FchhzgLmDlQSRF1q1pzqIFHnLqM3VERDWSnug="
@@ -854,8 +854,8 @@ schema = 3
     version = "v0.0.0-20251023183803-a4bb9ffd2546"
     hash = "sha256-H92+0L1kY6OHen1YctecROkC2/a/tLx7oWan/XaInA0="
   [mod."golang.org/x/mod"]
-    version = "v0.29.0"
-    hash = "sha256-UaJLv8CdfUpnT4nArFSt8lLpFVAGHYmT7jaZ6vPGuEQ="
+    version = "v0.30.0"
+    hash = "sha256-tZJikWbjGgN5rCgB/dqj3dpn9BfAZUVyXmd3KavAgLE="
   [mod."golang.org/x/net"]
     version = "v0.46.0"
     hash = "sha256-GkAUXwqEJZF2t5dmxJVEE+t58EDzO24KtihqHqsrZH0="
