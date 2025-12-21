@@ -24,12 +24,48 @@
         "aarch64-darwin"
       ];
       imports = [ inputs.treefmt-nix.flakeModule ];
+
       perSystem =
-        { pkgs, system, ... }:
+        {
+          inputs',
+          pkgs,
+          system,
+          lib,
+          ...
+        }:
         let
-          ux = pkgs.callPackage ./. {
-            inherit (inputs.gomod2nix.legacyPackages.${system}) buildGoApplication;
+          ux = inputs'.gomod2nix.legacyPackages.buildGoApplication rec {
+            pname = "ux";
+            version = "0.0.12";
+            src = ./.;
+            modules = ./gomod2nix.toml;
+
+            nativeBuildInputs = with pkgs; [
+              git
+              dotnetCorePackages.sdk_10_0
+            ];
+
+            ldflags = [
+              "-X github.com/unstoppablemango/ux/internal.Version=${version}"
+            ];
+
+            checkPhase = ''
+              go test ./... -ginkgo.label-filter="!E2E"
+            '';
+
+            meta = {
+              description = "Universal codegen CLI";
+              homepage = "https://github.com/UnstoppableMango/ux";
+              license = lib.licenses.mit;
+              maintainers = [
+                {
+                  name = "UnstoppableMango";
+                  email = "erik.rasmussen@unmango.dev";
+                }
+              ];
+            };
           };
+
           uxApp = {
             type = "app";
             program = ux + "/bin/ux";
@@ -43,9 +79,22 @@
           apps.ux = uxApp;
           apps.default = uxApp;
 
-          devShells.default = pkgs.callPackage ./shell.nix {
-            inherit (inputs.gomod2nix.legacyPackages.${system}) mkGoEnv gomod2nix;
-          };
+          devShells.default =
+            let
+              inherit (inputs.gomod2nix.legacyPackages.${system}) mkGoEnv gomod2nix;
+              goEnv = mkGoEnv { pwd = ./.; };
+            in
+            pkgs.mkShell {
+              packages = with pkgs; [
+                buf
+                docker
+                git
+                gnumake
+                goEnv
+                gomod2nix
+                shellcheck
+              ];
+            };
 
           treefmt = {
             projectRootFile = "flake.nix";
