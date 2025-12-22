@@ -33,8 +33,6 @@ jobs:
   nix:
     runs-on: ux-runners
     if: github.event_name == 'pull_request'
-    env:
-      USER: runner
     steps:
       - uses: actions/checkout@v6
 
