@@ -14,7 +14,7 @@ tool (
 require (
 	github.com/adrg/xdg v0.5.3
 	github.com/charmbracelet/log v0.4.2
-	github.com/google/go-github/v79 v79.0.0
+	github.com/google/go-github/v80 v80.0.0
 	github.com/mattn/go-isatty v0.0.20
 	github.com/onsi/ginkgo/v2 v2.27.3
 	github.com/onsi/gomega v1.38.3
