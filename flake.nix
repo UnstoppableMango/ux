@@ -4,10 +4,13 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    systems.url = "github:nix-systems/default";
+
     gomod2nix = {
       url = "github:nix-community/gomod2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,13 +20,11 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
+      systems = import inputs.systems;
+
+      imports = [
+        inputs.treefmt-nix.flakeModule
       ];
-      imports = [ inputs.treefmt-nix.flakeModule ];
 
       perSystem =
         {
@@ -57,12 +58,7 @@
               description = "Universal codegen CLI";
               homepage = "https://github.com/UnstoppableMango/ux";
               license = lib.licenses.mit;
-              maintainers = [
-                {
-                  name = "UnstoppableMango";
-                  email = "erik.rasmussen@unmango.dev";
-                }
-              ];
+              maintainers = with lib.maintainers; [ UnstoppableMango ];
             };
           };
 
@@ -73,6 +69,13 @@
           };
         in
         {
+          _module.args.pkgs = import inputs.nixpkgs {
+            inherit system;
+            overlays = [
+              inputs.gomod2nix.overlays.default
+            ];
+          };
+
           packages.ux = ux;
           packages.default = ux;
 
@@ -81,7 +84,7 @@
 
           devShells.default =
             let
-              inherit (inputs.gomod2nix.legacyPackages.${system}) mkGoEnv gomod2nix;
+              inherit (inputs'.gomod2nix.legacyPackages) mkGoEnv;
               goEnv = mkGoEnv { pwd = ./.; };
             in
             pkgs.mkShell {
