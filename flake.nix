@@ -35,6 +35,10 @@
           ...
         }:
         let
+          inherit (inputs'.gomod2nix.legacyPackages) mkGoEnv;
+          goEnv = mkGoEnv { pwd = ./.; };
+          dotnet = pkgs.dotnetCorePackages.sdk_10_0;
+
           ux = inputs'.gomod2nix.legacyPackages.buildGoApplication rec {
             pname = "ux";
             version = "0.0.12";
@@ -43,7 +47,7 @@
 
             nativeBuildInputs = with pkgs; [
               git
-              dotnetCorePackages.sdk_10_0
+              dotnet
             ];
 
             ldflags = [
@@ -62,6 +66,21 @@
             };
           };
 
+          ctr = pkgs.dockerTools.buildImage {
+            name = "ux";
+            tag = "latest";
+
+            copyToRoot = pkgs.buildEnv {
+              name = "image-root";
+              paths = [ ux ];
+              pathsToLink = [ "/bin" ];
+            };
+
+            config = {
+              Cmd = [ "/bin/ux" ];
+            };
+          };
+
           uxApp = {
             type = "app";
             program = ux + "/bin/ux";
@@ -76,28 +95,25 @@
             ];
           };
 
+          packages.ux-image = ctr;
           packages.ux = ux;
           packages.default = ux;
 
           apps.ux = uxApp;
           apps.default = uxApp;
 
-          devShells.default =
-            let
-              inherit (inputs'.gomod2nix.legacyPackages) mkGoEnv;
-              goEnv = mkGoEnv { pwd = ./.; };
-            in
-            pkgs.mkShell {
-              packages = with pkgs; [
-                buf
-                docker
-                git
-                gnumake
-                goEnv
-                gomod2nix
-                shellcheck
-              ];
-            };
+          devShells.default = pkgs.mkShell {
+            packages = with pkgs; [
+              buf
+              docker
+              git
+              gnumake
+              goEnv
+              gomod2nix
+              nixfmt
+              shellcheck
+            ];
+          };
 
           treefmt = {
             projectRootFile = "flake.nix";

@@ -59,9 +59,13 @@ ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 test/e2e/testdata/petstore.yaml:
 	curl -Lo $@ https://raw.githubusercontent.com/readmeio/oas/refs/heads/main/packages/oas-examples/3.1/yaml/petstore.yaml
 
-.PHONY: result
-result:
-	$(NIX) build
+.PHONY: bin/ux-nix
+bin/ux-nix:
+	$(NIX) build --out-link $@ .#ux
+
+.PHONY: bin/image.tar.gz
+bin/image.tar.gz:
+	$(NIX) build --out-link $@ .#ux-image
 
 ##@ Locks
 
