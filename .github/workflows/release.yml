@@ -2,12 +2,12 @@ name: Release
 
 on:
   pull_request:
-    branches: ['main']
+    branches: ["main"]
     paths:
       - .github/workflows/release.yml
       - .goreleaser.yaml
   push:
-    tags: ['v*.*.*']
+    tags: ["v*.*.*"]
 
 permissions:
   contents: read
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   goreleaser:
-    runs-on: ubuntu-latest
+    runs-on: ux-runners
     permissions:
       contents: write
     steps:
@@ -31,7 +31,7 @@ jobs:
       - uses: goreleaser/goreleaser-action@v6
         if: github.event_name == 'pull_request'
         with:
-          version: '~> v2'
+          version: "~> v2"
           args: release --snapshot
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -42,13 +42,15 @@ jobs:
       - uses: goreleaser/goreleaser-action@v6
         if: github.event_name != 'pull_request'
         with:
-          version: '~> v2'
+          version: "~> v2"
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
   nuget:
-    runs-on: ubuntu-latest
+    runs-on: ux-runners
+    env:
+      DOTNET_INSTALL_DIR: "./.dotnet"
     steps:
       - uses: actions/checkout@v6
         with:
