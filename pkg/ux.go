@@ -7,6 +7,7 @@ import (
 	"iter"
 
 	"github.com/charmbracelet/log"
+	"github.com/spf13/afero"
 )
 
 type Context interface {
@@ -20,6 +21,15 @@ type Spec interface {
 type Input interface {
 	Open() (io.Reader, error)
 	Spec(context.Context) (Spec, error)
+}
+
+type InputFs interface {
+	afero.Fs
+}
+
+type Phase interface {
+	fmt.Stringer
+	Run(context.Context, InputFs) error
 }
 
 type Generator interface {
