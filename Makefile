@@ -24,7 +24,7 @@ test: .make/ginkgo-run
 fmt format: .make/buf-fmt .make/go-fmt .make/dotnet-format .make/dprint-fmt
 lint: .make/buf-lint .make/go-vet .make/golangci-lint-run
 tidy update: go.sum buf.lock flake.lock gomod2nix.toml
-docker: .make/docker-ux
+docker: .make/docker-ux bin/image.tar.gz
 nuget: .make/dotnet-pack
 
 ##@ Source
@@ -66,6 +66,7 @@ bin/ux-nix:
 .PHONY: bin/image.tar.gz
 bin/image.tar.gz:
 	$(NIX) build --out-link $@ .#ux-image
+	$(DOCKER) load < $@
 
 ##@ Locks
 
@@ -177,4 +178,3 @@ JSON_SRC := global.json .dprint.json .github/renovate.json .vscode/extensions.js
 .PHONY: nix
 nix: ## Switch to a Nix based environment
 	cp hack/nix.envrc .envrc && chmod a=,u=rw .envrc
-
