@@ -106,6 +106,7 @@
             packages = with pkgs; [
               buf
               docker
+              dprint
               git
               gnumake
               goEnv
