@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"os/exec"
 
+	"github.com/spf13/afero"
 	"github.com/unmango/go/os"
+	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/cli"
 	"github.com/unstoppablemango/ux/pkg/plugin"
 	"github.com/unstoppablemango/ux/pkg/plugin/decl"
@@ -17,6 +19,14 @@ var (
 )
 
 type Ux struct{ os.Os }
+
+func (ux *Ux) Input() ux.InputFs[afero.File] {
+	return afero.NewOsFs()
+}
+
+func (ux *Ux) Output() afero.Fs {
+	return afero.NewOsFs()
+}
 
 func (ux *Ux) InputFile() string {
 	return ux.Getenv("UX_INPUT_FILE")
