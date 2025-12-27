@@ -8,7 +8,6 @@ import (
 
 	"github.com/spf13/afero"
 	"github.com/unmango/go/os"
-	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/cli"
 	"github.com/unstoppablemango/ux/pkg/plugin"
 	"github.com/unstoppablemango/ux/pkg/plugin/decl"
@@ -20,7 +19,7 @@ var (
 
 type Ux struct{ os.Os }
 
-func (ux *Ux) Input() ux.InputFs[afero.File] {
+func (ux *Ux) Input() afero.Fs {
 	return afero.NewOsFs()
 }
 
