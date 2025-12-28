@@ -23,4 +23,6 @@ var _ = Describe("Generate", func() {
 		Eventually(ses).Should(gexec.Exit(0))
 		Expect(out).To(BeARegularFile())
 	})
+
+	It("should generate a gomod2nix.toml file", func() {})
 })

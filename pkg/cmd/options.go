@@ -11,8 +11,8 @@ type GlobalOptions struct {
 	Verbose bool
 }
 
-func (opts *GlobalOptions) NewConfig() config.Config {
-	viper := viper.NewWithOptions()
+func (opts *GlobalOptions) NewConfig() *viper.Viper {
+	viper := viper.New()
 	if opts.Config != "" {
 		viper.SetConfigFile(opts.Config)
 	} else {
