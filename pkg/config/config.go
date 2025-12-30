@@ -34,7 +34,7 @@ type Config struct {
 
 func NewViper() *viper.Viper {
 	v := viper.New()
-	v.SetConfigName(DefaultName)
+	v.SetConfigName(Project)
 	v.AddConfigPath(DefaultDir)
 	v.AddConfigPath(".")
 
