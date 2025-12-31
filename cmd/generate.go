@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"
 	"github.com/unmango/go/cli"
 	ux "github.com/unstoppablemango/ux/pkg"
@@ -46,8 +47,8 @@ func generateConfig() error {
 		return fmt.Errorf("reading config: %w", err)
 	}
 
-	for name := range conf.Targets {
-		fmt.Printf("Generating target: %s\n", name)
+	for name, target := range conf.Targets {
+		log.Info("Generating target", "name", name, "type", target.Type)
 	}
 
 	return nil
