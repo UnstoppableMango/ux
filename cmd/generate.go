@@ -8,6 +8,7 @@ import (
 	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"
 	"github.com/unmango/go/cli"
+	"github.com/unmango/go/os"
 	ux "github.com/unstoppablemango/ux/pkg"
 	"github.com/unstoppablemango/ux/pkg/config"
 	"github.com/unstoppablemango/ux/pkg/input"
@@ -65,9 +66,15 @@ func generateConfig(ctx context.Context) error {
 			continue
 		}
 
+		os := os.FromContext(ctx)
+		workspace, err := os.MkdirTemp("", "")
+		if err != nil {
+			log.Errorf("Creating workspace: %s", err)
+		}
+
 		cmd := exec.CommandContext(ctx, command[0])
 		cmd.Args = command
-		// cmd.Dir = conf.WorkingDirectory
+		cmd.Dir = workspace
 	}
 
 	return nil
