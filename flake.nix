@@ -111,6 +111,7 @@
               gnumake
               goEnv
               gomod2nix
+              nil
               nixfmt
               shellcheck
             ];
