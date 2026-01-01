@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os/exec"
 
 	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"
@@ -28,10 +29,12 @@ func NewGenerate() *cobra.Command {
 		},
 		Run: func(cmd *cobra.Command, args []string) {
 			var err error
+
+			ctx := cmd.Context()
 			if len(args) == 0 {
-				err = generateConfig()
+				err = generateConfig(ctx)
 			} else {
-				err = generateTarget(cmd.Context(), args)
+				err = generateTarget(ctx, args)
 			}
 
 			if err != nil {
@@ -41,14 +44,30 @@ func NewGenerate() *cobra.Command {
 	}
 }
 
-func generateConfig() error {
+func generateConfig(ctx context.Context) error {
 	conf, err := config.Read(config.NewViper())
 	if err != nil {
 		return fmt.Errorf("reading config: %w", err)
 	}
 
 	for name, target := range conf.Targets {
-		log.Info("Generating target", "name", name, "type", target.Type)
+		log := log.With("name", name, "type", target.Type)
+
+		log.Info("Generating target")
+		if target.Type != "cli" {
+			log.Warn("Unsupported target")
+			continue
+		}
+
+		command := target.Command
+		if len(command) == 0 {
+			log.Error("No command specified for target")
+			continue
+		}
+
+		cmd := exec.CommandContext(ctx, command[0])
+		cmd.Args = command
+		// cmd.Dir = conf.WorkingDirectory
 	}
 
 	return nil
