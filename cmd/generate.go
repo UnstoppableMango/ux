@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"
@@ -66,18 +67,66 @@ func generateConfig(ctx context.Context) error {
 			continue
 		}
 
+		log.Info("Creating workspace")
 		os := os.FromContext(ctx)
 		workspace, err := os.MkdirTemp("", "")
 		if err != nil {
 			log.Errorf("Creating workspace: %s", err)
+			continue
+		}
+
+		log = log.With("workspace", workspace)
+		defer cleanup(os, workspace)
+
+		cwd, err := os.Getwd()
+		if err != nil {
+			log.Errorf("Getting current working directory: %s", err)
+			continue
+		}
+
+		log.Info("Linking inputs")
+		if err := linkInputs(os, cwd, workspace, target.Inputs); err != nil {
+			log.Errorf("Linking inputs: %s", err)
+			continue
 		}
 
 		cmd := exec.CommandContext(ctx, command[0])
-		cmd.Args = command
+		cmd.Args = append(command, target.Args...)
 		cmd.Dir = workspace
+
+		log.Info("Running CLI", "command", cmd.Args)
+		if out, err := cmd.CombinedOutput(); err != nil {
+			log.Error("Running command", "err", err, "out", string(out))
+		} else {
+			log.Info("Command output", "out", string(out))
+		}
 	}
 
 	return nil
+}
+
+func linkInputs(os os.Os, cwd, workspace string, inputs []string) error {
+	for _, input := range inputs {
+		if !filepath.IsAbs(input) {
+			input = filepath.Join(cwd, input)
+		}
+
+		link := filepath.Join(workspace, filepath.Base(input))
+		if err := os.Symlink(input, link); err != nil {
+			return fmt.Errorf("linking input %s: %w", input, err)
+		} else {
+			log.Infof("Linked input %s to %s", input, link)
+		}
+	}
+
+	return nil
+}
+
+func cleanup(os os.Os, workspace string) {
+	log.Info("Cleaning up workspace")
+	if err := os.RemoveAll(workspace); err != nil {
+		log.Errorf("Cleaning up workspace: %s", err)
+	}
 }
 
 func generateTarget(ctx context.Context, args []string) error {

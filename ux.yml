@@ -1,6 +1,6 @@
 targets:
   gomod2nix:
     type: cli
-    args: [--dir, "${IN_DIR}"]
-    command: [gomod2nix]
+    command: [gomod2nix, generate]
+    inputs: [go.mod, gomod2nix.toml]
     outputs: [gomod2nix.toml]
