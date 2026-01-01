@@ -25,6 +25,7 @@ type Target struct {
 	Type    string   `json:"type" yaml:"type"`
 	Args    []string `json:"args" yaml:"args"`
 	Command []string `json:"command" yaml:"command"`
+	Inputs  []string `json:"inputs" yaml:"inputs"`
 	Outputs []string `json:"outputs" yaml:"outputs"`
 }
 
