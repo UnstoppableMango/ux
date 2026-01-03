@@ -1,12 +1,21 @@
 package cmd
 
 import (
+	"archive/tar"
+	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"os/exec"
 	"path/filepath"
 
 	"github.com/charmbracelet/log"
+	"github.com/google/go-containerregistry/pkg/name"
+	v1 "github.com/google/go-containerregistry/pkg/v1"
+	"github.com/google/go-containerregistry/pkg/v1/empty"
+	"github.com/google/go-containerregistry/pkg/v1/mutate"
+	"github.com/google/go-containerregistry/pkg/v1/stream"
+	"github.com/google/go-containerregistry/pkg/v1/tarball"
 	"github.com/spf13/cobra"
 	"github.com/unmango/go/cli"
 	"github.com/unmango/go/os"
@@ -52,8 +61,8 @@ func generateConfig(ctx context.Context) error {
 		return fmt.Errorf("reading config: %w", err)
 	}
 
-	for name, target := range conf.Targets {
-		log := log.With("name", name, "type", target.Type)
+	for n, target := range conf.Targets {
+		log := log.With("name", n, "type", target.Type)
 
 		log.Info("Generating target")
 		if target.Type != "cli" {
@@ -84,9 +93,25 @@ func generateConfig(ctx context.Context) error {
 			continue
 		}
 
-		log.Info("Linking inputs")
-		if err := linkInputs(os, cwd, workspace, target.Inputs); err != nil {
+		if err := linkFiles(os, cwd, workspace, target.Inputs); err != nil {
 			log.Errorf("Linking inputs: %s", err)
+			continue
+		}
+
+		inbuf := &bytes.Buffer{}
+		tw := tar.NewWriter(inbuf)
+		defer tw.Close()
+
+		if err = tw.AddFS(os.DirFS(workspace)); err != nil {
+			log.Errorf("Creating workspace tarball: %s", err)
+			continue
+		}
+
+		img, err := mutate.AppendLayers(empty.Image,
+			stream.NewLayer(io.NopCloser(inbuf)),
+		)
+		if err != nil {
+			log.Errorf("Creating input layer: %s", err)
 			continue
 		}
 
@@ -100,26 +125,107 @@ func generateConfig(ctx context.Context) error {
 		} else {
 			log.Info("Command output", "out", string(out))
 		}
+
+		outbuf := &bytes.Buffer{}
+		tw = tar.NewWriter(outbuf)
+		defer tw.Close()
+
+		output, err := os.MkdirTemp("", "")
+		if err != nil {
+			log.Errorf("Creating output temp dir: %s", err)
+			continue
+		}
+		defer cleanup(os, output)
+
+		if err = linkFiles(os, workspace, output, target.Outputs); err != nil {
+			log.Errorf("Linking outputs: %s", err)
+			continue
+		}
+
+		if err := tw.AddFS(os.DirFS(output)); err != nil {
+			log.Errorf("Creating output tarball: %s", err)
+			continue
+		}
+
+		img, err = mutate.AppendLayers(img,
+			stream.NewLayer(io.NopCloser(outbuf)),
+		)
+		if err != nil {
+			log.Errorf("Appending output layer: %s", err)
+			continue
+		}
+
+		tag, err := name.NewTag("output")
+		if err != nil {
+			log.Errorf("Creating output tag: %s", err)
+			continue
+		}
+
+		outpath := filepath.Join(cwd, "out.tar")
+		if err := tarball.WriteToFile(outpath, tag, img); err != nil {
+			log.Errorf("Writing output tarball to file: %s", err)
+			continue
+		}
 	}
 
 	return nil
 }
 
-func linkInputs(os os.Os, cwd, workspace string, inputs []string) error {
+func linkFiles(os os.Os, cwd, workspace string, files []string) error {
+	for _, f := range files {
+		if !filepath.IsAbs(f) {
+			f = filepath.Join(cwd, f)
+		}
+
+		link := filepath.Join(workspace, filepath.Base(f))
+		if err := os.Symlink(f, link); err != nil {
+			return fmt.Errorf("linking input %s: %w", f, err)
+		} else {
+			log.Infof("Linked input %s to %s", f, link)
+		}
+	}
+
+	return nil
+}
+
+func packageInputs(os os.Os, cwd string, inputs []string) (v1.Image, error) {
+	buf := &bytes.Buffer{}
+	tw := tar.NewWriter(buf)
+	defer tw.Close()
+
 	for _, input := range inputs {
 		if !filepath.IsAbs(input) {
 			input = filepath.Join(cwd, input)
 		}
 
-		link := filepath.Join(workspace, filepath.Base(input))
-		if err := os.Symlink(input, link); err != nil {
-			return fmt.Errorf("linking input %s: %w", input, err)
-		} else {
-			log.Infof("Linked input %s to %s", input, link)
+		f, err := os.ReadFile(input)
+		if err != nil {
+			return nil, fmt.Errorf("reading input %s: %w", input, err)
+		}
+
+		hdr := &tar.Header{
+			Name: filepath.Base(input),
+			Size: int64(len(f)),
+			Mode: 0x700,
+		}
+
+		if err = tw.WriteHeader(hdr); err != nil {
+			return nil, fmt.Errorf("writing header for input %s: %w", input, err)
+		}
+
+		if _, err = tw.Write(f); err != nil {
+			return nil, fmt.Errorf("writing file for input %s: %w", input, err)
 		}
 	}
 
-	return nil
+	img, err := mutate.AppendLayers(empty.Image,
+		stream.NewLayer(io.NopCloser(buf)),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("creating image layer: %w", err)
+	}
+
+	return img, nil
 }
 
 func cleanup(os os.Os, workspace string) {
