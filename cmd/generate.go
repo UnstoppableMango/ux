@@ -16,6 +16,7 @@ import (
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
 	"github.com/google/go-containerregistry/pkg/v1/stream"
 	"github.com/google/go-containerregistry/pkg/v1/tarball"
+	"github.com/google/go-containerregistry/pkg/v1/types"
 	"github.com/spf13/cobra"
 	"github.com/unmango/go/cli"
 	"github.com/unmango/go/os"
@@ -107,9 +108,22 @@ func generateConfig(ctx context.Context) error {
 			continue
 		}
 
-		img, err := mutate.AppendLayers(empty.Image,
-			stream.NewLayer(io.NopCloser(inbuf)),
+		if err = tw.Flush(); err != nil {
+			log.Errorf("Flushing output tarball: %s", err)
+		}
+
+		l, err := tarball.LayerFromOpener(
+			func() (io.ReadCloser, error) {
+				return io.NopCloser(inbuf), nil
+			},
+			tarball.WithMediaType(types.OCILayer),
 		)
+		if err != nil {
+			log.Errorf("Creating tar layer: %s", err)
+			continue
+		}
+
+		img, err := mutate.AppendLayers(empty.Image, l)
 		if err != nil {
 			log.Errorf("Creating input layer: %s", err)
 			continue
@@ -147,9 +161,22 @@ func generateConfig(ctx context.Context) error {
 			continue
 		}
 
-		img, err = mutate.AppendLayers(img,
-			stream.NewLayer(io.NopCloser(outbuf)),
+		if err = tw.Flush(); err != nil {
+			log.Errorf("Flushing output tarball: %s", err)
+		}
+
+		l, err = tarball.LayerFromOpener(
+			func() (io.ReadCloser, error) {
+				return io.NopCloser(inbuf), nil
+			},
+			tarball.WithMediaType(types.OCILayer),
 		)
+		if err != nil {
+			log.Errorf("Creating tar layer: %s", err)
+			continue
+		}
+
+		img, err = mutate.AppendLayers(img, l)
 		if err != nil {
 			log.Errorf("Appending output layer: %s", err)
 			continue
