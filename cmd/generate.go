@@ -6,17 +6,13 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"os/exec"
 	"path/filepath"
 
 	"github.com/charmbracelet/log"
-	"github.com/google/go-containerregistry/pkg/name"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/google/go-containerregistry/pkg/v1/empty"
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
 	"github.com/google/go-containerregistry/pkg/v1/stream"
-	"github.com/google/go-containerregistry/pkg/v1/tarball"
-	"github.com/google/go-containerregistry/pkg/v1/types"
 	"github.com/spf13/cobra"
 	"github.com/unmango/go/cli"
 	"github.com/unmango/go/os"
@@ -24,6 +20,7 @@ import (
 	"github.com/unstoppablemango/ux/pkg/config"
 	"github.com/unstoppablemango/ux/pkg/input"
 	"github.com/unstoppablemango/ux/pkg/spec"
+	"github.com/unstoppablemango/ux/pkg/target"
 	"github.com/unstoppablemango/ux/pkg/work"
 )
 
@@ -57,141 +54,15 @@ func NewGenerate() *cobra.Command {
 }
 
 func generateConfig(ctx context.Context) error {
-	conf, err := config.Read(config.NewViper())
+	conf, err := config.Parse(config.NewViper())
 	if err != nil {
-		return fmt.Errorf("reading config: %w", err)
+		return fmt.Errorf("parsing config: %w", err)
 	}
 
-	for n, target := range conf.Targets {
-		log := log.With("name", n, "type", target.Type)
-
-		log.Info("Generating target")
-		if target.Type != "cli" {
-			log.Warn("Unsupported target")
-			continue
-		}
-
-		command := target.Command
-		if len(command) == 0 {
-			log.Error("No command specified for target")
-			continue
-		}
-
-		log.Info("Creating workspace")
-		os := os.FromContext(ctx)
-		workspace, err := os.MkdirTemp("", "")
-		if err != nil {
-			log.Errorf("Creating workspace: %s", err)
-			continue
-		}
-
-		log = log.With("workspace", workspace)
-		defer cleanup(os, workspace)
-
-		cwd, err := os.Getwd()
-		if err != nil {
-			log.Errorf("Getting current working directory: %s", err)
-			continue
-		}
-
-		if err := linkFiles(os, cwd, workspace, target.Inputs); err != nil {
-			log.Errorf("Linking inputs: %s", err)
-			continue
-		}
-
-		inbuf := &bytes.Buffer{}
-		tw := tar.NewWriter(inbuf)
-		defer tw.Close()
-
-		if err = tw.AddFS(os.DirFS(workspace)); err != nil {
-			log.Errorf("Creating workspace tarball: %s", err)
-			continue
-		}
-
-		if err = tw.Flush(); err != nil {
-			log.Errorf("Flushing output tarball: %s", err)
-		}
-
-		l, err := tarball.LayerFromOpener(
-			func() (io.ReadCloser, error) {
-				return io.NopCloser(inbuf), nil
-			},
-			tarball.WithMediaType(types.OCILayer),
-		)
-		if err != nil {
-			log.Errorf("Creating tar layer: %s", err)
-			continue
-		}
-
-		img, err := mutate.AppendLayers(empty.Image, l)
-		if err != nil {
-			log.Errorf("Creating input layer: %s", err)
-			continue
-		}
-
-		cmd := exec.CommandContext(ctx, command[0])
-		cmd.Args = append(command, target.Args...)
-		cmd.Dir = workspace
-
-		log.Info("Running CLI", "command", cmd.Args)
-		if out, err := cmd.CombinedOutput(); err != nil {
-			log.Error("Running command", "err", err, "out", string(out))
-		} else {
-			log.Info("Command output", "out", string(out))
-		}
-
-		outbuf := &bytes.Buffer{}
-		tw = tar.NewWriter(outbuf)
-		defer tw.Close()
-
-		output, err := os.MkdirTemp("", "")
-		if err != nil {
-			log.Errorf("Creating output temp dir: %s", err)
-			continue
-		}
-		defer cleanup(os, output)
-
-		if err = linkFiles(os, workspace, output, target.Outputs); err != nil {
-			log.Errorf("Linking outputs: %s", err)
-			continue
-		}
-
-		if err := tw.AddFS(os.DirFS(output)); err != nil {
-			log.Errorf("Creating output tarball: %s", err)
-			continue
-		}
-
-		if err = tw.Flush(); err != nil {
-			log.Errorf("Flushing output tarball: %s", err)
-		}
-
-		l, err = tarball.LayerFromOpener(
-			func() (io.ReadCloser, error) {
-				return io.NopCloser(inbuf), nil
-			},
-			tarball.WithMediaType(types.OCILayer),
-		)
-		if err != nil {
-			log.Errorf("Creating tar layer: %s", err)
-			continue
-		}
-
-		img, err = mutate.AppendLayers(img, l)
-		if err != nil {
-			log.Errorf("Appending output layer: %s", err)
-			continue
-		}
-
-		tag, err := name.NewTag("output")
-		if err != nil {
-			log.Errorf("Creating output tag: %s", err)
-			continue
-		}
-
-		outpath := filepath.Join(cwd, "out.tar")
-		if err := tarball.WriteToFile(outpath, tag, img); err != nil {
-			log.Errorf("Writing output tarball to file: %s", err)
-			continue
+	for n, t := range conf.Targets {
+		ctx = log.WithContext(ctx, log.With("name", n))
+		if err := target.Generate(ctx, t); err != nil {
+			log.Errorf("Target failed: %s", err)
 		}
 	}
 

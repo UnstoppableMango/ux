@@ -42,7 +42,7 @@ func NewViper() *viper.Viper {
 	return v
 }
 
-func Read(v *viper.Viper) (*Config, error) {
+func Parse(v *viper.Viper) (*Config, error) {
 	if v == nil {
 		v = NewViper()
 	}
