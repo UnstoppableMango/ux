@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/afero"
+	"github.com/unmango/go/os"
 )
 
 type Space interface {
@@ -12,6 +13,14 @@ type Space interface {
 
 type space struct {
 	afero.Fs
+}
+
+func CwdOs(os os.Os) (Space, error) {
+	if dir, err := os.Getwd(); err != nil {
+		return nil, err
+	} else {
+		return DirFs(dir, afero.FromIOFS{FS: os})
+	}
 }
 
 func DirFs(dir string, fs afero.Fs) (Space, error) {
