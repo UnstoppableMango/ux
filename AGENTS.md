@@ -9,22 +9,26 @@ UX is a codegen management tool that orchestrates code generation workflows. It 
 ## Core Concepts
 
 ### Plugin Architecture
+
 - Plugins are executable binaries with names matching `([\w\-]+2[\w\-]+)` pattern
 - Example: `csharp2go`, `go2csharp`, `proto2go`
 - Plugins can be listed with: `ux plugin list`
 - Plugins can be run with: `ux plugin run <plugin-name>`
 
 ### Primary Workflow
+
 The main execution mode is: `ux gen <source> <target>`
 
 ## Technology Stack
 
 ### Languages and Frameworks
+
 - **Go 1.24.9**: Primary implementation language
 - **C# .NET**: Plugin implementations and framework
 - **Protocol Buffers**: Inter-process communication
 
 ### Key Tools
+
 - **buf**: Protocol buffer management
 - **ginkgo/gomega**: Testing framework for Go
 - **golangci-lint**: Go linting
@@ -34,6 +38,7 @@ The main execution mode is: `ux gen <source> <target>`
 ## Development Workflow
 
 ### Building
+
 ```bash
 make build          # Build all components
 make bin/ux        # Build just the ux binary
@@ -41,26 +46,31 @@ make bin/dummy     # Build dummy test binary
 ```
 
 ### Testing
+
 ```bash
 make test          # Run all tests with ginkgo
 ```
 
 ### Formatting
+
 ```bash
 make fmt           # Format all code (Go, C#, proto, JSON)
 ```
 
 ### Linting
+
 ```bash
 make lint          # Run all linters
 ```
 
 ### Code Generation
+
 ```bash
 make generate      # Generate code from protobuf definitions
 ```
 
 ### Dependency Management
+
 ```bash
 make tidy          # Update all lock files and dependencies
 ```
@@ -97,22 +107,26 @@ make tidy          # Update all lock files and dependencies
 5. **Regenerate code** with `make generate` if you modify .proto files
 
 ### Don't Modify
+
 - Generated code in `gen/` directory
 - Lock files manually (use `make tidy` instead)
 - `.make/` sentinel files
 
 ### Testing Approach
+
 - Use Ginkgo's BDD-style tests for Go
 - Tests should be in `*_test.go` files
 - Use Gomega matchers for assertions
 - Keep test data in `test/` directory
 
 ### Error Handling
+
 - Always check and handle errors in Go
 - Use structured logging with charmbracelet/log
 - Wrap errors with context using `fmt.Errorf` with `%w`
 
 ### Plugin Development
+
 - Implement plugin interface defined in proto
 - Follow naming convention: `source2target`
 - Can be written in Go or C#
@@ -121,18 +135,21 @@ make tidy          # Update all lock files and dependencies
 ## Common Tasks
 
 ### Adding a New Go Package
+
 1. Create package directory under `pkg/` or `internal/`
 2. Add tests using Ginkgo
 3. Run `make test` to verify
 4. Update imports and run `make tidy`
 
 ### Adding a New Proto Definition
+
 1. Add/modify `.proto` files in `proto/` directory
 2. Run `make generate` to regenerate Go code
 3. Run `make build` to verify compilation
 4. Update `buf.lock` if adding dependencies
 
 ### Adding a New Plugin
+
 1. Create executable following naming convention
 2. Implement plugin protocol (gRPC or command-line)
 3. Add tests for plugin functionality
@@ -143,6 +160,7 @@ make tidy          # Update all lock files and dependencies
 The project uses Make with sentinel files in `.make/` directory to track build state. This allows incremental builds and avoids unnecessary work.
 
 ### Nix Integration
+
 - `flake.nix` defines reproducible build environment
 - Use `nix develop` for development shell
 - Use `make nix` to switch to Nix-based environment
