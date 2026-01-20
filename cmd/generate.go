@@ -1,12 +1,16 @@
 package cmd
 
 import (
+	"fmt"
+	"os"
+
+	"github.com/charmbracelet/log"
+	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
-	ux "github.com/unstoppablemango/ux/pkg"
+	"github.com/unmango/aferox"
+	"github.com/unmango/aferox/filter"
+	"github.com/unmango/aferox/gitignore"
 	"github.com/unstoppablemango/ux/pkg/cli"
-	"github.com/unstoppablemango/ux/pkg/input"
-	"github.com/unstoppablemango/ux/pkg/spec"
-	"github.com/unstoppablemango/ux/pkg/work"
 )
 
 func NewGenerate() *cobra.Command {
@@ -16,20 +20,41 @@ func NewGenerate() *cobra.Command {
 		Aliases: []string{"gen"},
 		Args:    cobra.MinimumNArgs(2),
 		Run: func(cmd *cobra.Command, args []string) {
-			target := spec.Token(args[0])
-			input, err := input.Parse(args[1])
-			if err != nil {
-				cli.Fail(err)
-			}
-
-			ws, err := work.Cwd()
-			if err != nil {
-				cli.Fail(err)
-			}
-
-			if err := ux.Generate(cmd.Context(), ws, target, input); err != nil {
+			if err := generate(); err != nil {
 				cli.Fail(err)
 			}
 		},
 	}
+}
+
+func generate() error {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("getwd: %w", err)
+	}
+
+	osfs := afero.NewOsFs()
+	tmp, err := afero.TempDir(osfs, "", "")
+	if err != nil {
+		return fmt.Errorf("tempdir: %w", err)
+	}
+
+	tmpfs := afero.NewBasePathFs(osfs, tmp)
+
+	workfs := afero.NewBasePathFs(osfs, cwd)
+	workfs, err = gitignore.OpenDefault(workfs)
+	if err != nil {
+		return fmt.Errorf("opening default gitignore: %w", err)
+	}
+
+	workfs = filter.NewFs(workfs, func(s string) bool {
+		log.Infof("Filtering %s", s)
+		return false
+	})
+
+	if err := aferox.Copy(workfs, tmpfs); err != nil {
+		return fmt.Errorf("copy: %w", err)
+	}
+
+	return nil
 }
