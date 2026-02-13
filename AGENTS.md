@@ -12,8 +12,6 @@ UX is a codegen management tool that orchestrates code generation workflows. It 
 
 - Plugins are executable binaries with names matching `([\w\-]+2[\w\-]+)` pattern
 - Example: `csharp2go`, `go2csharp`, `proto2go`
-- Plugins can be listed with: `ux plugin list`
-- Plugins can be run with: `ux plugin run <plugin-name>`
 
 ### Primary Workflow
 
@@ -24,15 +22,11 @@ The main execution mode is: `ux gen <source> <target>`
 ### Languages and Frameworks
 
 - **Go 1.24.9**: Primary implementation language
-- **C# .NET**: Plugin implementations and framework
-- **Protocol Buffers**: Inter-process communication
 
 ### Key Tools
 
-- **buf**: Protocol buffer management
 - **ginkgo/gomega**: Testing framework for Go
 - **golangci-lint**: Go linting
-- **dprint**: JSON/Markdown formatting
 - **Nix**: Reproducible build environment
 
 ## Development Workflow
@@ -40,9 +34,8 @@ The main execution mode is: `ux gen <source> <target>`
 ### Building
 
 ```bash
-make build          # Build all components
+make build         # Build all components
 make bin/ux        # Build just the ux binary
-make bin/dummy     # Build dummy test binary
 ```
 
 ### Testing
@@ -66,7 +59,7 @@ make lint          # Run all linters
 ### Code Generation
 
 ```bash
-make generate      # Generate code from protobuf definitions
+make generate      # Generate code
 ```
 
 ### Dependency Management
@@ -79,17 +72,7 @@ make tidy          # Update all lock files and dependencies
 
 ```
 .
-├── pkg/           # Core Go packages and libraries
-│   ├── plugin/    # Plugin system implementation
-│   ├── cli/       # CLI utilities
-│   ├── config/    # Configuration management
-│   └── ...
-├── src/           # C# .NET implementations
-│   ├── UnMango.Ux.Plugins/              # Plugin framework
-│   └── UnMango.Ux.Plugins.CommandLine/  # CLI utilities
 ├── cmd/           # Command-line entry points
-├── internal/      # Internal Go packages (not importable)
-├── proto/         # Protocol buffer definitions
 ├── gen/           # Generated code (don't edit manually)
 ├── test/          # Test files and fixtures
 ├── examples/      # Usage examples
@@ -103,7 +86,7 @@ make tidy          # Update all lock files and dependencies
 1. **Always run tests** before and after changes
 2. **Format code** with `make fmt` before committing
 3. **Run linters** with `make lint` to catch issues
-4. **Update dependencies** with `make tidy` if you modify go.mod or .csproj files
+4. **Update dependencies** with `make tidy` if you modify go.mod or flake.nix files
 5. **Regenerate code** with `make generate` if you modify .proto files
 
 ### Don't Modify
@@ -127,9 +110,7 @@ make tidy          # Update all lock files and dependencies
 
 ### Plugin Development
 
-- Implement plugin interface defined in proto
 - Follow naming convention: `source2target`
-- Can be written in Go or C#
 - Should be standalone executables
 
 ## Common Tasks
@@ -143,17 +124,8 @@ make tidy          # Update all lock files and dependencies
 
 ### Adding a New Proto Definition
 
-1. Add/modify `.proto` files in `proto/` directory
-2. Run `make generate` to regenerate Go code
-3. Run `make build` to verify compilation
-4. Update `buf.lock` if adding dependencies
-
-### Adding a New Plugin
-
-1. Create executable following naming convention
-2. Implement plugin protocol (gRPC or command-line)
-3. Add tests for plugin functionality
-4. Document plugin in appropriate location
+1. Run `make generate` to regenerate Go code
+2. Run `make build` to verify compilation
 
 ## Build System Notes
 
@@ -163,16 +135,11 @@ The project uses Make with sentinel files in `.make/` directory to track build s
 
 - `flake.nix` defines reproducible build environment
 - Use `nix develop` for development shell
-- Use `make nix` to switch to Nix-based environment
 - `gomod2nix.toml` syncs Go modules with Nix
 
 ## Questions to Consider
 
 When working on this codebase, consider:
 
-- Does this change affect the plugin interface?
-- Do I need to regenerate protobuf code?
-- Are there corresponding changes needed in both Go and C# implementations?
 - Do I need to update documentation?
 - Are there tests that validate this functionality?
-- Does this maintain backward compatibility with existing plugins?

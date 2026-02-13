@@ -1,20 +1,19 @@
 package cmd
 
 import (
-	"github.com/charmbracelet/log"
-	"github.com/unstoppablemango/ux/cmd/plugin"
+	"fmt"
+
+	"github.com/spf13/cobra"
 )
 
-var rootCmd = NewUx()
-
-func init() {
-	rootCmd.AddCommand(
-		NewGenerate(),
-		plugin.Cmd,
-	)
+var rootCmd = &cobra.Command{
+	Use:   "ux",
+	Short: "Codegen glue tooling",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("Got here")
+	},
 }
 
 func Execute() error {
-	log.SetReportTimestamp(false)
 	return rootCmd.Execute()
 }

@@ -69,6 +69,9 @@ jobs:
           install-mode: none
 
   docker:
+    # TODO: Push the nix image instead. Could probably model after https://github.com/nix-community/docker-nixpkgs
+    #       I'd like to keep using the metadata action for tags, can --argstr be used to pass args to the build?
+    if: false
     runs-on: ux-runners
     steps:
       - uses: docker/setup-buildx-action@v3
@@ -111,18 +114,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           provenance: ${{ github.event_name != 'pull_request' }}
           sbom: ${{ github.event_name != 'pull_request' }}
-
-  dprint:
-    runs-on: ux-runners
-    if: github.event_name == 'pull_request'
-    env:
-      # renovate: datasource=github-tags depName=dprint/dprint
-      DPRINT_VERSION: 0.51.1
-    steps:
-      - uses: actions/checkout@v6
-      - uses: dprint/check@v2.3
-        with:
-          dprint-version: ${{ env.DPRINT_VERSION }}
 
   clean:
     runs-on: ux-runners

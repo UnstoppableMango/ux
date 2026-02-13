@@ -7,14 +7,11 @@ applyTo: "**/*.go"
 ## Code Style and Conventions
 
 - Follow standard Go conventions and effective Go guidelines
-- Use gofmt for formatting (automatically applied by `make fmt`)
-- Run `go vet` to catch common mistakes
-- Use golangci-lint for comprehensive linting (`make lint`)
+- Run `make fmt` for comprehensive formatting
+- Run `make lint` for comprehensive linting
 
 ## Naming Conventions
 
-- Use camelCase for unexported identifiers
-- Use PascalCase for exported identifiers
 - Interface names should describe behavior (e.g., `Reader`, `Writer`)
 - Avoid stuttering in package names (e.g., `log.Logger` not `log.LogLogger`)
 
@@ -44,8 +41,7 @@ applyTo: "**/*.go"
 
 - Add dependencies via `go get`
 - Run `make tidy` after adding/removing dependencies
-- Use `go mod tidy` to clean up unused dependencies
-- Update gomod2nix.toml for Nix builds
+- Run `make tidy` to update gomod2nix.toml when dependencies change
 
 ## Logging
 
@@ -53,15 +49,9 @@ applyTo: "**/*.go"
 - Provide appropriate log levels (debug, info, warn, error)
 - Include relevant context in log messages
 
-## Protobuf and gRPC
-
-- Don't modify generated protobuf code in `gen/`
-- Regenerate protobuf code with `make generate` after changing `.proto` files
-- Implement gRPC services in `pkg/` or `internal/`, not in generated code
-
 ## Build and Development
 
-- Build with `make build` or `go build`
+- Build with `make build`
 - The main entry point is `main.go`
 - Command implementations are in `cmd/`
 - Use `make` targets for consistent builds

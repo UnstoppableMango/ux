@@ -36,23 +36,21 @@
           ...
         }:
         let
-          inherit (inputs'.gomod2nix.legacyPackages) mkGoEnv;
+          inherit (inputs'.gomod2nix.legacyPackages) buildGoApplication mkGoEnv;
           goEnv = mkGoEnv { pwd = ./.; };
-          dotnet = pkgs.dotnetCorePackages.sdk_10_0;
 
-          ux = inputs'.gomod2nix.legacyPackages.buildGoApplication rec {
+          ux = buildGoApplication rec {
             pname = "ux";
-            version = "0.0.12";
+            version = "0.0.13";
             src = ./.;
             modules = ./gomod2nix.toml;
 
             nativeBuildInputs = with pkgs; [
               git
-              dotnet
             ];
 
             ldflags = [
-              "-X github.com/unstoppablemango/ux/internal.Version=${version}"
+              "-X github.com/unstoppablemango/ux/Version=${version}"
             ];
 
             checkPhase = ''
@@ -105,9 +103,8 @@
 
           devShells.default = pkgs.mkShell {
             packages = with pkgs; [
-              buf
               docker
-              dprint
+              ginkgo
               git
               gnumake
               goEnv
@@ -122,9 +119,7 @@
             projectRootFile = "flake.nix";
             programs = {
               nixfmt.enable = true;
-              # dprint.enable = true;
               gofmt.enable = true;
-              buf.enable = true;
             };
           };
         };

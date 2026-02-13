@@ -46,34 +46,3 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ github.token }}
-
-  nuget:
-    runs-on: ux-runners
-    env:
-      DOTNET_INSTALL_DIR: "./.dotnet"
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-dotnet@v5
-        with:
-          global-json-file: global.json
-
-      - run: dotnet pack --configuration Release --output nupkgs
-
-      - name: Publish to GitHub Packages
-        if: github.event_name != 'pull_request'
-        run: |
-          dotnet nuget push 'nupkgs/UnMango.Ux.*.nupkg' \
-            --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json \
-            --api-key ${{ secrets.GITHUB_TOKEN }} \
-            --skip-duplicate
-
-      - name: Publish to NuGet.org
-        if: github.event_name != 'pull_request'
-        run: |
-          dotnet nuget push 'nupkgs/UnMango.Ux.*.nupkg' \
-            --source https://api.nuget.org/v3/index.json \
-            --api-key ${{ secrets.NUGET_API_KEY }} \
-            --skip-duplicate
