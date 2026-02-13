@@ -50,7 +50,7 @@
             ];
 
             ldflags = [
-              "-X github.com/unstoppablemango/ux/Version=${version}"
+              "-X github.com/unstoppablemango/ux/cmd.Version=${version}"
             ];
 
             checkPhase = ''

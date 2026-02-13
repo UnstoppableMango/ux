@@ -30,7 +30,7 @@ NIX_SRC     := $(wildcard *.nix)
 
 ##@ Artifacts
 
-LDFLAGS := -X github.com/unstoppablemango/ux/Version=${VERSION}
+LDFLAGS := -X github.com/unstoppablemango/ux/cmd.Version=${VERSION}
 bin/ux: ${GO_SRC} ## Build the ux CLI
 	$(GO) build -o $@ -ldflags='${LDFLAGS}'
 
