@@ -3,6 +3,7 @@ VERSION ?= v0.0.1-development
 
 ##@ Tools
 
+BUF        ?= buf
 GO         ?= go
 DEVCTL     ?= $(GO) tool devctl
 DOCKER     ?= docker
@@ -16,7 +17,7 @@ NIX        ?= nix
 ##@ Primary Targets
 
 build: bin/ux bin/ux-nix
-generate gen: codegen
+generate gen: .make/buf-gen .make/go-generate
 test: .make/ginkgo-run
 fmt format: .make/go-fmt
 lint: .make/go-vet .make/golangci-lint-run
@@ -25,16 +26,15 @@ docker: bin/image.tar.gz
 
 ##@ Source
 
-GO_SRC      ?= $(shell find . -path '*.go')
-NIX_SRC     := $(wildcard *.nix)
+GO_SRC    ?= $(shell find . -path '*.go')
+PROTO_SRC ?= $(shell $(BUF) ls-files)
+NIX_SRC   := $(wildcard *.nix)
 
 ##@ Artifacts
 
 LDFLAGS := -X github.com/unstoppablemango/ux/cmd.Version=${VERSION}
 bin/ux: ${GO_SRC} ## Build the ux CLI
 	$(GO) build -o $@ -ldflags='${LDFLAGS}'
-
-codegen: ${GO_CODEGEN} .make/go-generate
 
 .PHONY: bin/ux-nix
 bin/ux-nix: ${GO_SRC} ${NIX_SRC}
@@ -68,6 +68,10 @@ go.sum: go.mod ${GO_SRC}
 	cp $< $@ && chmod a=,u=rw $@
 
 ##@ Sentinels
+
+.make/buf-gen: ${PROTO_SRC}
+	$(BUF) generate
+	@touch $@
 
 .make/go-fmt: ${GO_SRC}
 	$(GO) fmt $(addprefix ./,$(sort $(dir $?)))

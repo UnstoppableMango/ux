@@ -103,6 +103,7 @@
 
           devShells.default = pkgs.mkShell {
             packages = with pkgs; [
+              buf
               docker
               ginkgo
               git
