@@ -14,7 +14,6 @@ require (
 	github.com/google/go-containerregistry v0.20.7
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cobra v1.10.2
-	github.com/unmango/aferox/containerregistry v0.0.1
 	github.com/unmango/go v0.15.1
 	google.golang.org/protobuf v1.36.11
 )
