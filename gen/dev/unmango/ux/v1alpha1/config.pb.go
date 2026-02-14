@@ -11,7 +11,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/gofeaturespb"
 	reflect "reflect"
-	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -23,10 +22,12 @@ const (
 )
 
 type Config struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Command       []string               `protobuf:"bytes,1,rep,name=command" json:"command,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Command []string               `protobuf:"bytes,1,rep,name=command"`
+	xxx_hidden_Inputs  []string               `protobuf:"bytes,2,rep,name=inputs"`
+	xxx_hidden_Outputs []string               `protobuf:"bytes,3,rep,name=outputs"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *Config) Reset() {
@@ -54,38 +55,67 @@ func (x *Config) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Config.ProtoReflect.Descriptor instead.
-func (*Config) Descriptor() ([]byte, []int) {
-	return file_dev_unmango_ux_v1alpha1_config_proto_rawDescGZIP(), []int{0}
-}
-
 func (x *Config) GetCommand() []string {
 	if x != nil {
-		return x.Command
+		return x.xxx_hidden_Command
 	}
 	return nil
+}
+
+func (x *Config) GetInputs() []string {
+	if x != nil {
+		return x.xxx_hidden_Inputs
+	}
+	return nil
+}
+
+func (x *Config) GetOutputs() []string {
+	if x != nil {
+		return x.xxx_hidden_Outputs
+	}
+	return nil
+}
+
+func (x *Config) SetCommand(v []string) {
+	x.xxx_hidden_Command = v
+}
+
+func (x *Config) SetInputs(v []string) {
+	x.xxx_hidden_Inputs = v
+}
+
+func (x *Config) SetOutputs(v []string) {
+	x.xxx_hidden_Outputs = v
+}
+
+type Config_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Command []string
+	Inputs  []string
+	Outputs []string
+}
+
+func (b0 Config_builder) Build() *Config {
+	m0 := &Config{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Command = b.Command
+	x.xxx_hidden_Inputs = b.Inputs
+	x.xxx_hidden_Outputs = b.Outputs
+	return m0
 }
 
 var File_dev_unmango_ux_v1alpha1_config_proto protoreflect.FileDescriptor
 
 const file_dev_unmango_ux_v1alpha1_config_proto_rawDesc = "" +
 	"\n" +
-	"$dev/unmango/ux/v1alpha1/config.proto\x12\x17dev.unmango.ux.v1alpha1\x1a!google/protobuf/go_features.proto\"\"\n" +
+	"$dev/unmango/ux/v1alpha1/config.proto\x12\x17dev.unmango.ux.v1alpha1\x1a!google/protobuf/go_features.proto\"T\n" +
 	"\x06Config\x12\x18\n" +
-	"\acommand\x18\x01 \x03(\tR\acommandB\xf8\x01\n" +
-	"\x1bcom.dev.unmango.ux.v1alpha1B\vConfigProtoP\x01ZEgithub.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1;uxv1alpha1\xa2\x02\x03DUU\xaa\x02\x17Dev.Unmango.Ux.V1alpha1\xca\x02\x17Dev\\Unmango\\Ux\\V1alpha1\xe2\x02#Dev\\Unmango\\Ux\\V1alpha1\\GPBMetadata\xea\x02\x1aDev::Unmango::Ux::V1alpha1\x92\x03\x05\xd2>\x02\x10\x01b\beditionsp\xe8\a"
-
-var (
-	file_dev_unmango_ux_v1alpha1_config_proto_rawDescOnce sync.Once
-	file_dev_unmango_ux_v1alpha1_config_proto_rawDescData []byte
-)
-
-func file_dev_unmango_ux_v1alpha1_config_proto_rawDescGZIP() []byte {
-	file_dev_unmango_ux_v1alpha1_config_proto_rawDescOnce.Do(func() {
-		file_dev_unmango_ux_v1alpha1_config_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_dev_unmango_ux_v1alpha1_config_proto_rawDesc), len(file_dev_unmango_ux_v1alpha1_config_proto_rawDesc)))
-	})
-	return file_dev_unmango_ux_v1alpha1_config_proto_rawDescData
-}
+	"\acommand\x18\x01 \x03(\tR\acommand\x12\x16\n" +
+	"\x06inputs\x18\x02 \x03(\tR\x06inputs\x12\x18\n" +
+	"\aoutputs\x18\x03 \x03(\tR\aoutputsB\xf8\x01\n" +
+	"\x1bcom.dev.unmango.ux.v1alpha1B\vConfigProtoP\x01ZEgithub.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1;uxv1alpha1\xa2\x02\x03DUU\xaa\x02\x17Dev.Unmango.Ux.V1alpha1\xca\x02\x17Dev\\Unmango\\Ux\\V1alpha1\xe2\x02#Dev\\Unmango\\Ux\\V1alpha1\\GPBMetadata\xea\x02\x1aDev::Unmango::Ux::V1alpha1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
 
 var file_dev_unmango_ux_v1alpha1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_dev_unmango_ux_v1alpha1_config_proto_goTypes = []any{

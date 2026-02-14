@@ -16,13 +16,14 @@ NIX        ?= nix
 
 ##@ Primary Targets
 
-build: bin/ux bin/ux-nix
+build: bin/ux
 generate gen: .make/buf-gen .make/go-generate
 test: .make/ginkgo-run
 fmt format: .make/go-fmt
 lint: .make/go-vet .make/golangci-lint-run
-tidy update: go.sum flake.lock gomod2nix.toml
+tidy: go.sum gomod2nix.toml
 docker: bin/image.tar.gz
+update: flake.lock
 
 ##@ Source
 
@@ -32,16 +33,12 @@ NIX_SRC   := $(wildcard *.nix)
 
 ##@ Artifacts
 
-LDFLAGS := -X github.com/unstoppablemango/ux/cmd.Version=${VERSION}
-bin/ux: ${GO_SRC} ## Build the ux CLI
-	$(GO) build -o $@ -ldflags='${LDFLAGS}'
+bin/ux: result  ## Build the ux CLI
+	mkdir -p $(dir $@) && ln -s ${CURDIR}/$</bin/ux ${CURDIR}/$@
+result: ${GO_SRC} ${NIX_SRC}
+	$(NIX) build .#ux
 
-.PHONY: bin/ux-nix
-bin/ux-nix: ${GO_SRC} ${NIX_SRC}
-	$(NIX) build --out-link $@ .#ux
-
-.PHONY: bin/image.tar.gz
-bin/image.tar.gz:
+bin/image.tar.gz: ${GO_SRC} ${NIX_SRC}
 	$(NIX) build --out-link $@ .#ux-image
 	$(DOCKER) load < $@
 
