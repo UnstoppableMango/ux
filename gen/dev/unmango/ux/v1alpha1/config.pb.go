@@ -22,12 +22,10 @@ const (
 )
 
 type Config struct {
-	state              protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Command []string               `protobuf:"bytes,1,rep,name=command"`
-	xxx_hidden_Inputs  []string               `protobuf:"bytes,2,rep,name=inputs"`
-	xxx_hidden_Outputs []string               `protobuf:"bytes,3,rep,name=outputs"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Packages map[string]*Package    `protobuf:"bytes,1,rep,name=packages" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Config) Reset() {
@@ -55,40 +53,99 @@ func (x *Config) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Config) GetCommand() []string {
+func (x *Config) GetPackages() map[string]*Package {
+	if x != nil {
+		return x.xxx_hidden_Packages
+	}
+	return nil
+}
+
+func (x *Config) SetPackages(v map[string]*Package) {
+	x.xxx_hidden_Packages = v
+}
+
+type Config_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Packages map[string]*Package
+}
+
+func (b0 Config_builder) Build() *Config {
+	m0 := &Config{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Packages = b.Packages
+	return m0
+}
+
+type Package struct {
+	state              protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Command []string               `protobuf:"bytes,1,rep,name=command"`
+	xxx_hidden_Inputs  []string               `protobuf:"bytes,2,rep,name=inputs"`
+	xxx_hidden_Outputs []string               `protobuf:"bytes,3,rep,name=outputs"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *Package) Reset() {
+	*x = Package{}
+	mi := &file_dev_unmango_ux_v1alpha1_config_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Package) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Package) ProtoMessage() {}
+
+func (x *Package) ProtoReflect() protoreflect.Message {
+	mi := &file_dev_unmango_ux_v1alpha1_config_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *Package) GetCommand() []string {
 	if x != nil {
 		return x.xxx_hidden_Command
 	}
 	return nil
 }
 
-func (x *Config) GetInputs() []string {
+func (x *Package) GetInputs() []string {
 	if x != nil {
 		return x.xxx_hidden_Inputs
 	}
 	return nil
 }
 
-func (x *Config) GetOutputs() []string {
+func (x *Package) GetOutputs() []string {
 	if x != nil {
 		return x.xxx_hidden_Outputs
 	}
 	return nil
 }
 
-func (x *Config) SetCommand(v []string) {
+func (x *Package) SetCommand(v []string) {
 	x.xxx_hidden_Command = v
 }
 
-func (x *Config) SetInputs(v []string) {
+func (x *Package) SetInputs(v []string) {
 	x.xxx_hidden_Inputs = v
 }
 
-func (x *Config) SetOutputs(v []string) {
+func (x *Package) SetOutputs(v []string) {
 	x.xxx_hidden_Outputs = v
 }
 
-type Config_builder struct {
+type Package_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Command []string
@@ -96,8 +153,8 @@ type Config_builder struct {
 	Outputs []string
 }
 
-func (b0 Config_builder) Build() *Config {
-	m0 := &Config{}
+func (b0 Package_builder) Build() *Package {
+	m0 := &Package{}
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_Command = b.Command
@@ -110,23 +167,32 @@ var File_dev_unmango_ux_v1alpha1_config_proto protoreflect.FileDescriptor
 
 const file_dev_unmango_ux_v1alpha1_config_proto_rawDesc = "" +
 	"\n" +
-	"$dev/unmango/ux/v1alpha1/config.proto\x12\x17dev.unmango.ux.v1alpha1\x1a!google/protobuf/go_features.proto\"T\n" +
-	"\x06Config\x12\x18\n" +
+	"$dev/unmango/ux/v1alpha1/config.proto\x12\x17dev.unmango.ux.v1alpha1\x1a!google/protobuf/go_features.proto\"\xb2\x01\n" +
+	"\x06Config\x12I\n" +
+	"\bpackages\x18\x01 \x03(\v2-.dev.unmango.ux.v1alpha1.Config.PackagesEntryR\bpackages\x1a]\n" +
+	"\rPackagesEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x126\n" +
+	"\x05value\x18\x02 \x01(\v2 .dev.unmango.ux.v1alpha1.PackageR\x05value:\x028\x01\"U\n" +
+	"\aPackage\x12\x18\n" +
 	"\acommand\x18\x01 \x03(\tR\acommand\x12\x16\n" +
 	"\x06inputs\x18\x02 \x03(\tR\x06inputs\x12\x18\n" +
 	"\aoutputs\x18\x03 \x03(\tR\aoutputsB\xf8\x01\n" +
 	"\x1bcom.dev.unmango.ux.v1alpha1B\vConfigProtoP\x01ZEgithub.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1;uxv1alpha1\xa2\x02\x03DUU\xaa\x02\x17Dev.Unmango.Ux.V1alpha1\xca\x02\x17Dev\\Unmango\\Ux\\V1alpha1\xe2\x02#Dev\\Unmango\\Ux\\V1alpha1\\GPBMetadata\xea\x02\x1aDev::Unmango::Ux::V1alpha1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
 
-var file_dev_unmango_ux_v1alpha1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_dev_unmango_ux_v1alpha1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_dev_unmango_ux_v1alpha1_config_proto_goTypes = []any{
-	(*Config)(nil), // 0: dev.unmango.ux.v1alpha1.Config
+	(*Config)(nil),  // 0: dev.unmango.ux.v1alpha1.Config
+	(*Package)(nil), // 1: dev.unmango.ux.v1alpha1.Package
+	nil,             // 2: dev.unmango.ux.v1alpha1.Config.PackagesEntry
 }
 var file_dev_unmango_ux_v1alpha1_config_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	2, // 0: dev.unmango.ux.v1alpha1.Config.packages:type_name -> dev.unmango.ux.v1alpha1.Config.PackagesEntry
+	1, // 1: dev.unmango.ux.v1alpha1.Config.PackagesEntry.value:type_name -> dev.unmango.ux.v1alpha1.Package
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_dev_unmango_ux_v1alpha1_config_proto_init() }
@@ -140,7 +206,7 @@ func file_dev_unmango_ux_v1alpha1_config_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dev_unmango_ux_v1alpha1_config_proto_rawDesc), len(file_dev_unmango_ux_v1alpha1_config_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
