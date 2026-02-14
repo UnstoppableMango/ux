@@ -1,8 +1,11 @@
 package pkg
 
 import (
+	"archive/tar"
 	"bytes"
 	"fmt"
+	"io"
+	"os"
 	"os/exec"
 	"text/template"
 
@@ -11,6 +14,7 @@ import (
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/google/go-containerregistry/pkg/v1/empty"
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
+	"github.com/google/go-containerregistry/pkg/v1/tarball"
 	"github.com/spf13/afero"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 )
@@ -36,8 +40,10 @@ func Execute(fs afero.Fs, wd string) error {
 		return err
 	}
 
+	vars := Vars{Work: wd}
+
 	log.Infof("Config: %+v\n", c)
-	cmd, err := BuildCommand(c.Command, Vars{Work: wd})
+	cmd, err := BuildCommand(c.Command, vars)
 	if err != nil {
 		return err
 	}
@@ -47,22 +53,102 @@ func Execute(fs afero.Fs, wd string) error {
 		return err
 	}
 
+	img, err := CollectOutput(fs, c.Outputs, vars)
+	if err != nil {
+		return err
+	}
+
+	layers, err := img.Layers()
+	if err != nil {
+		return err
+	}
+
+	for _, layer := range layers {
+		r, err := layer.Uncompressed()
+		if err != nil {
+			return err
+		}
+		defer r.Close()
+
+		tr := tar.NewReader(r)
+		hdr, err := tr.Next()
+		if err != nil {
+			return err
+		}
+		log.Infof("Processing file: %s", hdr.Name)
+
+		s, err := io.ReadAll(tr)
+		if err != nil {
+			return err
+		}
+		log.Infof("Data: %s", string(s))
+	}
+
 	return nil
 }
 
-func CollectOutput(outputs []string, vars Vars) (v1.Image, error) {
+func CollectOutput(fsys afero.Fs, outputs []string, vars Vars) (v1.Image, error) {
 	outputs, err := ReplaceVariables(outputs, vars)
 	if err != nil {
 		return nil, err
 	}
 
-	a := mutate.Addendum{}
+	f, err := afero.TempFile(fsys, "", "ux-*.tar")
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
 
+	tw := tar.NewWriter(f)
+	defer tw.Close()
+
+	for _, output := range outputs {
+		if err = writeOutput(fsys, output, tw); err != nil {
+			return nil, err
+		}
+	}
+
+	l, err := tarball.LayerFromOpener(func() (io.ReadCloser, error) {
+		return fsys.OpenFile(f.Name(), os.O_RDONLY, os.ModePerm)
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	a := mutate.Addendum{Layer: l}
 	if img, err := mutate.Append(empty.Image, a); err != nil {
 		return nil, err
 	} else {
 		return img, nil
 	}
+}
+
+func writeOutput(fsys afero.Fs, output string, tw *tar.Writer) error {
+	f, err := fsys.OpenFile(output, os.O_RDONLY, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	info, err := f.Stat()
+	if err != nil {
+		return err
+	}
+
+	header, err := tar.FileInfoHeader(info, "")
+	if err != nil {
+		return err
+	}
+
+	if err := tw.WriteHeader(header); err != nil {
+		return err
+	}
+
+	if _, err := io.Copy(tw, f); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func BuildCommand(cmd []string, vars Vars) (*exec.Cmd, error) {
