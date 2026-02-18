@@ -24,12 +24,12 @@ func Execute(fsys afero.Fs, wd string) error {
 		return err
 	}
 
-	vars := uxv1alpha1.Vars_builder{Work: &wd}
 	packages := conf.GetPackages()
 	images := make(map[string]v1.Image, len(packages))
 
 	for name, pack := range conf.GetPackages() {
 		log.Infof("Processing package: %s", name)
+		vars := uxv1alpha1.Vars_builder{Work: &wd}
 		if img, err := image.Generate(fsys, pack, vars.Build()); err != nil {
 			return err
 		} else {
