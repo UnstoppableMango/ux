@@ -78,7 +78,7 @@ go.sum: go.mod ${GO_SRC}
 	$(NIX) fmt
 	@touch $@
 
-.make/ginkgo-run: ${GO_SRC} | test/e2e/testdata/petstore.yaml
+.make/ginkgo-run: ${GO_SRC}
 	$(GINKGO) $(sort $(dir $?))
 	@touch $@
 
