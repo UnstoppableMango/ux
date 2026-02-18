@@ -14,11 +14,16 @@ import (
 
 var _ = Describe("E2e", func() {
 	Describe("Simple", func() {
-		It("should work", func() {
-			tmp := GinkgoT().TempDir()
+		var tmp string
+
+		BeforeEach(func() {
+			tmp = GinkgoT().TempDir()
 			simple, err := fs.Sub(testdata, "testdata/simple")
 			Expect(err).NotTo(HaveOccurred())
 			Expect(os.CopyFS(tmp, simple)).To(Succeed())
+		})
+
+		It("should work", func() {
 			cmd := exec.Command(uxBin)
 			cmd.Dir = tmp
 

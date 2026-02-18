@@ -163,6 +163,84 @@ func (b0 Package_builder) Build() *Package {
 	return m0
 }
 
+type Vars struct {
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Work        *string                `protobuf:"bytes,1,opt,name=work"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *Vars) Reset() {
+	*x = Vars{}
+	mi := &file_dev_unmango_ux_v1alpha1_config_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Vars) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Vars) ProtoMessage() {}
+
+func (x *Vars) ProtoReflect() protoreflect.Message {
+	mi := &file_dev_unmango_ux_v1alpha1_config_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *Vars) GetWork() string {
+	if x != nil {
+		if x.xxx_hidden_Work != nil {
+			return *x.xxx_hidden_Work
+		}
+		return ""
+	}
+	return ""
+}
+
+func (x *Vars) SetWork(v string) {
+	x.xxx_hidden_Work = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
+}
+
+func (x *Vars) HasWork() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *Vars) ClearWork() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Work = nil
+}
+
+type Vars_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Work *string
+}
+
+func (b0 Vars_builder) Build() *Vars {
+	m0 := &Vars{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Work != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
+		x.xxx_hidden_Work = b.Work
+	}
+	return m0
+}
+
 var File_dev_unmango_ux_v1alpha1_config_proto protoreflect.FileDescriptor
 
 const file_dev_unmango_ux_v1alpha1_config_proto_rawDesc = "" +
@@ -176,17 +254,20 @@ const file_dev_unmango_ux_v1alpha1_config_proto_rawDesc = "" +
 	"\aPackage\x12\x18\n" +
 	"\acommand\x18\x01 \x03(\tR\acommand\x12\x16\n" +
 	"\x06inputs\x18\x02 \x03(\tR\x06inputs\x12\x18\n" +
-	"\aoutputs\x18\x03 \x03(\tR\aoutputsB\xf8\x01\n" +
+	"\aoutputs\x18\x03 \x03(\tR\aoutputs\"\x1a\n" +
+	"\x04Vars\x12\x12\n" +
+	"\x04work\x18\x01 \x01(\tR\x04workB\xf8\x01\n" +
 	"\x1bcom.dev.unmango.ux.v1alpha1B\vConfigProtoP\x01ZEgithub.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1;uxv1alpha1\xa2\x02\x03DUU\xaa\x02\x17Dev.Unmango.Ux.V1alpha1\xca\x02\x17Dev\\Unmango\\Ux\\V1alpha1\xe2\x02#Dev\\Unmango\\Ux\\V1alpha1\\GPBMetadata\xea\x02\x1aDev::Unmango::Ux::V1alpha1\x92\x03\x05\xd2>\x02\x10\x03b\beditionsp\xe8\a"
 
-var file_dev_unmango_ux_v1alpha1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_dev_unmango_ux_v1alpha1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_dev_unmango_ux_v1alpha1_config_proto_goTypes = []any{
 	(*Config)(nil),  // 0: dev.unmango.ux.v1alpha1.Config
 	(*Package)(nil), // 1: dev.unmango.ux.v1alpha1.Package
-	nil,             // 2: dev.unmango.ux.v1alpha1.Config.PackagesEntry
+	(*Vars)(nil),    // 2: dev.unmango.ux.v1alpha1.Vars
+	nil,             // 3: dev.unmango.ux.v1alpha1.Config.PackagesEntry
 }
 var file_dev_unmango_ux_v1alpha1_config_proto_depIdxs = []int32{
-	2, // 0: dev.unmango.ux.v1alpha1.Config.packages:type_name -> dev.unmango.ux.v1alpha1.Config.PackagesEntry
+	3, // 0: dev.unmango.ux.v1alpha1.Config.packages:type_name -> dev.unmango.ux.v1alpha1.Config.PackagesEntry
 	1, // 1: dev.unmango.ux.v1alpha1.Config.PackagesEntry.value:type_name -> dev.unmango.ux.v1alpha1.Package
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
@@ -206,7 +287,7 @@ func file_dev_unmango_ux_v1alpha1_config_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dev_unmango_ux_v1alpha1_config_proto_rawDesc), len(file_dev_unmango_ux_v1alpha1_config_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

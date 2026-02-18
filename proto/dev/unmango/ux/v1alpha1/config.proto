@@ -15,3 +15,7 @@ message Package {
   repeated string inputs = 2;
   repeated string outputs = 3;
 }
+
+message Vars {
+  string work = 1;
+}
