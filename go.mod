@@ -63,4 +63,5 @@ require (
 	golang.org/x/text v0.34.0 // indirect
 	golang.org/x/tools v0.42.0 // indirect
 	golang.org/x/tools/go/vcs v0.1.0-deprecated // indirect
+	oras.land/oras-go/v2 v2.6.0 // indirect
 )
