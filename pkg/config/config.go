@@ -13,8 +13,9 @@ import (
 )
 
 type (
-	Config = uxv1alpha1.Config
-	Vars   = uxv1alpha1.Vars
+	Config  = uxv1alpha1.Config
+	Package = uxv1alpha1.Package
+	Vars    = uxv1alpha1.Vars
 )
 
 func Command(cmd []string, vars *Vars) (*exec.Cmd, error) {

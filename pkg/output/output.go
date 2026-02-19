@@ -55,12 +55,12 @@ func writeOutput(fsys afero.Fs, output string, tw *tar.Writer) error {
 		return err
 	}
 
-	header, err := tar.FileInfoHeader(info, "")
+	hdr, err := tar.FileInfoHeader(info, "")
 	if err != nil {
 		return err
 	}
 
-	if err := tw.WriteHeader(header); err != nil {
+	if err := tw.WriteHeader(hdr); err != nil {
 		return err
 	}
 

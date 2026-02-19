@@ -2,37 +2,44 @@ package image
 
 import (
 	"fmt"
-	"io"
+	"os"
+	"path/filepath"
 
 	"github.com/charmbracelet/log"
+	"github.com/google/go-containerregistry/pkg/name"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
-	"github.com/google/go-containerregistry/pkg/v1/mutate"
+	"github.com/google/go-containerregistry/pkg/v1/tarball"
 	"github.com/spf13/afero"
-	uxv1alpha1 "github.com/unstoppablemango/ux/gen/dev/unmango/ux/v1alpha1"
 	"github.com/unstoppablemango/ux/pkg/config"
 	"github.com/unstoppablemango/ux/pkg/output"
 )
 
-type Package = uxv1alpha1.Package
-
 func Write(fsys afero.Fs, pname string, img v1.Image) error {
-	out, err := fsys.Create(pname + ".tar")
+	wd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("getting working directory: %w", err)
+	}
+
+	out, err := fsys.Create(filepath.Join(wd, pname+".tar"))
 	if err != nil {
 		return fmt.Errorf("creating file: %w", err)
 	}
 	defer out.Close()
 
-	rc := mutate.Extract(img)
-	defer rc.Close()
+	store, err := name.NewRegistry("test")
+	if err != nil {
+		return fmt.Errorf("creating registry: %w", err)
+	}
 
-	if _, err = io.Copy(out, rc); err != nil {
-		return fmt.Errorf("copying image: %w", err)
+	tag := store.Repo(pname).Tag("test")
+	if err = tarball.Write(tag, img, out); err != nil {
+		return fmt.Errorf("writing tarball: %w", err)
 	}
 
 	return nil
 }
 
-func Generate(fsys afero.Fs, pack *Package, vars *config.Vars) (v1.Image, error) {
+func Generate(fsys afero.Fs, pack *config.Package, vars *config.Vars) (v1.Image, error) {
 	log.Infof("Config: %+v\n", pack)
 	cmd, err := config.Command(pack.GetCommand(), vars)
 	if err != nil {
