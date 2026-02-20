@@ -15,7 +15,7 @@ func Collect(fsys afero.Fs, outputs []string) (oras.ReadOnlyTarget, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer fsys.RemoveAll(tmp)
+	// defer fsys.RemoveAll(tmp)
 
 	ctx := context.Background()
 	store, err := oci.NewWithContext(ctx, tmp)
@@ -29,6 +29,12 @@ func Collect(fsys afero.Fs, outputs []string) (oras.ReadOnlyTarget, error) {
 			return nil, err
 		}
 	}
+
+	_, err = oras.PackManifest(ctx, store,
+		oras.PackManifestVersion1_1,
+		"example/test",
+		oras.PackManifestOptions{},
+	)
 
 	return store, nil
 }
