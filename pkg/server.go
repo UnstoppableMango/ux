@@ -2,6 +2,8 @@ package ux
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/ux/v1alpha1"
 )
@@ -10,6 +12,7 @@ type (
 	Config         = uxv1alpha1.Config
 	ConfigBuilder  = uxv1alpha1.Config_builder
 	Repo           = uxv1alpha1.Repo
+	Derivation     = uxv1alpha1.Derivation
 	Package        = uxv1alpha1.Package
 	InvokeRequest  = uxv1alpha1.InvokeRequest
 	InvokeResponse = uxv1alpha1.InvokeResponse
@@ -20,25 +23,22 @@ type UX struct {
 }
 
 func (s *UX) Invoke(ctx context.Context, req *InvokeRequest) (*InvokeResponse, error) {
-	var cfg *Config
-	if cfg = req.GetConfig(); cfg == nil {
-		cfg = DefaultConfig
+	out := &strings.Builder{}
+	cfg := GetConfig(req, DefaultConfig)
+	for _, pkg := range cfg.GetPackages() {
+		if r, err := Instantiate(ctx, pkg); err != nil {
+			return nil, err
+		} else {
+			fmt.Fprintln(out, r.GetOutput())
+		}
 	}
 
-	b := uxv1alpha1.InvokeResponse_builder{
-		Output: new("Got here"),
+	resp := uxv1alpha1.InvokeResponse_builder{
+		Output: new(out.String()),
 	}
-
-	return b.Build(), nil
+	return resp.Build(), nil
 }
 
 func NewServer() uxv1alpha1.UxServiceServer {
 	return &UX{}
 }
-
-var cfgBuilder = ConfigBuilder{
-	Repos:    []*Repo{},
-	Packages: []*Package{},
-}
-
-var DefaultConfig *Config = cfgBuilder.Build()
