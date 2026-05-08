@@ -1,0 +1,17 @@
+edition = "2024";
+
+package ux.v1alpha1;
+
+import "ux/v1alpha1/config.proto";
+
+service UxService {
+  rpc Invoke(InvokeRequest) returns (InvokeResponse);
+}
+
+message InvokeRequest {
+  Config config = 1;
+}
+
+message InvokeResponse {
+  string output = 1;
+}

@@ -1,0 +1,32 @@
+edition = "2024";
+
+package ux.v1alpha1;
+
+import "ux/v1alpha1/package.proto";
+
+message Config {
+  repeated Repo repos = 1;
+  repeated Package packages = 2;
+}
+
+message FlakeRepo {
+  string url = 1;
+}
+
+message GitRepo {
+  string url = 1;
+  string rev = 2;
+}
+
+message OciRepo {
+  string url = 1;
+}
+
+message Repo {
+  string name = 1;
+  oneof src {
+    FlakeRepo flake = 10;
+    GitRepo git = 11;
+    OciRepo oci = 12;
+  }
+}

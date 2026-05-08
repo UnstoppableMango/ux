@@ -36,28 +36,23 @@
           ...
         }:
         let
-          inherit (inputs'.gomod2nix.legacyPackages) mkGoEnv;
-          goEnv = mkGoEnv { pwd = ./.; };
-          dotnet = pkgs.dotnetCorePackages.sdk_10_0;
+          inherit (inputs'.gomod2nix.legacyPackages) buildGoApplication;
 
-          ux = inputs'.gomod2nix.legacyPackages.buildGoApplication rec {
+          version = "0.1.0";
+          ux = buildGoApplication {
+            inherit version;
             pname = "ux";
-            version = "0.0.12";
-            src = ./.;
+            src = lib.cleanSource ./.;
             modules = ./gomod2nix.toml;
 
             nativeBuildInputs = with pkgs; [
               git
-              dotnet
+              nix
             ];
 
             ldflags = [
-              "-X github.com/unstoppablemango/ux/internal.Version=${version}"
+              "-X github.com/unstoppablemango/ux.Version=${version}"
             ];
-
-            checkPhase = ''
-              go test ./... -ginkgo.label-filter="!E2E"
-            '';
 
             meta = {
               description = "Universal codegen CLI";
@@ -65,27 +60,6 @@
               license = lib.licenses.mit;
               maintainers = with lib.maintainers; [ UnstoppableMango ];
             };
-          };
-
-          ctr = pkgs.dockerTools.buildImage {
-            name = "ux";
-            tag = "latest";
-
-            copyToRoot = pkgs.buildEnv {
-              name = "image-root";
-              paths = [ ux ];
-              pathsToLink = [ "/bin" ];
-            };
-
-            config = {
-              Cmd = [ "/bin/ux" ];
-            };
-          };
-
-          uxApp = {
-            type = "app";
-            program = ux + "/bin/ux";
-            meta = ux.meta;
           };
         in
         {
@@ -96,12 +70,10 @@
             ];
           };
 
-          packages.ux-image = ctr;
-          packages.ux = ux;
-          packages.default = ux;
-
-          apps.ux = uxApp;
-          apps.default = uxApp;
+          packages = {
+            inherit ux;
+            default = ux;
+          };
 
           devShells.default = pkgs.mkShell {
             packages = with pkgs; [
@@ -110,7 +82,6 @@
               dprint
               git
               gnumake
-              goEnv
               gomod2nix
               nil
               nixfmt
@@ -118,14 +89,10 @@
             ];
           };
 
-          treefmt = {
-            projectRootFile = "flake.nix";
-            programs = {
-              nixfmt.enable = true;
-              # dprint.enable = true;
-              gofmt.enable = true;
-              buf.enable = true;
-            };
+          treefmt.programs = {
+            nixfmt.enable = true;
+            gofmt.enable = true;
+            buf.enable = true;
           };
         };
     };
