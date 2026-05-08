@@ -3,5 +3,5 @@ edition = "2024";
 package ux.v1alpha1;
 
 message Derivation {
-  string name = 1;
+  string path = 1;
 }

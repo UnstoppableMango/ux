@@ -10,7 +10,6 @@ import (
 
 type (
 	Config         = uxv1alpha1.Config
-	ConfigBuilder  = uxv1alpha1.Config_builder
 	Repo           = uxv1alpha1.Repo
 	Derivation     = uxv1alpha1.Derivation
 	Package        = uxv1alpha1.Package
@@ -22,23 +21,18 @@ type UX struct {
 	uxv1alpha1.UnimplementedUxServiceServer
 }
 
+func NewServer() uxv1alpha1.UxServiceServer {
+	return &UX{}
+}
+
 func (s *UX) Invoke(ctx context.Context, req *InvokeRequest) (*InvokeResponse, error) {
 	out := &strings.Builder{}
-	cfg := GetConfig(req, DefaultConfig)
-	for _, pkg := range cfg.GetPackages() {
-		if r, err := Instantiate(ctx, pkg); err != nil {
-			return nil, err
-		} else {
-			fmt.Fprintln(out, r.GetOutput())
-		}
+	if err := Invoke(ctx, GetConfig(req, DefaultConfig)); err != nil {
+		fmt.Fprintln(out, err)
 	}
 
 	resp := uxv1alpha1.InvokeResponse_builder{
 		Output: new(out.String()),
 	}
 	return resp.Build(), nil
-}
-
-func NewServer() uxv1alpha1.UxServiceServer {
-	return &UX{}
 }

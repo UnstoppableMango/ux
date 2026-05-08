@@ -81,6 +81,7 @@
               docker
               dprint
               git
+              ginkgo
               gnumake
               gomod2nix
               nil

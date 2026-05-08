@@ -1,0 +1,78 @@
+edition = "2024";
+
+package nix.v1alpha1;
+
+service NixService {
+  rpc Build(BuildRequest) returns (BuildResponse);
+  rpc Instantiate(InstantiateRequest) returns (InstantiateResponse);
+}
+
+message BuildRequest {
+  repeated string paths = 1;
+  bool no_out_link = 2;
+  bool dry_run = 3;
+  string out_link = 4;
+  CommonOptions common = 5;
+}
+
+message BuildResponse {
+  string stdout = 1;
+  string stderr = 2;
+  int32 exit_code = 3;
+}
+
+message InstantiateRequest {
+  string add_root = 1;
+  bool parse = 2;
+  bool eval = 3;
+  bool find_file = 4;
+  bool strict = 5;
+  bool raw = 6;
+  bool json = 7;
+  bool xml = 8;
+  bool read_write_mode = 9;
+  repeated string files = 10;
+  CommonOptions common = 11;
+}
+
+message InstantiateResponse {
+  string stdout = 1;
+  string stderr = 2;
+  int32 exit_code = 3;
+}
+
+message CommonOptions {
+  bool help = 1;
+  bool version = 2;
+  int32 verbose = 3;
+  bool quiet = 4;
+  LogFormat log_format = 5;
+  bool no_build_output = 6;
+  int32 max_jobs = 7;
+  int32 cores = 8;
+  int32 max_slient_time = 9;
+  int32 timeout = 10;
+  bool keep_failed = 11;
+  bool keep_going = 12;
+  bool fallback = 13;
+  bool readonly_mode = 14;
+  map<string, string> args = 15;
+  map<string, string> args_from_files = 16;
+  repeated string args_from_stdin = 17;
+  map<string, string> argstrs = 18;
+  repeated string attrs = 19;
+  string eval_store = 20;
+  bool expr = 21;
+  repeated string includes = 22;
+  bool impurt = 23;
+  map<string, string> options = 24;
+  bool repair = 25;
+}
+
+enum LogFormat {
+  LOG_FORMAT_UNSPECIFIED = 0;
+  LOG_FORMAT_RAW = 1;
+  LOG_FORMAT_INTERNAL_JSON = 2;
+  LOG_FORMAT_BAR = 3;
+  LOG_FORMAT_BAR_WITH_LOGS = 4;
+}

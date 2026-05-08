@@ -22,7 +22,7 @@ const (
 
 type Derivation struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Name        *string                `protobuf:"bytes,1,opt,name=name"`
+	xxx_hidden_Path        *string                `protobuf:"bytes,1,opt,name=path"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -54,46 +54,46 @@ func (x *Derivation) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Derivation) GetName() string {
+func (x *Derivation) GetPath() string {
 	if x != nil {
-		if x.xxx_hidden_Name != nil {
-			return *x.xxx_hidden_Name
+		if x.xxx_hidden_Path != nil {
+			return *x.xxx_hidden_Path
 		}
 		return ""
 	}
 	return ""
 }
 
-func (x *Derivation) SetName(v string) {
-	x.xxx_hidden_Name = &v
+func (x *Derivation) SetPath(v string) {
+	x.xxx_hidden_Path = &v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
 }
 
-func (x *Derivation) HasName() bool {
+func (x *Derivation) HasPath() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *Derivation) ClearName() {
+func (x *Derivation) ClearPath() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Name = nil
+	x.xxx_hidden_Path = nil
 }
 
 type Derivation_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Name *string
+	Path *string
 }
 
 func (b0 Derivation_builder) Build() *Derivation {
 	m0 := &Derivation{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Name != nil {
+	if b.Path != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
-		x.xxx_hidden_Name = b.Name
+		x.xxx_hidden_Path = b.Path
 	}
 	return m0
 }
@@ -105,7 +105,7 @@ const file_ux_v1alpha1_nix_proto_rawDesc = "" +
 	"\x15ux/v1alpha1/nix.proto\x12\vux.v1alpha1\" \n" +
 	"\n" +
 	"Derivation\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04nameB\xa3\x01\n" +
+	"\x04path\x18\x01 \x01(\tR\x04pathB\xa3\x01\n" +
 	"\x0fcom.ux.v1alpha1B\bNixProtoP\x01Z9github.com/unstoppablemango/ux/gen/ux/v1alpha1;uxv1alpha1\xa2\x02\x03UXX\xaa\x02\vUx.V1alpha1\xca\x02\vUx\\V1alpha1\xe2\x02\x17Ux\\V1alpha1\\GPBMetadata\xea\x02\fUx::V1alpha1b\beditionsp\xe9\a"
 
 var file_ux_v1alpha1_nix_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
