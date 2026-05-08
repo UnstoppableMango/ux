@@ -71,7 +71,7 @@ jobs:
   docker:
     runs-on: ux-runners
     steps:
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
 
       - id: meta
         uses: docker/metadata-action@v6
