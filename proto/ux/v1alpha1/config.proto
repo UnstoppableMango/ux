@@ -2,11 +2,11 @@ edition = "2024";
 
 package ux.v1alpha1;
 
-import "ux/v1alpha1/package.proto";
+import "ux/v1alpha1/nix.proto";
 
 message Config {
   repeated Repo repos = 1;
-  repeated Package packages = 2;
+  repeated Link links = 2;
 }
 
 message FlakeRepo {
@@ -28,5 +28,15 @@ message Repo {
     FlakeRepo flake = 10;
     GitRepo git = 11;
     OciRepo oci = 12;
+  }
+}
+
+message Link {
+  string name = 1;
+  oneof source {
+    Derivation derivation = 100;
+  }
+  oneof destination {
+    string relative_path = 200;
   }
 }
