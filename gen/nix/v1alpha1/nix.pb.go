@@ -248,14 +248,10 @@ func (b0 BuildRequest_builder) Build() *BuildRequest {
 }
 
 type BuildResponse struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Stdout      *string                `protobuf:"bytes,1,opt,name=stdout"`
-	xxx_hidden_Stderr      *string                `protobuf:"bytes,2,opt,name=stderr"`
-	xxx_hidden_ExitCode    int32                  `protobuf:"varint,3,opt,name=exit_code,json=exitCode"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Result *Result                `protobuf:"bytes,1,opt,name=result"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *BuildResponse) Reset() {
@@ -283,108 +279,39 @@ func (x *BuildResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *BuildResponse) GetStdout() string {
+func (x *BuildResponse) GetResult() *Result {
 	if x != nil {
-		if x.xxx_hidden_Stdout != nil {
-			return *x.xxx_hidden_Stdout
-		}
-		return ""
+		return x.xxx_hidden_Result
 	}
-	return ""
+	return nil
 }
 
-func (x *BuildResponse) GetStderr() string {
-	if x != nil {
-		if x.xxx_hidden_Stderr != nil {
-			return *x.xxx_hidden_Stderr
-		}
-		return ""
-	}
-	return ""
+func (x *BuildResponse) SetResult(v *Result) {
+	x.xxx_hidden_Result = v
 }
 
-func (x *BuildResponse) GetExitCode() int32 {
-	if x != nil {
-		return x.xxx_hidden_ExitCode
-	}
-	return 0
-}
-
-func (x *BuildResponse) SetStdout(v string) {
-	x.xxx_hidden_Stdout = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
-}
-
-func (x *BuildResponse) SetStderr(v string) {
-	x.xxx_hidden_Stderr = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
-}
-
-func (x *BuildResponse) SetExitCode(v int32) {
-	x.xxx_hidden_ExitCode = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
-}
-
-func (x *BuildResponse) HasStdout() bool {
+func (x *BuildResponse) HasResult() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_Result != nil
 }
 
-func (x *BuildResponse) HasStderr() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
-func (x *BuildResponse) HasExitCode() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
-}
-
-func (x *BuildResponse) ClearStdout() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Stdout = nil
-}
-
-func (x *BuildResponse) ClearStderr() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_Stderr = nil
-}
-
-func (x *BuildResponse) ClearExitCode() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_ExitCode = 0
+func (x *BuildResponse) ClearResult() {
+	x.xxx_hidden_Result = nil
 }
 
 type BuildResponse_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Stdout   *string
-	Stderr   *string
-	ExitCode *int32
+	Result *Result
 }
 
 func (b0 BuildResponse_builder) Build() *BuildResponse {
 	m0 := &BuildResponse{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Stdout != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
-		x.xxx_hidden_Stdout = b.Stdout
-	}
-	if b.Stderr != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
-		x.xxx_hidden_Stderr = b.Stderr
-	}
-	if b.ExitCode != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
-		x.xxx_hidden_ExitCode = *b.ExitCode
-	}
+	x.xxx_hidden_Result = b.Result
 	return m0
 }
 
@@ -746,14 +673,10 @@ func (b0 InstantiateRequest_builder) Build() *InstantiateRequest {
 }
 
 type InstantiateResponse struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Stdout      *string                `protobuf:"bytes,1,opt,name=stdout"`
-	xxx_hidden_Stderr      *string                `protobuf:"bytes,2,opt,name=stderr"`
-	xxx_hidden_ExitCode    int32                  `protobuf:"varint,3,opt,name=exit_code,json=exitCode"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Result *Result                `protobuf:"bytes,1,opt,name=result"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *InstantiateResponse) Reset() {
@@ -781,7 +704,418 @@ func (x *InstantiateResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *InstantiateResponse) GetStdout() string {
+func (x *InstantiateResponse) GetResult() *Result {
+	if x != nil {
+		return x.xxx_hidden_Result
+	}
+	return nil
+}
+
+func (x *InstantiateResponse) SetResult(v *Result) {
+	x.xxx_hidden_Result = v
+}
+
+func (x *InstantiateResponse) HasResult() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Result != nil
+}
+
+func (x *InstantiateResponse) ClearResult() {
+	x.xxx_hidden_Result = nil
+}
+
+type InstantiateResponse_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Result *Result
+}
+
+func (b0 InstantiateResponse_builder) Build() *InstantiateResponse {
+	m0 := &InstantiateResponse{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Result = b.Result
+	return m0
+}
+
+type StoreRealise struct {
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Paths       []string               `protobuf:"bytes,1,rep,name=paths"`
+	xxx_hidden_DryRun      bool                   `protobuf:"varint,2,opt,name=dry_run,json=dryRun"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *StoreRealise) Reset() {
+	*x = StoreRealise{}
+	mi := &file_nix_v1alpha1_nix_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StoreRealise) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StoreRealise) ProtoMessage() {}
+
+func (x *StoreRealise) ProtoReflect() protoreflect.Message {
+	mi := &file_nix_v1alpha1_nix_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *StoreRealise) GetPaths() []string {
+	if x != nil {
+		return x.xxx_hidden_Paths
+	}
+	return nil
+}
+
+func (x *StoreRealise) GetDryRun() bool {
+	if x != nil {
+		return x.xxx_hidden_DryRun
+	}
+	return false
+}
+
+func (x *StoreRealise) SetPaths(v []string) {
+	x.xxx_hidden_Paths = v
+}
+
+func (x *StoreRealise) SetDryRun(v bool) {
+	x.xxx_hidden_DryRun = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+}
+
+func (x *StoreRealise) HasDryRun() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *StoreRealise) ClearDryRun() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_DryRun = false
+}
+
+type StoreRealise_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Paths  []string
+	DryRun *bool
+}
+
+func (b0 StoreRealise_builder) Build() *StoreRealise {
+	m0 := &StoreRealise{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Paths = b.Paths
+	if b.DryRun != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		x.xxx_hidden_DryRun = *b.DryRun
+	}
+	return m0
+}
+
+type StoreRequest struct {
+	state                protoimpl.MessageState   `protogen:"opaque.v1"`
+	xxx_hidden_Operation isStoreRequest_Operation `protobuf_oneof:"operation"`
+	xxx_hidden_Options   map[string]string        `protobuf:"bytes,51,rep,name=options" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	xxx_hidden_AddRoots  []string                 `protobuf:"bytes,52,rep,name=add_roots,json=addRoots"`
+	xxx_hidden_Common    *CommonOptions           `protobuf:"bytes,53,opt,name=common"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *StoreRequest) Reset() {
+	*x = StoreRequest{}
+	mi := &file_nix_v1alpha1_nix_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StoreRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StoreRequest) ProtoMessage() {}
+
+func (x *StoreRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nix_v1alpha1_nix_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *StoreRequest) GetRealise() *StoreRealise {
+	if x != nil {
+		if x, ok := x.xxx_hidden_Operation.(*storeRequest_Realise); ok {
+			return x.Realise
+		}
+	}
+	return nil
+}
+
+func (x *StoreRequest) GetOptions() map[string]string {
+	if x != nil {
+		return x.xxx_hidden_Options
+	}
+	return nil
+}
+
+func (x *StoreRequest) GetAddRoots() []string {
+	if x != nil {
+		return x.xxx_hidden_AddRoots
+	}
+	return nil
+}
+
+func (x *StoreRequest) GetCommon() *CommonOptions {
+	if x != nil {
+		return x.xxx_hidden_Common
+	}
+	return nil
+}
+
+func (x *StoreRequest) SetRealise(v *StoreRealise) {
+	if v == nil {
+		x.xxx_hidden_Operation = nil
+		return
+	}
+	x.xxx_hidden_Operation = &storeRequest_Realise{v}
+}
+
+func (x *StoreRequest) SetOptions(v map[string]string) {
+	x.xxx_hidden_Options = v
+}
+
+func (x *StoreRequest) SetAddRoots(v []string) {
+	x.xxx_hidden_AddRoots = v
+}
+
+func (x *StoreRequest) SetCommon(v *CommonOptions) {
+	x.xxx_hidden_Common = v
+}
+
+func (x *StoreRequest) HasOperation() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Operation != nil
+}
+
+func (x *StoreRequest) HasRealise() bool {
+	if x == nil {
+		return false
+	}
+	_, ok := x.xxx_hidden_Operation.(*storeRequest_Realise)
+	return ok
+}
+
+func (x *StoreRequest) HasCommon() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Common != nil
+}
+
+func (x *StoreRequest) ClearOperation() {
+	x.xxx_hidden_Operation = nil
+}
+
+func (x *StoreRequest) ClearRealise() {
+	if _, ok := x.xxx_hidden_Operation.(*storeRequest_Realise); ok {
+		x.xxx_hidden_Operation = nil
+	}
+}
+
+func (x *StoreRequest) ClearCommon() {
+	x.xxx_hidden_Common = nil
+}
+
+const StoreRequest_Operation_not_set_case case_StoreRequest_Operation = 0
+const StoreRequest_Realise_case case_StoreRequest_Operation = 1
+
+func (x *StoreRequest) WhichOperation() case_StoreRequest_Operation {
+	if x == nil {
+		return StoreRequest_Operation_not_set_case
+	}
+	switch x.xxx_hidden_Operation.(type) {
+	case *storeRequest_Realise:
+		return StoreRequest_Realise_case
+	default:
+		return StoreRequest_Operation_not_set_case
+	}
+}
+
+type StoreRequest_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// https://nix.dev/manual/nix/2.25/command-ref/nix-store
+
+	// Fields of oneof xxx_hidden_Operation:
+	Realise *StoreRealise
+	// -- end of xxx_hidden_Operation
+	Options  map[string]string
+	AddRoots []string
+	Common   *CommonOptions
+}
+
+func (b0 StoreRequest_builder) Build() *StoreRequest {
+	m0 := &StoreRequest{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Realise != nil {
+		x.xxx_hidden_Operation = &storeRequest_Realise{b.Realise}
+	}
+	x.xxx_hidden_Options = b.Options
+	x.xxx_hidden_AddRoots = b.AddRoots
+	x.xxx_hidden_Common = b.Common
+	return m0
+}
+
+type case_StoreRequest_Operation protoreflect.FieldNumber
+
+func (x case_StoreRequest_Operation) String() string {
+	md := file_nix_v1alpha1_nix_proto_msgTypes[5].Descriptor()
+	if x == 0 {
+		return "not set"
+	}
+	return protoimpl.X.MessageFieldStringOf(md, protoreflect.FieldNumber(x))
+}
+
+type isStoreRequest_Operation interface {
+	isStoreRequest_Operation()
+}
+
+type storeRequest_Realise struct {
+	Realise *StoreRealise `protobuf:"bytes,1,opt,name=realise,oneof"`
+}
+
+func (*storeRequest_Realise) isStoreRequest_Operation() {}
+
+type StoreResponse struct {
+	state             protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Result *Result                `protobuf:"bytes,1,opt,name=result"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *StoreResponse) Reset() {
+	*x = StoreResponse{}
+	mi := &file_nix_v1alpha1_nix_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StoreResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StoreResponse) ProtoMessage() {}
+
+func (x *StoreResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_nix_v1alpha1_nix_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *StoreResponse) GetResult() *Result {
+	if x != nil {
+		return x.xxx_hidden_Result
+	}
+	return nil
+}
+
+func (x *StoreResponse) SetResult(v *Result) {
+	x.xxx_hidden_Result = v
+}
+
+func (x *StoreResponse) HasResult() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Result != nil
+}
+
+func (x *StoreResponse) ClearResult() {
+	x.xxx_hidden_Result = nil
+}
+
+type StoreResponse_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Result *Result
+}
+
+func (b0 StoreResponse_builder) Build() *StoreResponse {
+	m0 := &StoreResponse{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Result = b.Result
+	return m0
+}
+
+type Result struct {
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Stdout      *string                `protobuf:"bytes,1,opt,name=stdout"`
+	xxx_hidden_Stderr      *string                `protobuf:"bytes,2,opt,name=stderr"`
+	xxx_hidden_ExitCode    int32                  `protobuf:"varint,3,opt,name=exit_code,json=exitCode"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *Result) Reset() {
+	*x = Result{}
+	mi := &file_nix_v1alpha1_nix_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Result) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Result) ProtoMessage() {}
+
+func (x *Result) ProtoReflect() protoreflect.Message {
+	mi := &file_nix_v1alpha1_nix_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *Result) GetStdout() string {
 	if x != nil {
 		if x.xxx_hidden_Stdout != nil {
 			return *x.xxx_hidden_Stdout
@@ -791,7 +1125,7 @@ func (x *InstantiateResponse) GetStdout() string {
 	return ""
 }
 
-func (x *InstantiateResponse) GetStderr() string {
+func (x *Result) GetStderr() string {
 	if x != nil {
 		if x.xxx_hidden_Stderr != nil {
 			return *x.xxx_hidden_Stderr
@@ -801,65 +1135,65 @@ func (x *InstantiateResponse) GetStderr() string {
 	return ""
 }
 
-func (x *InstantiateResponse) GetExitCode() int32 {
+func (x *Result) GetExitCode() int32 {
 	if x != nil {
 		return x.xxx_hidden_ExitCode
 	}
 	return 0
 }
 
-func (x *InstantiateResponse) SetStdout(v string) {
+func (x *Result) SetStdout(v string) {
 	x.xxx_hidden_Stdout = &v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
 }
 
-func (x *InstantiateResponse) SetStderr(v string) {
+func (x *Result) SetStderr(v string) {
 	x.xxx_hidden_Stderr = &v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
 }
 
-func (x *InstantiateResponse) SetExitCode(v int32) {
+func (x *Result) SetExitCode(v int32) {
 	x.xxx_hidden_ExitCode = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
-func (x *InstantiateResponse) HasStdout() bool {
+func (x *Result) HasStdout() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *InstantiateResponse) HasStderr() bool {
+func (x *Result) HasStderr() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *InstantiateResponse) HasExitCode() bool {
+func (x *Result) HasExitCode() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *InstantiateResponse) ClearStdout() {
+func (x *Result) ClearStdout() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Stdout = nil
 }
 
-func (x *InstantiateResponse) ClearStderr() {
+func (x *Result) ClearStderr() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_Stderr = nil
 }
 
-func (x *InstantiateResponse) ClearExitCode() {
+func (x *Result) ClearExitCode() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_ExitCode = 0
 }
 
-type InstantiateResponse_builder struct {
+type Result_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Stdout   *string
@@ -867,8 +1201,8 @@ type InstantiateResponse_builder struct {
 	ExitCode *int32
 }
 
-func (b0 InstantiateResponse_builder) Build() *InstantiateResponse {
-	m0 := &InstantiateResponse{}
+func (b0 Result_builder) Build() *Result {
+	m0 := &Result{}
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Stdout != nil {
@@ -921,7 +1255,7 @@ type CommonOptions struct {
 
 func (x *CommonOptions) Reset() {
 	*x = CommonOptions{}
-	mi := &file_nix_v1alpha1_nix_proto_msgTypes[4]
+	mi := &file_nix_v1alpha1_nix_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -933,7 +1267,7 @@ func (x *CommonOptions) String() string {
 func (*CommonOptions) ProtoMessage() {}
 
 func (x *CommonOptions) ProtoReflect() protoreflect.Message {
-	mi := &file_nix_v1alpha1_nix_proto_msgTypes[4]
+	mi := &file_nix_v1alpha1_nix_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1584,11 +1918,9 @@ const file_nix_v1alpha1_nix_proto_rawDesc = "" +
 	"\vno_out_link\x18\x02 \x01(\bR\tnoOutLink\x12\x17\n" +
 	"\adry_run\x18\x03 \x01(\bR\x06dryRun\x12\x19\n" +
 	"\bout_link\x18\x04 \x01(\tR\aoutLink\x123\n" +
-	"\x06common\x18\x05 \x01(\v2\x1b.nix.v1alpha1.CommonOptionsR\x06common\"\\\n" +
-	"\rBuildResponse\x12\x16\n" +
-	"\x06stdout\x18\x01 \x01(\tR\x06stdout\x12\x16\n" +
-	"\x06stderr\x18\x02 \x01(\tR\x06stderr\x12\x1b\n" +
-	"\texit_code\x18\x03 \x01(\x05R\bexitCode\"\xb9\x02\n" +
+	"\x06common\x18\x05 \x01(\v2\x1b.nix.v1alpha1.CommonOptionsR\x06common\"=\n" +
+	"\rBuildResponse\x12,\n" +
+	"\x06result\x18\x01 \x01(\v2\x14.nix.v1alpha1.ResultR\x06result\"\xb9\x02\n" +
 	"\x12InstantiateRequest\x12\x19\n" +
 	"\badd_root\x18\x01 \x01(\tR\aaddRoot\x12\x14\n" +
 	"\x05parse\x18\x02 \x01(\bR\x05parse\x12\x12\n" +
@@ -1601,8 +1933,24 @@ const file_nix_v1alpha1_nix_proto_rawDesc = "" +
 	"\x0fread_write_mode\x18\t \x01(\bR\rreadWriteMode\x12\x14\n" +
 	"\x05files\x18\n" +
 	" \x03(\tR\x05files\x123\n" +
-	"\x06common\x18\v \x01(\v2\x1b.nix.v1alpha1.CommonOptionsR\x06common\"b\n" +
-	"\x13InstantiateResponse\x12\x16\n" +
+	"\x06common\x18\v \x01(\v2\x1b.nix.v1alpha1.CommonOptionsR\x06common\"C\n" +
+	"\x13InstantiateResponse\x12,\n" +
+	"\x06result\x18\x01 \x01(\v2\x14.nix.v1alpha1.ResultR\x06result\"=\n" +
+	"\fStoreRealise\x12\x14\n" +
+	"\x05paths\x18\x01 \x03(\tR\x05paths\x12\x17\n" +
+	"\adry_run\x18\x02 \x01(\bR\x06dryRun\"\xa4\x02\n" +
+	"\fStoreRequest\x126\n" +
+	"\arealise\x18\x01 \x01(\v2\x1a.nix.v1alpha1.StoreRealiseH\x00R\arealise\x12A\n" +
+	"\aoptions\x183 \x03(\v2'.nix.v1alpha1.StoreRequest.OptionsEntryR\aoptions\x12\x1b\n" +
+	"\tadd_roots\x184 \x03(\tR\baddRoots\x123\n" +
+	"\x06common\x185 \x01(\v2\x1b.nix.v1alpha1.CommonOptionsR\x06common\x1a:\n" +
+	"\fOptionsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\v\n" +
+	"\toperation\"=\n" +
+	"\rStoreResponse\x12,\n" +
+	"\x06result\x18\x01 \x01(\v2\x14.nix.v1alpha1.ResultR\x06result\"U\n" +
+	"\x06Result\x12\x16\n" +
 	"\x06stdout\x18\x01 \x01(\tR\x06stdout\x12\x16\n" +
 	"\x06stderr\x18\x02 \x01(\tR\x06stderr\x12\x1b\n" +
 	"\texit_code\x18\x03 \x01(\x05R\bexitCode\"\x8c\t\n" +
@@ -1654,44 +2002,58 @@ const file_nix_v1alpha1_nix_proto_rawDesc = "" +
 	"\x0eLOG_FORMAT_RAW\x10\x01\x12\x1c\n" +
 	"\x18LOG_FORMAT_INTERNAL_JSON\x10\x02\x12\x12\n" +
 	"\x0eLOG_FORMAT_BAR\x10\x03\x12\x1c\n" +
-	"\x18LOG_FORMAT_BAR_WITH_LOGS\x10\x042\xa2\x01\n" +
+	"\x18LOG_FORMAT_BAR_WITH_LOGS\x10\x042\xe4\x01\n" +
 	"\n" +
 	"NixService\x12@\n" +
 	"\x05Build\x12\x1a.nix.v1alpha1.BuildRequest\x1a\x1b.nix.v1alpha1.BuildResponse\x12R\n" +
-	"\vInstantiate\x12 .nix.v1alpha1.InstantiateRequest\x1a!.nix.v1alpha1.InstantiateResponseB\xaa\x01\n" +
+	"\vInstantiate\x12 .nix.v1alpha1.InstantiateRequest\x1a!.nix.v1alpha1.InstantiateResponse\x12@\n" +
+	"\x05Store\x12\x1a.nix.v1alpha1.StoreRequest\x1a\x1b.nix.v1alpha1.StoreResponseB\xaa\x01\n" +
 	"\x10com.nix.v1alpha1B\bNixProtoP\x01Z;github.com/unstoppablemango/ux/gen/nix/v1alpha1;nixv1alpha1\xa2\x02\x03NXX\xaa\x02\fNix.V1alpha1\xca\x02\fNix\\V1alpha1\xe2\x02\x18Nix\\V1alpha1\\GPBMetadata\xea\x02\rNix::V1alpha1b\beditionsp\xe9\a"
 
 var file_nix_v1alpha1_nix_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_nix_v1alpha1_nix_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_nix_v1alpha1_nix_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_nix_v1alpha1_nix_proto_goTypes = []any{
 	(LogFormat)(0),              // 0: nix.v1alpha1.LogFormat
 	(*BuildRequest)(nil),        // 1: nix.v1alpha1.BuildRequest
 	(*BuildResponse)(nil),       // 2: nix.v1alpha1.BuildResponse
 	(*InstantiateRequest)(nil),  // 3: nix.v1alpha1.InstantiateRequest
 	(*InstantiateResponse)(nil), // 4: nix.v1alpha1.InstantiateResponse
-	(*CommonOptions)(nil),       // 5: nix.v1alpha1.CommonOptions
-	nil,                         // 6: nix.v1alpha1.CommonOptions.ArgsEntry
-	nil,                         // 7: nix.v1alpha1.CommonOptions.ArgsFromFilesEntry
-	nil,                         // 8: nix.v1alpha1.CommonOptions.ArgstrsEntry
-	nil,                         // 9: nix.v1alpha1.CommonOptions.OptionsEntry
+	(*StoreRealise)(nil),        // 5: nix.v1alpha1.StoreRealise
+	(*StoreRequest)(nil),        // 6: nix.v1alpha1.StoreRequest
+	(*StoreResponse)(nil),       // 7: nix.v1alpha1.StoreResponse
+	(*Result)(nil),              // 8: nix.v1alpha1.Result
+	(*CommonOptions)(nil),       // 9: nix.v1alpha1.CommonOptions
+	nil,                         // 10: nix.v1alpha1.StoreRequest.OptionsEntry
+	nil,                         // 11: nix.v1alpha1.CommonOptions.ArgsEntry
+	nil,                         // 12: nix.v1alpha1.CommonOptions.ArgsFromFilesEntry
+	nil,                         // 13: nix.v1alpha1.CommonOptions.ArgstrsEntry
+	nil,                         // 14: nix.v1alpha1.CommonOptions.OptionsEntry
 }
 var file_nix_v1alpha1_nix_proto_depIdxs = []int32{
-	5, // 0: nix.v1alpha1.BuildRequest.common:type_name -> nix.v1alpha1.CommonOptions
-	5, // 1: nix.v1alpha1.InstantiateRequest.common:type_name -> nix.v1alpha1.CommonOptions
-	0, // 2: nix.v1alpha1.CommonOptions.log_format:type_name -> nix.v1alpha1.LogFormat
-	6, // 3: nix.v1alpha1.CommonOptions.args:type_name -> nix.v1alpha1.CommonOptions.ArgsEntry
-	7, // 4: nix.v1alpha1.CommonOptions.args_from_files:type_name -> nix.v1alpha1.CommonOptions.ArgsFromFilesEntry
-	8, // 5: nix.v1alpha1.CommonOptions.argstrs:type_name -> nix.v1alpha1.CommonOptions.ArgstrsEntry
-	9, // 6: nix.v1alpha1.CommonOptions.options:type_name -> nix.v1alpha1.CommonOptions.OptionsEntry
-	1, // 7: nix.v1alpha1.NixService.Build:input_type -> nix.v1alpha1.BuildRequest
-	3, // 8: nix.v1alpha1.NixService.Instantiate:input_type -> nix.v1alpha1.InstantiateRequest
-	2, // 9: nix.v1alpha1.NixService.Build:output_type -> nix.v1alpha1.BuildResponse
-	4, // 10: nix.v1alpha1.NixService.Instantiate:output_type -> nix.v1alpha1.InstantiateResponse
-	9, // [9:11] is the sub-list for method output_type
-	7, // [7:9] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	9,  // 0: nix.v1alpha1.BuildRequest.common:type_name -> nix.v1alpha1.CommonOptions
+	8,  // 1: nix.v1alpha1.BuildResponse.result:type_name -> nix.v1alpha1.Result
+	9,  // 2: nix.v1alpha1.InstantiateRequest.common:type_name -> nix.v1alpha1.CommonOptions
+	8,  // 3: nix.v1alpha1.InstantiateResponse.result:type_name -> nix.v1alpha1.Result
+	5,  // 4: nix.v1alpha1.StoreRequest.realise:type_name -> nix.v1alpha1.StoreRealise
+	10, // 5: nix.v1alpha1.StoreRequest.options:type_name -> nix.v1alpha1.StoreRequest.OptionsEntry
+	9,  // 6: nix.v1alpha1.StoreRequest.common:type_name -> nix.v1alpha1.CommonOptions
+	8,  // 7: nix.v1alpha1.StoreResponse.result:type_name -> nix.v1alpha1.Result
+	0,  // 8: nix.v1alpha1.CommonOptions.log_format:type_name -> nix.v1alpha1.LogFormat
+	11, // 9: nix.v1alpha1.CommonOptions.args:type_name -> nix.v1alpha1.CommonOptions.ArgsEntry
+	12, // 10: nix.v1alpha1.CommonOptions.args_from_files:type_name -> nix.v1alpha1.CommonOptions.ArgsFromFilesEntry
+	13, // 11: nix.v1alpha1.CommonOptions.argstrs:type_name -> nix.v1alpha1.CommonOptions.ArgstrsEntry
+	14, // 12: nix.v1alpha1.CommonOptions.options:type_name -> nix.v1alpha1.CommonOptions.OptionsEntry
+	1,  // 13: nix.v1alpha1.NixService.Build:input_type -> nix.v1alpha1.BuildRequest
+	3,  // 14: nix.v1alpha1.NixService.Instantiate:input_type -> nix.v1alpha1.InstantiateRequest
+	6,  // 15: nix.v1alpha1.NixService.Store:input_type -> nix.v1alpha1.StoreRequest
+	2,  // 16: nix.v1alpha1.NixService.Build:output_type -> nix.v1alpha1.BuildResponse
+	4,  // 17: nix.v1alpha1.NixService.Instantiate:output_type -> nix.v1alpha1.InstantiateResponse
+	7,  // 18: nix.v1alpha1.NixService.Store:output_type -> nix.v1alpha1.StoreResponse
+	16, // [16:19] is the sub-list for method output_type
+	13, // [13:16] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_nix_v1alpha1_nix_proto_init() }
@@ -1699,13 +2061,16 @@ func file_nix_v1alpha1_nix_proto_init() {
 	if File_nix_v1alpha1_nix_proto != nil {
 		return
 	}
+	file_nix_v1alpha1_nix_proto_msgTypes[5].OneofWrappers = []any{
+		(*storeRequest_Realise)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nix_v1alpha1_nix_proto_rawDesc), len(file_nix_v1alpha1_nix_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   9,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

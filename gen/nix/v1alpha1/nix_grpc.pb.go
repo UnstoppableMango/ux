@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	NixService_Build_FullMethodName       = "/nix.v1alpha1.NixService/Build"
 	NixService_Instantiate_FullMethodName = "/nix.v1alpha1.NixService/Instantiate"
+	NixService_Store_FullMethodName       = "/nix.v1alpha1.NixService/Store"
 )
 
 // NixServiceClient is the client API for NixService service.
@@ -29,6 +30,7 @@ const (
 type NixServiceClient interface {
 	Build(ctx context.Context, in *BuildRequest, opts ...grpc.CallOption) (*BuildResponse, error)
 	Instantiate(ctx context.Context, in *InstantiateRequest, opts ...grpc.CallOption) (*InstantiateResponse, error)
+	Store(ctx context.Context, in *StoreRequest, opts ...grpc.CallOption) (*StoreResponse, error)
 }
 
 type nixServiceClient struct {
@@ -59,12 +61,23 @@ func (c *nixServiceClient) Instantiate(ctx context.Context, in *InstantiateReque
 	return out, nil
 }
 
+func (c *nixServiceClient) Store(ctx context.Context, in *StoreRequest, opts ...grpc.CallOption) (*StoreResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(StoreResponse)
+	err := c.cc.Invoke(ctx, NixService_Store_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NixServiceServer is the server API for NixService service.
 // All implementations must embed UnimplementedNixServiceServer
 // for forward compatibility.
 type NixServiceServer interface {
 	Build(context.Context, *BuildRequest) (*BuildResponse, error)
 	Instantiate(context.Context, *InstantiateRequest) (*InstantiateResponse, error)
+	Store(context.Context, *StoreRequest) (*StoreResponse, error)
 	mustEmbedUnimplementedNixServiceServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedNixServiceServer) Build(context.Context, *BuildRequest) (*Bui
 }
 func (UnimplementedNixServiceServer) Instantiate(context.Context, *InstantiateRequest) (*InstantiateResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Instantiate not implemented")
+}
+func (UnimplementedNixServiceServer) Store(context.Context, *StoreRequest) (*StoreResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Store not implemented")
 }
 func (UnimplementedNixServiceServer) mustEmbedUnimplementedNixServiceServer() {}
 func (UnimplementedNixServiceServer) testEmbeddedByValue()                    {}
@@ -138,6 +154,24 @@ func _NixService_Instantiate_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NixService_Store_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StoreRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NixServiceServer).Store(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NixService_Store_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NixServiceServer).Store(ctx, req.(*StoreRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NixService_ServiceDesc is the grpc.ServiceDesc for NixService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +186,10 @@ var NixService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Instantiate",
 			Handler:    _NixService_Instantiate_Handler,
+		},
+		{
+			MethodName: "Store",
+			Handler:    _NixService_Store_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

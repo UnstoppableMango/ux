@@ -10,6 +10,9 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "ux",
 	Short: "Codegen toolkit",
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		log.SetOutput(cmd.OutOrStdout())
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		s := ux.NewServer()
 		req := &ux.InvokeRequest{}
@@ -18,7 +21,6 @@ var rootCmd = &cobra.Command{
 			cli.Fail(err)
 		}
 
-		log := log.New(cmd.OutOrStdout())
 		if resp.HasOutput() {
 			log.Info(resp.GetOutput())
 		} else {

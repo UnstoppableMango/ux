@@ -5,16 +5,20 @@ import (
 	"context"
 	"os/exec"
 
+	"charm.land/log/v2"
 	nixv1alpha1 "github.com/unstoppablemango/ux/gen/nix/v1alpha1"
 	"github.com/unstoppablemango/ux/internal"
 )
 
 type (
+	Result              = nixv1alpha1.Result
 	CommonOptions       = nixv1alpha1.CommonOptions
 	BuildRequest        = nixv1alpha1.BuildRequest
 	BuildResponse       = nixv1alpha1.BuildResponse
 	InstantiateRequest  = nixv1alpha1.InstantiateRequest
 	InstantiateResponse = nixv1alpha1.InstantiateResponse
+	StoreRequest        = nixv1alpha1.StoreRequest
+	StoreResponse       = nixv1alpha1.StoreResponse
 )
 
 type Cli struct {
@@ -27,48 +31,56 @@ func NewCli() *Cli {
 
 // Build implements https://nix.dev/manual/nix/2.25/command-ref/nix-build
 func (*Cli) Build(ctx context.Context, req *BuildRequest) (*BuildResponse, error) {
-	e := &executor{"nix-build", BuildArgs(req)}
 	res := &BuildResponse{}
-	if err := e.Execute(ctx, res); err != nil {
+	args := BuildArgs(req)
+	if result, err := execute(ctx, "nix-build", args); err != nil {
 		return nil, err
+	} else {
+		res.SetResult(result)
 	}
 	return res, nil
 }
 
 // Instantiate implements https://nix.dev/manual/nix/2.25/command-ref/nix-instantiate
 func (*Cli) Instantiate(ctx context.Context, req *InstantiateRequest) (*InstantiateResponse, error) {
-	e := &executor{"nix-instantiate", InstantiateArgs(req)}
 	res := &InstantiateResponse{}
-	if err := e.Execute(ctx, res); err != nil {
+	args := InstantiateArgs(req)
+	if result, err := execute(ctx, "nix-instantiate", args); err != nil {
 		return nil, err
+	} else {
+		res.SetResult(result)
 	}
 	return res, nil
 }
 
-type response interface {
-	SetExitCode(int32)
-	SetStderr(string)
-	SetStdout(string)
+// Store implements https://nix.dev/manual/nix/2.25/command-ref/nix-store
+func (*Cli) Store(ctx context.Context, req *StoreRequest) (*StoreResponse, error) {
+	res := &StoreResponse{}
+	args := StoreArgs(req)
+	if result, err := execute(ctx, "nix-store", args); err != nil {
+		return nil, err
+	} else {
+		res.SetResult(result)
+	}
+	return res, nil
 }
 
-type executor struct {
-	name string
-	args []string
-}
-
-func (e *executor) Execute(ctx context.Context, res response) error {
-	cmd := exec.CommandContext(ctx, e.name, e.args...)
+func execute(ctx context.Context, name string, args []string) (*Result, error) {
+	log.Info("Executing command", "name", name, "args", args)
+	cmd := exec.CommandContext(ctx, name, args...)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	if err := cmd.Run(); err != nil {
-		return err
+		return nil, err
 	}
 
-	res.SetExitCode(int32(cmd.ProcessState.ExitCode()))
-	res.SetStdout(stdout.String())
-	res.SetStderr(stderr.String())
-	return nil
+	b := nixv1alpha1.Result_builder{
+		Stdout:   new(stdout.String()),
+		Stderr:   new(stderr.String()),
+		ExitCode: new(int32(cmd.ProcessState.ExitCode())),
+	}
+	return b.Build(), nil
 }
 
 var logFormats = map[nixv1alpha1.LogFormat]string{
@@ -121,20 +133,20 @@ func applyCommon(b *internal.CommandBuilder, opts *CommonOptions) {
 }
 
 func BuildArgs(req *BuildRequest) []string {
-	b := internal.CommandBuilder{}
+	b := &internal.CommandBuilder{}
 	b.AppendIf(req.HasDryRun(), "--dry-run")
 	b.AppendIf(req.HasNoOutLink(), "--no-out-link")
 	b.AppendIf(req.HasOutLink(), "--out-link")
 
 	if req.HasCommon() {
-		applyCommon(&b, req.GetCommon())
+		applyCommon(b, req.GetCommon())
 	}
 
 	return b.Build()
 }
 
 func InstantiateArgs(req *InstantiateRequest) []string {
-	b := internal.CommandBuilder{}
+	b := &internal.CommandBuilder{}
 	b.AppendIf(req.HasAddRoot(), "--add-root", req.GetAddRoot())
 	b.Option(req.HasParse(), "--parse", req.GetParse)
 	b.Option(req.HasEval(), "--eval", req.GetEval)
@@ -146,7 +158,35 @@ func InstantiateArgs(req *InstantiateRequest) []string {
 	b.Option(req.HasReadWriteMode(), "--read-write-mode", req.GetReadWriteMode)
 
 	if req.HasCommon() {
-		applyCommon(&b, req.GetCommon())
+		applyCommon(b, req.GetCommon())
+	}
+
+	return b.Build()
+}
+
+func StoreArgs(req *StoreRequest) []string {
+	b := &internal.CommandBuilder{}
+	for name, value := range req.GetOptions() {
+		b.Append("--option", name, value)
+	}
+	for _, path := range req.GetAddRoots() {
+		b.Append("--add-root", path)
+	}
+
+	switch req.WhichOperation() {
+	case nixv1alpha1.StoreRequest_Realise_case:
+		if req.HasRealise() {
+			r := req.GetRealise()
+			b.Append("--realise")
+			internal.AppendAll(b, r.GetPaths())
+			b.Opt("--dry-run", r.HasDryRun, r.GetDryRun)
+		}
+	default:
+		// TODO
+	}
+
+	if req.HasCommon() {
+		applyCommon(b, req.GetCommon())
 	}
 
 	return b.Build()

@@ -5,6 +5,7 @@ package nix.v1alpha1;
 service NixService {
   rpc Build(BuildRequest) returns (BuildResponse);
   rpc Instantiate(InstantiateRequest) returns (InstantiateResponse);
+  rpc Store(StoreRequest) returns (StoreResponse);
 }
 
 message BuildRequest {
@@ -16,9 +17,7 @@ message BuildRequest {
 }
 
 message BuildResponse {
-  string stdout = 1;
-  string stderr = 2;
-  int32 exit_code = 3;
+  Result result = 1;
 }
 
 message InstantiateRequest {
@@ -36,6 +35,29 @@ message InstantiateRequest {
 }
 
 message InstantiateResponse {
+  Result result = 1;
+}
+
+message StoreRealise {
+  repeated string paths = 1;
+  bool dry_run = 2;
+}
+
+message StoreRequest {
+  // https://nix.dev/manual/nix/2.25/command-ref/nix-store
+  oneof operation {
+    StoreRealise realise = 1;
+  }
+  map<string, string> options = 51;
+  repeated string add_roots = 52;
+  CommonOptions common = 53;
+}
+
+message StoreResponse {
+  Result result = 1;
+}
+
+message Result {
   string stdout = 1;
   string stderr = 2;
   int32 exit_code = 3;
