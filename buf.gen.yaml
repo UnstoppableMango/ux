@@ -16,3 +16,9 @@ plugins:
     out: gen
     opt:
       - paths=source_relative
+
+inputs:
+  - directory: proto
+  - module: buf.build/unmango/apis
+    paths:
+      - dev/unmango/cmd
