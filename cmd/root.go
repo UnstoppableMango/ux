@@ -33,7 +33,7 @@ var rootCmd = &cobra.Command{
 			cli.Fail(err)
 		}
 
-		log.Debug("Invoking with config", "cfg", cfg, "links", cfg.GetLinks())
+		log.Debug("Invoking with config", "cfg", cfg)
 		s := ux.NewServer()
 		req := &uxv1alpha1.InvokeRequest_builder{Config: cfg}
 		resp, err := s.Invoke(cmd.Context(), req.Build())

@@ -3,6 +3,7 @@ package nix
 import (
 	"bytes"
 	"context"
+	"errors"
 	"os/exec"
 
 	"charm.land/log/v2"
@@ -10,66 +11,87 @@ import (
 	"github.com/unstoppablemango/ux/internal"
 )
 
-type Cli struct {
+var Cli nixv1alpha1.NixServiceServer = &cli{}
+
+type Response interface {
+	SetResult(*Result)
+}
+
+type cli struct {
 	nixv1alpha1.UnimplementedNixServiceServer
 }
 
-func NewCli() *Cli {
-	return &Cli{}
+func (*cli) Build(ctx context.Context, req *BuildRequest) (*BuildResponse, error) {
+	return Build(ctx, req)
 }
 
 // Build implements https://nix.dev/manual/nix/2.25/command-ref/nix-build
-func (*Cli) Build(ctx context.Context, req *BuildRequest) (*BuildResponse, error) {
+func Build(ctx context.Context, req *BuildRequest) (*BuildResponse, error) {
 	res := &BuildResponse{}
 	args := BuildArgs(req)
-	if result, err := execute(ctx, "nix-build", args); err != nil {
+	if err := execute(ctx, "nix-build", args, res); err != nil {
 		return nil, err
-	} else {
-		res.SetResult(result)
 	}
 	return res, nil
+}
+
+func (*cli) Instantiate(ctx context.Context, req *InstantiateRequest) (*InstantiateResponse, error) {
+	return Instantiate(ctx, req)
 }
 
 // Instantiate implements https://nix.dev/manual/nix/2.25/command-ref/nix-instantiate
-func (*Cli) Instantiate(ctx context.Context, req *InstantiateRequest) (*InstantiateResponse, error) {
+func Instantiate(ctx context.Context, req *InstantiateRequest) (*InstantiateResponse, error) {
 	res := &InstantiateResponse{}
 	args := InstantiateArgs(req)
-	if result, err := execute(ctx, "nix-instantiate", args); err != nil {
+	if err := execute(ctx, "nix-instantiate", args, res); err != nil {
 		return nil, err
-	} else {
-		res.SetResult(result)
 	}
 	return res, nil
+}
+
+func (*cli) Store(ctx context.Context, req *StoreRequest) (*StoreResponse, error) {
+	return Store(ctx, req)
 }
 
 // Store implements https://nix.dev/manual/nix/2.25/command-ref/nix-store
-func (*Cli) Store(ctx context.Context, req *StoreRequest) (*StoreResponse, error) {
+func Store(ctx context.Context, req *StoreRequest) (*StoreResponse, error) {
 	res := &StoreResponse{}
 	args := StoreArgs(req)
-	if result, err := execute(ctx, "nix-store", args); err != nil {
+	if err := execute(ctx, "nix-store", args, res); err != nil {
 		return nil, err
-	} else {
-		res.SetResult(result)
 	}
 	return res, nil
 }
 
-func execute(ctx context.Context, name string, args []string) (*Result, error) {
+func execute(
+	ctx context.Context,
+	name string,
+	args []string,
+	res Response,
+) error {
 	log.Info("Executing command", "name", name, "args", args)
 	cmd := exec.CommandContext(ctx, name, args...)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
-	if err := cmd.Run(); err != nil {
-		return nil, err
+
+	err := cmd.Run()
+	b := nixv1alpha1.Result_builder{
+		Stdout: new(stdout.String()),
+		Stderr: new(stderr.String()),
 	}
 
-	b := nixv1alpha1.Result_builder{
-		Stdout:   new(stdout.String()),
-		Stderr:   new(stderr.String()),
-		ExitCode: new(int32(cmd.ProcessState.ExitCode())),
+	exitErr, ok := errors.AsType[*exec.ExitError](err)
+	if err != nil && !ok {
+		return err
+	} else if ok {
+		b.ExitCode = new(int32(exitErr.ExitCode()))
+	} else {
+		b.ExitCode = new(int32(cmd.ProcessState.ExitCode()))
 	}
-	return b.Build(), nil
+
+	res.SetResult(b.Build())
+	return nil
 }
 
 var logFormats = map[nixv1alpha1.LogFormat]string{
