@@ -1,0 +1,5 @@
+links:
+  - name: test
+    derivation:
+      path: testing
+    relative_path: testing

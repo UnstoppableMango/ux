@@ -7,8 +7,9 @@ type Derivation struct {
 }
 
 type Link struct {
-	Name       string     `yaml:"name"`
-	Derivation Derivation `yaml:"source"`
+	Name         string     `yaml:"name"`
+	Derivation   Derivation `yaml:"derivation"`
+	RelativePath string     `yaml:"relative_path"`
 }
 
 type Config struct {
@@ -25,7 +26,8 @@ func ToSpec(cfg Config) *uxv1alpha1.Config {
 
 func linkToSpec(link Link) *uxv1alpha1.Link {
 	b := &uxv1alpha1.Link_builder{
-		Derivation: drvToSpec(link.Derivation),
+		Derivation:   drvToSpec(link.Derivation),
+		RelativePath: &link.RelativePath,
 	}
 	return b.Build()
 }
