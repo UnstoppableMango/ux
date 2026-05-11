@@ -1,7 +1,7 @@
 GO_SRC := $(shell find . -type f -name '*.go')
 
 .PHONY: tidy
-tidy: go.sum gomod2nix.toml
+tidy: go.sum nix/gomod2nix.toml
 
 .PHONY: generate gen
 generate gen:
