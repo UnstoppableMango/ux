@@ -44,6 +44,7 @@
             version = "0.0.13";
             src = ./.;
             modules = ./gomod2nix.toml;
+            go = pkgs.go_1_26;
 
             nativeBuildInputs = with pkgs; [
               git
@@ -108,6 +109,7 @@
               ginkgo
               git
               gnumake
+              go_1_26
               goEnv
               gomod2nix
               nil

@@ -3,8 +3,8 @@ package config
 import (
 	"bytes"
 	"fmt"
-	"html/template"
 	"os/exec"
+	"text/template"
 
 	"github.com/goccy/go-yaml"
 	"github.com/spf13/afero"
@@ -26,7 +26,7 @@ func Command(cmd []string, vars *Vars) (*exec.Cmd, error) {
 	}
 }
 
-func Find(fs afero.Fs, wd string) (string, error) {
+func Find(fs afero.Fs) (string, error) {
 	matches, err := afero.Glob(fs, "config.y*ml")
 	if err != nil {
 		return "", err
