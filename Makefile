@@ -11,5 +11,5 @@ go.sum: ${GO_SRC} go.mod
 	go mod tidy
 	@touch $@
 
-gomod2nix.toml: ${GO_SRC} go.mod go.sum
-	gomod2nix generate
+nix/gomod2nix.toml: ${GO_SRC} go.mod go.sum
+	gomod2nix generate --dir ${CURDIR} --outdir ${CURDIR}/${@D}

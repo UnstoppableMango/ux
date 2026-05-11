@@ -39,28 +39,7 @@
           inherit (inputs'.gomod2nix.legacyPackages) buildGoApplication;
 
           version = "0.1.0";
-          ux = buildGoApplication {
-            inherit version;
-            pname = "ux";
-            src = lib.cleanSource ./.;
-            modules = ./gomod2nix.toml;
-
-            nativeBuildInputs = with pkgs; [
-              git
-              nix
-            ];
-
-            ldflags = [
-              "-X github.com/unstoppablemango/ux.Version=${version}"
-            ];
-
-            meta = {
-              description = "Universal codegen CLI";
-              homepage = "https://github.com/UnstoppableMango/ux";
-              license = lib.licenses.mit;
-              maintainers = with lib.maintainers; [ UnstoppableMango ];
-            };
-          };
+          ux = pkgs.callPackage ./nix { inherit buildGoApplication version; };
         in
         {
           _module.args.pkgs = import inputs.nixpkgs {
@@ -76,6 +55,8 @@
           };
 
           devShells.default = pkgs.mkShell {
+            DEBUG = true;
+
             packages = with pkgs; [
               buf
               docker
@@ -84,6 +65,7 @@
               ginkgo
               gnumake
               gomod2nix
+              gopls
               nil
               nixfmt
               shellcheck
