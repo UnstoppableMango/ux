@@ -612,11 +612,89 @@ func (*repo_Git) isRepo_Src() {}
 
 func (*repo_Oci) isRepo_Src() {}
 
+type Destination struct {
+	state                   protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_RelativePath *string                `protobuf:"bytes,1,opt,name=relative_path,json=relativePath"`
+	XXX_raceDetectHookData  protoimpl.RaceDetectHookData
+	XXX_presence            [1]uint32
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
+}
+
+func (x *Destination) Reset() {
+	*x = Destination{}
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Destination) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Destination) ProtoMessage() {}
+
+func (x *Destination) ProtoReflect() protoreflect.Message {
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *Destination) GetRelativePath() string {
+	if x != nil {
+		if x.xxx_hidden_RelativePath != nil {
+			return *x.xxx_hidden_RelativePath
+		}
+		return ""
+	}
+	return ""
+}
+
+func (x *Destination) SetRelativePath(v string) {
+	x.xxx_hidden_RelativePath = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
+}
+
+func (x *Destination) HasRelativePath() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *Destination) ClearRelativePath() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_RelativePath = nil
+}
+
+type Destination_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	RelativePath *string
+}
+
+func (b0 Destination_builder) Build() *Destination {
+	m0 := &Destination{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.RelativePath != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
+		x.xxx_hidden_RelativePath = b.RelativePath
+	}
+	return m0
+}
+
 type Link struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Name        *string                `protobuf:"bytes,1,opt,name=name"`
+	xxx_hidden_Destination *Destination           `protobuf:"bytes,2,opt,name=destination"`
 	xxx_hidden_Source      isLink_Source          `protobuf_oneof:"source"`
-	xxx_hidden_Destination isLink_Destination     `protobuf_oneof:"destination"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -625,7 +703,7 @@ type Link struct {
 
 func (x *Link) Reset() {
 	*x = Link{}
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[5]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -637,7 +715,7 @@ func (x *Link) String() string {
 func (*Link) ProtoMessage() {}
 
 func (x *Link) ProtoReflect() protoreflect.Message {
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[5]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -658,6 +736,13 @@ func (x *Link) GetName() string {
 	return ""
 }
 
+func (x *Link) GetDestination() *Destination {
+	if x != nil {
+		return x.xxx_hidden_Destination
+	}
+	return nil
+}
+
 func (x *Link) GetDerivation() *Derivation {
 	if x != nil {
 		if x, ok := x.xxx_hidden_Source.(*link_Derivation); ok {
@@ -667,18 +752,13 @@ func (x *Link) GetDerivation() *Derivation {
 	return nil
 }
 
-func (x *Link) GetRelativePath() string {
-	if x != nil {
-		if x, ok := x.xxx_hidden_Destination.(*link_RelativePath); ok {
-			return x.RelativePath
-		}
-	}
-	return ""
-}
-
 func (x *Link) SetName(v string) {
 	x.xxx_hidden_Name = &v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+}
+
+func (x *Link) SetDestination(v *Destination) {
+	x.xxx_hidden_Destination = v
 }
 
 func (x *Link) SetDerivation(v *Derivation) {
@@ -689,15 +769,18 @@ func (x *Link) SetDerivation(v *Derivation) {
 	x.xxx_hidden_Source = &link_Derivation{v}
 }
 
-func (x *Link) SetRelativePath(v string) {
-	x.xxx_hidden_Destination = &link_RelativePath{v}
-}
-
 func (x *Link) HasName() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *Link) HasDestination() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Destination != nil
 }
 
 func (x *Link) HasSource() bool {
@@ -715,24 +798,13 @@ func (x *Link) HasDerivation() bool {
 	return ok
 }
 
-func (x *Link) HasDestination() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_Destination != nil
-}
-
-func (x *Link) HasRelativePath() bool {
-	if x == nil {
-		return false
-	}
-	_, ok := x.xxx_hidden_Destination.(*link_RelativePath)
-	return ok
-}
-
 func (x *Link) ClearName() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Name = nil
+}
+
+func (x *Link) ClearDestination() {
+	x.xxx_hidden_Destination = nil
 }
 
 func (x *Link) ClearSource() {
@@ -742,16 +814,6 @@ func (x *Link) ClearSource() {
 func (x *Link) ClearDerivation() {
 	if _, ok := x.xxx_hidden_Source.(*link_Derivation); ok {
 		x.xxx_hidden_Source = nil
-	}
-}
-
-func (x *Link) ClearDestination() {
-	x.xxx_hidden_Destination = nil
-}
-
-func (x *Link) ClearRelativePath() {
-	if _, ok := x.xxx_hidden_Destination.(*link_RelativePath); ok {
-		x.xxx_hidden_Destination = nil
 	}
 }
 
@@ -770,31 +832,14 @@ func (x *Link) WhichSource() case_Link_Source {
 	}
 }
 
-const Link_Destination_not_set_case case_Link_Destination = 0
-const Link_RelativePath_case case_Link_Destination = 200
-
-func (x *Link) WhichDestination() case_Link_Destination {
-	if x == nil {
-		return Link_Destination_not_set_case
-	}
-	switch x.xxx_hidden_Destination.(type) {
-	case *link_RelativePath:
-		return Link_RelativePath_case
-	default:
-		return Link_Destination_not_set_case
-	}
-}
-
 type Link_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Name *string
+	Name        *string
+	Destination *Destination
 	// Fields of oneof xxx_hidden_Source:
 	Derivation *Derivation
 	// -- end of xxx_hidden_Source
-	// Fields of oneof xxx_hidden_Destination:
-	RelativePath *string
-	// -- end of xxx_hidden_Destination
 }
 
 func (b0 Link_builder) Build() *Link {
@@ -805,11 +850,9 @@ func (b0 Link_builder) Build() *Link {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
 		x.xxx_hidden_Name = b.Name
 	}
+	x.xxx_hidden_Destination = b.Destination
 	if b.Derivation != nil {
 		x.xxx_hidden_Source = &link_Derivation{b.Derivation}
-	}
-	if b.RelativePath != nil {
-		x.xxx_hidden_Destination = &link_RelativePath{*b.RelativePath}
 	}
 	return m0
 }
@@ -817,17 +860,7 @@ func (b0 Link_builder) Build() *Link {
 type case_Link_Source protoreflect.FieldNumber
 
 func (x case_Link_Source) String() string {
-	md := file_ux_v1alpha1_config_proto_msgTypes[5].Descriptor()
-	if x == 0 {
-		return "not set"
-	}
-	return protoimpl.X.MessageFieldStringOf(md, protoreflect.FieldNumber(x))
-}
-
-type case_Link_Destination protoreflect.FieldNumber
-
-func (x case_Link_Destination) String() string {
-	md := file_ux_v1alpha1_config_proto_msgTypes[5].Descriptor()
+	md := file_ux_v1alpha1_config_proto_msgTypes[6].Descriptor()
 	if x == 0 {
 		return "not set"
 	}
@@ -843,16 +876,6 @@ type link_Derivation struct {
 }
 
 func (*link_Derivation) isLink_Source() {}
-
-type isLink_Destination interface {
-	isLink_Destination()
-}
-
-type link_RelativePath struct {
-	RelativePath string `protobuf:"bytes,200,opt,name=relative_path,json=relativePath,oneof"`
-}
-
-func (*link_RelativePath) isLink_Destination() {}
 
 var File_ux_v1alpha1_config_proto protoreflect.FileDescriptor
 
@@ -875,39 +898,42 @@ const file_ux_v1alpha1_config_proto_rawDesc = "" +
 	" \x01(\v2\x16.ux.v1alpha1.FlakeRepoH\x00R\x05flake\x12(\n" +
 	"\x03git\x18\v \x01(\v2\x14.ux.v1alpha1.GitRepoH\x00R\x03git\x12(\n" +
 	"\x03oci\x18\f \x01(\v2\x14.ux.v1alpha1.OciRepoH\x00R\x03ociB\x05\n" +
-	"\x03src\"\x96\x01\n" +
+	"\x03src\"2\n" +
+	"\vDestination\x12#\n" +
+	"\rrelative_path\x18\x01 \x01(\tR\frelativePath\"\x9b\x01\n" +
 	"\x04Link\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x129\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12:\n" +
+	"\vdestination\x18\x02 \x01(\v2\x18.ux.v1alpha1.DestinationR\vdestination\x129\n" +
 	"\n" +
 	"derivation\x18d \x01(\v2\x17.ux.v1alpha1.DerivationH\x00R\n" +
-	"derivation\x12&\n" +
-	"\rrelative_path\x18\xc8\x01 \x01(\tH\x01R\frelativePathB\b\n" +
-	"\x06sourceB\r\n" +
-	"\vdestinationB\xa6\x01\n" +
+	"derivationB\b\n" +
+	"\x06sourceB\xa6\x01\n" +
 	"\x0fcom.ux.v1alpha1B\vConfigProtoP\x01Z9github.com/unstoppablemango/ux/gen/ux/v1alpha1;uxv1alpha1\xa2\x02\x03UXX\xaa\x02\vUx.V1alpha1\xca\x02\vUx\\V1alpha1\xe2\x02\x17Ux\\V1alpha1\\GPBMetadata\xea\x02\fUx::V1alpha1b\beditionsp\xe9\a"
 
-var file_ux_v1alpha1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_ux_v1alpha1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_ux_v1alpha1_config_proto_goTypes = []any{
-	(*Config)(nil),     // 0: ux.v1alpha1.Config
-	(*FlakeRepo)(nil),  // 1: ux.v1alpha1.FlakeRepo
-	(*GitRepo)(nil),    // 2: ux.v1alpha1.GitRepo
-	(*OciRepo)(nil),    // 3: ux.v1alpha1.OciRepo
-	(*Repo)(nil),       // 4: ux.v1alpha1.Repo
-	(*Link)(nil),       // 5: ux.v1alpha1.Link
-	(*Derivation)(nil), // 6: ux.v1alpha1.Derivation
+	(*Config)(nil),      // 0: ux.v1alpha1.Config
+	(*FlakeRepo)(nil),   // 1: ux.v1alpha1.FlakeRepo
+	(*GitRepo)(nil),     // 2: ux.v1alpha1.GitRepo
+	(*OciRepo)(nil),     // 3: ux.v1alpha1.OciRepo
+	(*Repo)(nil),        // 4: ux.v1alpha1.Repo
+	(*Destination)(nil), // 5: ux.v1alpha1.Destination
+	(*Link)(nil),        // 6: ux.v1alpha1.Link
+	(*Derivation)(nil),  // 7: ux.v1alpha1.Derivation
 }
 var file_ux_v1alpha1_config_proto_depIdxs = []int32{
 	4, // 0: ux.v1alpha1.Config.repos:type_name -> ux.v1alpha1.Repo
-	5, // 1: ux.v1alpha1.Config.links:type_name -> ux.v1alpha1.Link
+	6, // 1: ux.v1alpha1.Config.links:type_name -> ux.v1alpha1.Link
 	1, // 2: ux.v1alpha1.Repo.flake:type_name -> ux.v1alpha1.FlakeRepo
 	2, // 3: ux.v1alpha1.Repo.git:type_name -> ux.v1alpha1.GitRepo
 	3, // 4: ux.v1alpha1.Repo.oci:type_name -> ux.v1alpha1.OciRepo
-	6, // 5: ux.v1alpha1.Link.derivation:type_name -> ux.v1alpha1.Derivation
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	5, // 5: ux.v1alpha1.Link.destination:type_name -> ux.v1alpha1.Destination
+	7, // 6: ux.v1alpha1.Link.derivation:type_name -> ux.v1alpha1.Derivation
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_ux_v1alpha1_config_proto_init() }
@@ -921,9 +947,8 @@ func file_ux_v1alpha1_config_proto_init() {
 		(*repo_Git)(nil),
 		(*repo_Oci)(nil),
 	}
-	file_ux_v1alpha1_config_proto_msgTypes[5].OneofWrappers = []any{
+	file_ux_v1alpha1_config_proto_msgTypes[6].OneofWrappers = []any{
 		(*link_Derivation)(nil),
-		(*link_RelativePath)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -931,7 +956,7 @@ func file_ux_v1alpha1_config_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_ux_v1alpha1_config_proto_rawDesc), len(file_ux_v1alpha1_config_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

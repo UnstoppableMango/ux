@@ -14,6 +14,14 @@ import (
 
 var FileGlob = "ux.*"
 
+func OpenFirstRoot(name string) (*ux.Config, error) {
+	root, err := os.OpenRoot(name)
+	if err != nil {
+		return nil, err
+	}
+	return OpenFirst(root)
+}
+
 func OpenFirst(root *os.Root) (*ux.Config, error) {
 	f, err := OpenFirstFile(root)
 	if err != nil {

@@ -10,3 +10,6 @@ breaking:
 modules:
   - path: proto
     name: buf.build/unstoppablemango/ux
+
+deps:
+  - buf.build/unmango/apis

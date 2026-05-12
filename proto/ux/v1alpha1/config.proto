@@ -31,12 +31,14 @@ message Repo {
   }
 }
 
+message Destination {
+  string relative_path = 1;
+}
+
 message Link {
   string name = 1;
+  Destination destination = 2;
   oneof source {
     Derivation derivation = 100;
-  }
-  oneof destination {
-    string relative_path = 200;
   }
 }
