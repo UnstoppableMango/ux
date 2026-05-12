@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 
 	"charm.land/log/v2"
@@ -31,7 +32,10 @@ var rootCmd = &cobra.Command{
 		}
 
 		for name, msg := range msgs {
-			log.Info("Message", "name", name, "lines", msg.GetLines())
+			fmt.Fprintln(cmd.OutOrStdout(), "name:", name)
+			for _, line := range msg.GetLines() {
+				fmt.Fprintf(cmd.OutOrStdout(), "  %s\n", line)
+			}
 		}
 	},
 }

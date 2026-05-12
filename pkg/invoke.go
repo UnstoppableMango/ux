@@ -18,7 +18,7 @@ func Invoke(ctx context.Context, config *Config, file []byte) (Messages, error) 
 	for _, link := range config.GetLinks() {
 		switch link.WhichSource() {
 		case uxv1alpha1.Link_Derivation_case:
-			handle("TODO", msgs, handleDrv(ctx, link))
+			handle(linkName(link), msgs, handleDrv(ctx, link))
 		}
 	}
 	log.Debug("Nothing to do")
@@ -59,4 +59,15 @@ func handleError(err error) *InvokeMessage {
 		Lines: []string{err.Error()},
 	}
 	return b.Build()
+}
+
+func linkName(link *Link) string {
+	if !link.HasName() {
+		return "<nil>"
+	}
+	n := link.GetName()
+	if n == "" {
+		return "<empty>"
+	}
+	return n
 }
