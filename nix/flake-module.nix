@@ -2,7 +2,7 @@
 {
   options.ux = {
     builders = lib.options.mkOption {
-      type = lib.types.attrs;
+      type = lib.types.attrsOf lib.types.package;
     };
   };
 
