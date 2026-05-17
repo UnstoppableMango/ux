@@ -23,14 +23,16 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import inputs.systems;
 
-      imports = [
-        inputs.treefmt-nix.flakeModule
+      imports = with inputs; [
+        treefmt-nix.flakeModule
         ./nix/flake-module.nix
       ];
 
       ux.builders = {
         test = blah: "whatver";
       };
+
+      flake.flakeModules.default = ./nix/flake-module;
 
       perSystem =
         {

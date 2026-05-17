@@ -7,7 +7,7 @@
   };
 
   config.perSystem =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
       legacyPackages.uxBuilders = config.ux.builders;
     };
