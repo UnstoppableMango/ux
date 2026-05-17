@@ -9,6 +9,7 @@ package uxv1alpha1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	anypb "google.golang.org/protobuf/types/known/anypb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -21,11 +22,13 @@ const (
 )
 
 type Config struct {
-	state            protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Repos *[]*Repo               `protobuf:"bytes,1,rep,name=repos"`
-	xxx_hidden_Links *[]*Link               `protobuf:"bytes,2,rep,name=links"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Repos    *[]*Repo               `protobuf:"bytes,1,rep,name=repos"`
+	xxx_hidden_Links    *[]*Link               `protobuf:"bytes,2,rep,name=links"`
+	xxx_hidden_Builders map[string]string      `protobuf:"bytes,3,rep,name=builders" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	xxx_hidden_Generate map[string]*Generate   `protobuf:"bytes,4,rep,name=generate" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Config) Reset() {
@@ -71,6 +74,20 @@ func (x *Config) GetLinks() []*Link {
 	return nil
 }
 
+func (x *Config) GetBuilders() map[string]string {
+	if x != nil {
+		return x.xxx_hidden_Builders
+	}
+	return nil
+}
+
+func (x *Config) GetGenerate() map[string]*Generate {
+	if x != nil {
+		return x.xxx_hidden_Generate
+	}
+	return nil
+}
+
 func (x *Config) SetRepos(v []*Repo) {
 	x.xxx_hidden_Repos = &v
 }
@@ -79,11 +96,21 @@ func (x *Config) SetLinks(v []*Link) {
 	x.xxx_hidden_Links = &v
 }
 
+func (x *Config) SetBuilders(v map[string]string) {
+	x.xxx_hidden_Builders = v
+}
+
+func (x *Config) SetGenerate(v map[string]*Generate) {
+	x.xxx_hidden_Generate = v
+}
+
 type Config_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Repos []*Repo
-	Links []*Link
+	Repos    []*Repo
+	Links    []*Link
+	Builders map[string]string
+	Generate map[string]*Generate
 }
 
 func (b0 Config_builder) Build() *Config {
@@ -92,6 +119,111 @@ func (b0 Config_builder) Build() *Config {
 	_, _ = b, x
 	x.xxx_hidden_Repos = &b.Repos
 	x.xxx_hidden_Links = &b.Links
+	x.xxx_hidden_Builders = b.Builders
+	x.xxx_hidden_Generate = b.Generate
+	return m0
+}
+
+type Generate struct {
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Builder     *string                `protobuf:"bytes,1,opt,name=builder"`
+	xxx_hidden_Config      *anypb.Any             `protobuf:"bytes,2,opt,name=config"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *Generate) Reset() {
+	*x = Generate{}
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Generate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Generate) ProtoMessage() {}
+
+func (x *Generate) ProtoReflect() protoreflect.Message {
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *Generate) GetBuilder() string {
+	if x != nil {
+		if x.xxx_hidden_Builder != nil {
+			return *x.xxx_hidden_Builder
+		}
+		return ""
+	}
+	return ""
+}
+
+func (x *Generate) GetConfig() *anypb.Any {
+	if x != nil {
+		return x.xxx_hidden_Config
+	}
+	return nil
+}
+
+func (x *Generate) SetBuilder(v string) {
+	x.xxx_hidden_Builder = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+}
+
+func (x *Generate) SetConfig(v *anypb.Any) {
+	x.xxx_hidden_Config = v
+}
+
+func (x *Generate) HasBuilder() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *Generate) HasConfig() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Config != nil
+}
+
+func (x *Generate) ClearBuilder() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Builder = nil
+}
+
+func (x *Generate) ClearConfig() {
+	x.xxx_hidden_Config = nil
+}
+
+type Generate_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Builder *string
+	Config  *anypb.Any
+}
+
+func (b0 Generate_builder) Build() *Generate {
+	m0 := &Generate{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Builder != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		x.xxx_hidden_Builder = b.Builder
+	}
+	x.xxx_hidden_Config = b.Config
 	return m0
 }
 
@@ -106,7 +238,7 @@ type FlakeRepo struct {
 
 func (x *FlakeRepo) Reset() {
 	*x = FlakeRepo{}
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[1]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -118,7 +250,7 @@ func (x *FlakeRepo) String() string {
 func (*FlakeRepo) ProtoMessage() {}
 
 func (x *FlakeRepo) ProtoReflect() protoreflect.Message {
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[1]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -185,7 +317,7 @@ type GitRepo struct {
 
 func (x *GitRepo) Reset() {
 	*x = GitRepo{}
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[2]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -197,7 +329,7 @@ func (x *GitRepo) String() string {
 func (*GitRepo) ProtoMessage() {}
 
 func (x *GitRepo) ProtoReflect() protoreflect.Message {
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[2]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -295,7 +427,7 @@ type OciRepo struct {
 
 func (x *OciRepo) Reset() {
 	*x = OciRepo{}
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[3]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -307,7 +439,7 @@ func (x *OciRepo) String() string {
 func (*OciRepo) ProtoMessage() {}
 
 func (x *OciRepo) ProtoReflect() protoreflect.Message {
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[3]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -374,7 +506,7 @@ type Repo struct {
 
 func (x *Repo) Reset() {
 	*x = Repo{}
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[4]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -386,7 +518,7 @@ func (x *Repo) String() string {
 func (*Repo) ProtoMessage() {}
 
 func (x *Repo) ProtoReflect() protoreflect.Message {
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[4]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -583,7 +715,7 @@ func (b0 Repo_builder) Build() *Repo {
 type case_Repo_Src protoreflect.FieldNumber
 
 func (x case_Repo_Src) String() string {
-	md := file_ux_v1alpha1_config_proto_msgTypes[4].Descriptor()
+	md := file_ux_v1alpha1_config_proto_msgTypes[5].Descriptor()
 	if x == 0 {
 		return "not set"
 	}
@@ -623,7 +755,7 @@ type Destination struct {
 
 func (x *Destination) Reset() {
 	*x = Destination{}
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[5]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -635,7 +767,7 @@ func (x *Destination) String() string {
 func (*Destination) ProtoMessage() {}
 
 func (x *Destination) ProtoReflect() protoreflect.Message {
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[5]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -703,7 +835,7 @@ type Link struct {
 
 func (x *Link) Reset() {
 	*x = Link{}
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[6]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -715,7 +847,7 @@ func (x *Link) String() string {
 func (*Link) ProtoMessage() {}
 
 func (x *Link) ProtoReflect() protoreflect.Message {
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[6]
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -860,7 +992,7 @@ func (b0 Link_builder) Build() *Link {
 type case_Link_Source protoreflect.FieldNumber
 
 func (x case_Link_Source) String() string {
-	md := file_ux_v1alpha1_config_proto_msgTypes[6].Descriptor()
+	md := file_ux_v1alpha1_config_proto_msgTypes[7].Descriptor()
 	if x == 0 {
 		return "not set"
 	}
@@ -881,10 +1013,21 @@ var File_ux_v1alpha1_config_proto protoreflect.FileDescriptor
 
 const file_ux_v1alpha1_config_proto_rawDesc = "" +
 	"\n" +
-	"\x18ux/v1alpha1/config.proto\x12\vux.v1alpha1\x1a\x15ux/v1alpha1/nix.proto\"Z\n" +
+	"\x18ux/v1alpha1/config.proto\x12\vux.v1alpha1\x1a\x19google/protobuf/any.proto\x1a\x15ux/v1alpha1/nix.proto\"\xe9\x02\n" +
 	"\x06Config\x12'\n" +
 	"\x05repos\x18\x01 \x03(\v2\x11.ux.v1alpha1.RepoR\x05repos\x12'\n" +
-	"\x05links\x18\x02 \x03(\v2\x11.ux.v1alpha1.LinkR\x05links\"\x1d\n" +
+	"\x05links\x18\x02 \x03(\v2\x11.ux.v1alpha1.LinkR\x05links\x12=\n" +
+	"\bbuilders\x18\x03 \x03(\v2!.ux.v1alpha1.Config.BuildersEntryR\bbuilders\x12=\n" +
+	"\bgenerate\x18\x04 \x03(\v2!.ux.v1alpha1.Config.GenerateEntryR\bgenerate\x1a;\n" +
+	"\rBuildersEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1aR\n" +
+	"\rGenerateEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12+\n" +
+	"\x05value\x18\x02 \x01(\v2\x15.ux.v1alpha1.GenerateR\x05value:\x028\x01\"R\n" +
+	"\bGenerate\x12\x18\n" +
+	"\abuilder\x18\x01 \x01(\tR\abuilder\x12,\n" +
+	"\x06config\x18\x02 \x01(\v2\x14.google.protobuf.AnyR\x06config\"\x1d\n" +
 	"\tFlakeRepo\x12\x10\n" +
 	"\x03url\x18\x01 \x01(\tR\x03url\"-\n" +
 	"\aGitRepo\x12\x10\n" +
@@ -910,30 +1053,38 @@ const file_ux_v1alpha1_config_proto_rawDesc = "" +
 	"\x06sourceB\xa6\x01\n" +
 	"\x0fcom.ux.v1alpha1B\vConfigProtoP\x01Z9github.com/unstoppablemango/ux/gen/ux/v1alpha1;uxv1alpha1\xa2\x02\x03UXX\xaa\x02\vUx.V1alpha1\xca\x02\vUx\\V1alpha1\xe2\x02\x17Ux\\V1alpha1\\GPBMetadata\xea\x02\fUx::V1alpha1b\beditionsp\xe9\a"
 
-var file_ux_v1alpha1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_ux_v1alpha1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_ux_v1alpha1_config_proto_goTypes = []any{
 	(*Config)(nil),      // 0: ux.v1alpha1.Config
-	(*FlakeRepo)(nil),   // 1: ux.v1alpha1.FlakeRepo
-	(*GitRepo)(nil),     // 2: ux.v1alpha1.GitRepo
-	(*OciRepo)(nil),     // 3: ux.v1alpha1.OciRepo
-	(*Repo)(nil),        // 4: ux.v1alpha1.Repo
-	(*Destination)(nil), // 5: ux.v1alpha1.Destination
-	(*Link)(nil),        // 6: ux.v1alpha1.Link
-	(*Derivation)(nil),  // 7: ux.v1alpha1.Derivation
+	(*Generate)(nil),    // 1: ux.v1alpha1.Generate
+	(*FlakeRepo)(nil),   // 2: ux.v1alpha1.FlakeRepo
+	(*GitRepo)(nil),     // 3: ux.v1alpha1.GitRepo
+	(*OciRepo)(nil),     // 4: ux.v1alpha1.OciRepo
+	(*Repo)(nil),        // 5: ux.v1alpha1.Repo
+	(*Destination)(nil), // 6: ux.v1alpha1.Destination
+	(*Link)(nil),        // 7: ux.v1alpha1.Link
+	nil,                 // 8: ux.v1alpha1.Config.BuildersEntry
+	nil,                 // 9: ux.v1alpha1.Config.GenerateEntry
+	(*anypb.Any)(nil),   // 10: google.protobuf.Any
+	(*Derivation)(nil),  // 11: ux.v1alpha1.Derivation
 }
 var file_ux_v1alpha1_config_proto_depIdxs = []int32{
-	4, // 0: ux.v1alpha1.Config.repos:type_name -> ux.v1alpha1.Repo
-	6, // 1: ux.v1alpha1.Config.links:type_name -> ux.v1alpha1.Link
-	1, // 2: ux.v1alpha1.Repo.flake:type_name -> ux.v1alpha1.FlakeRepo
-	2, // 3: ux.v1alpha1.Repo.git:type_name -> ux.v1alpha1.GitRepo
-	3, // 4: ux.v1alpha1.Repo.oci:type_name -> ux.v1alpha1.OciRepo
-	5, // 5: ux.v1alpha1.Link.destination:type_name -> ux.v1alpha1.Destination
-	7, // 6: ux.v1alpha1.Link.derivation:type_name -> ux.v1alpha1.Derivation
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	5,  // 0: ux.v1alpha1.Config.repos:type_name -> ux.v1alpha1.Repo
+	7,  // 1: ux.v1alpha1.Config.links:type_name -> ux.v1alpha1.Link
+	8,  // 2: ux.v1alpha1.Config.builders:type_name -> ux.v1alpha1.Config.BuildersEntry
+	9,  // 3: ux.v1alpha1.Config.generate:type_name -> ux.v1alpha1.Config.GenerateEntry
+	10, // 4: ux.v1alpha1.Generate.config:type_name -> google.protobuf.Any
+	2,  // 5: ux.v1alpha1.Repo.flake:type_name -> ux.v1alpha1.FlakeRepo
+	3,  // 6: ux.v1alpha1.Repo.git:type_name -> ux.v1alpha1.GitRepo
+	4,  // 7: ux.v1alpha1.Repo.oci:type_name -> ux.v1alpha1.OciRepo
+	6,  // 8: ux.v1alpha1.Link.destination:type_name -> ux.v1alpha1.Destination
+	11, // 9: ux.v1alpha1.Link.derivation:type_name -> ux.v1alpha1.Derivation
+	1,  // 10: ux.v1alpha1.Config.GenerateEntry.value:type_name -> ux.v1alpha1.Generate
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_ux_v1alpha1_config_proto_init() }
@@ -942,12 +1093,12 @@ func file_ux_v1alpha1_config_proto_init() {
 		return
 	}
 	file_ux_v1alpha1_nix_proto_init()
-	file_ux_v1alpha1_config_proto_msgTypes[4].OneofWrappers = []any{
+	file_ux_v1alpha1_config_proto_msgTypes[5].OneofWrappers = []any{
 		(*repo_Flake)(nil),
 		(*repo_Git)(nil),
 		(*repo_Oci)(nil),
 	}
-	file_ux_v1alpha1_config_proto_msgTypes[6].OneofWrappers = []any{
+	file_ux_v1alpha1_config_proto_msgTypes[7].OneofWrappers = []any{
 		(*link_Derivation)(nil),
 	}
 	type x struct{}
@@ -956,7 +1107,7 @@ func file_ux_v1alpha1_config_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_ux_v1alpha1_config_proto_rawDesc), len(file_ux_v1alpha1_config_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

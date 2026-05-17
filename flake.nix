@@ -52,9 +52,10 @@
             ];
           };
 
-          ux.gen.test = pkgs.runCommand "ux-gen-test" { } ''
-            echo "Hello, world!" > $out;
-          '';
+          ux.gen.test = {
+            builder = "buf";
+            config = { };
+          };
 
           packages = {
             inherit ux;
