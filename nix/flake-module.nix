@@ -1,14 +1,33 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  flake-parts-lib,
+  ...
+}:
+let
+  inherit (lib) options types;
+in
 {
   options.ux = {
-    builders = lib.options.mkOption {
-      type = lib.types.attrsOf lib.types.package;
+    builders = options.mkOption {
+      type = types.attrsOf (types.functionTo types.package);
+    };
+    gen = options.mkOption {
+      type = types.attrs;
     };
   };
 
   config.perSystem =
-    { pkgs, lib, ... }:
     {
-      legacyPackages.uxBuilders = config.ux.builders;
+      self',
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      packages.uxCodegen = pkgs.callPackage ./codegen.nix {
+        config = config.ux;
+        ux = pkgs.ux or self'.packages.ux;
+      };
     };
 }

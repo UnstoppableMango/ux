@@ -28,8 +28,12 @@
         ./nix/flake-module.nix
       ];
 
-      ux.builders = {
-        test = blah: "whatver";
+      ux = {
+        gen.test =
+          { pkgs }:
+          pkgs.runCommand "ux-gen-test" { } ''
+            echo "Hello, world!" > $out;
+          '';
       };
 
       flake.flakeModules.default = ./nix/flake-module.nix;
