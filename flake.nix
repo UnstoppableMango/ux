@@ -25,7 +25,12 @@
 
       imports = [
         inputs.treefmt-nix.flakeModule
+        ./nix/flake-module.nix
       ];
+
+      ux.builders = {
+        test = blah: "whatver";
+      };
 
       perSystem =
         {
