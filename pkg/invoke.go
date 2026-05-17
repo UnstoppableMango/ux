@@ -9,26 +9,28 @@ import (
 	"github.com/unstoppablemango/ux/pkg/nix"
 )
 
-type Messages map[string]*InvokeMessage
-
 var ErrNoDestination = fmt.Errorf("link has no destination")
 
-func Invoke(ctx context.Context, config *Config, file []byte) (Messages, error) {
-	msgs := Messages{}
+func Invoke(ctx context.Context, config *Config) error {
 	for _, link := range config.GetLinks() {
-		switch link.WhichSource() {
-		case uxv1alpha1.Link_Derivation_case:
-			handle(linkName(link), msgs, handleDrv(ctx, link))
+		if err := handle(ctx, link); err != nil {
+			return err
 		}
 	}
-	log.Debug("Nothing to do")
-	return msgs, nil
+	return nil
 }
 
-func handleDrv(
-	ctx context.Context,
-	link *uxv1alpha1.Link,
-) error {
+func handle(ctx context.Context, link *Link) error {
+	switch link.WhichSource() {
+	case uxv1alpha1.Link_Derivation_case:
+		return handleDrv(ctx, link)
+	default:
+		log.Debug("Nothing to do")
+		return nil
+	}
+}
+
+func handleDrv(ctx context.Context, link *Link) error {
 	if !link.HasDestination() {
 		return ErrNoDestination
 	}
@@ -42,23 +44,6 @@ func handleDrv(
 		[]string{link.GetDerivation().GetPath()},
 		[]string{dest.GetRelativePath()},
 	)
-}
-
-func handle(name string, msgs Messages, err error) {
-	if err != nil {
-		msgs[name] = handleError(err)
-	}
-}
-
-func handleError(err error) *InvokeMessage {
-	if err == nil {
-		return nil
-	}
-	b := &uxv1alpha1.InvokeMessage_builder{
-		Level: new("error"),
-		Lines: []string{err.Error()},
-	}
-	return b.Build()
 }
 
 func linkName(link *Link) string {

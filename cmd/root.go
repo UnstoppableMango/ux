@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"charm.land/log/v2"
@@ -25,17 +24,8 @@ var rootCmd = &cobra.Command{
 		if err != nil {
 			cli.Fail(err)
 		}
-
-		msgs, err := ux.Invoke(cmd.Context(), cfg, nil)
-		if err != nil {
+		if err = ux.Invoke(cmd.Context(), cfg); err != nil {
 			cli.Fail(err)
-		}
-
-		for name, msg := range msgs {
-			fmt.Fprintln(cmd.OutOrStdout(), "name:", name)
-			for _, line := range msg.GetLines() {
-				fmt.Fprintf(cmd.OutOrStdout(), "  %s\n", line)
-			}
 		}
 	},
 }

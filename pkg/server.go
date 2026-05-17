@@ -16,14 +16,13 @@ func NewServer() uxv1alpha1.UxServiceServer {
 
 func (s *UX) Invoke(ctx context.Context, req *InvokeRequest) (*InvokeResponse, error) {
 	cfg := req.GetConfig()
-	msgs, err := Invoke(ctx, cfg, req.GetUxFile())
-	if err != nil {
+	if err := Invoke(ctx, cfg); err != nil {
 		return nil, err
 	}
 
 	resp := uxv1alpha1.InvokeResponse_builder{
-		Links:    cfg.GetLinks(),
-		Messages: msgs,
+		Links: cfg.GetLinks(),
+		// Messages: msgs,
 	}
 	return resp.Build(), nil
 }

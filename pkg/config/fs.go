@@ -4,11 +4,8 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"path/filepath"
 
 	"charm.land/log/v2"
-	"github.com/unmango/go/codec"
-	"github.com/unstoppablemango/godec"
 	ux "github.com/unstoppablemango/ux/pkg"
 )
 
@@ -28,25 +25,7 @@ func OpenFirst(root *os.Root) (*ux.Config, error) {
 		return nil, err
 	}
 	defer f.Close()
-
-	stat, err := f.Stat()
-	if err != nil {
-		return nil, err
-	}
-
-	var m codec.Any
-	switch filepath.Ext(stat.Name()) {
-	case ".yaml", ".yml":
-		m = godec.Yaml
-	case ".json":
-		m = godec.Json
-	}
-
-	var cfg Config
-	if err = m.NewDecoder(f).Decode(&cfg); err != nil {
-		return nil, err
-	}
-	return ToSpec(cfg), nil
+	return DecodeFile(f)
 }
 
 func OpenFirstFile(root *os.Root) (fs.File, error) {

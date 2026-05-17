@@ -17,12 +17,9 @@ func main() {
 			cli.Fail(err)
 		}
 		fmt.Print(string(data))
-		return
 	} else {
-		fmt.Println("stdin is from a terminal")
-	}
-
-	if err := cmd.Execute(); err != nil {
-		cli.Fail(err)
+		if err := cmd.Execute(); err != nil {
+			cli.Fail(err)
+		}
 	}
 }
