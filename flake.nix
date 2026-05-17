@@ -28,14 +28,6 @@
         ./nix/flake-module.nix
       ];
 
-      ux = {
-        gen.test =
-          { pkgs }:
-          pkgs.runCommand "ux-gen-test" { } ''
-            echo "Hello, world!" > $out;
-          '';
-      };
-
       flake.flakeModules.default = ./nix/flake-module.nix;
 
       perSystem =
@@ -59,6 +51,10 @@
               gomod2nix.overlays.default
             ];
           };
+
+          ux.gen.test = pkgs.runCommand "ux-gen-test" { } ''
+            echo "Hello, world!" > $out;
+          '';
 
           packages = {
             inherit ux;

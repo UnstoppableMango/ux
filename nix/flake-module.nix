@@ -1,33 +1,37 @@
 {
   lib,
-  config,
   flake-parts-lib,
   ...
 }:
 let
-  inherit (lib) options types;
+  inherit (lib) mkOption types;
+  inherit (flake-parts-lib) mkPerSystemOption;
 in
 {
-  options.ux = {
-    builders = options.mkOption {
-      type = types.attrsOf (types.functionTo types.package);
-    };
-    gen = options.mkOption {
-      type = types.attrs;
-    };
-  };
-
-  config.perSystem =
+  options.perSystem = mkPerSystemOption (
     {
-      self',
+      config,
       pkgs,
+      self',
       lib,
       ...
     }:
     {
-      packages.uxCodegen = pkgs.callPackage ./codegen.nix {
+      options.ux = {
+        builders = mkOption {
+          type = types.attrsOf types.package;
+          default = { };
+        };
+        gen = mkOption {
+          type = types.attrsOf types.package;
+          default = { };
+        };
+      };
+
+      config.packages.uxCodegen = pkgs.callPackage ./codegen.nix {
         config = config.ux;
         ux = pkgs.ux or self'.packages.ux;
       };
-    };
+    }
+  );
 }
