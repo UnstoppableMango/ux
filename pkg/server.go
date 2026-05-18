@@ -20,9 +20,6 @@ func (s *UX) Invoke(ctx context.Context, req *InvokeRequest) (*InvokeResponse, e
 		return nil, err
 	}
 
-	resp := uxv1alpha1.InvokeResponse_builder{
-		Links: cfg.GetLinks(),
-		// Messages: msgs,
-	}
+	resp := uxv1alpha1.InvokeResponse_builder{}
 	return resp.Build(), nil
 }

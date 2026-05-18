@@ -8,7 +8,7 @@ import (
 
 	"github.com/unmango/go/codec"
 	"github.com/unstoppablemango/godec"
-	ux "github.com/unstoppablemango/ux/pkg"
+	uxv1alpha1 "github.com/unstoppablemango/ux/gen/ux/v1alpha1"
 )
 
 func CodecForFile(name string) (codec.Any, error) {
@@ -22,15 +22,17 @@ func CodecForFile(name string) (codec.Any, error) {
 	}
 }
 
-func Decode(c codec.Any, r io.Reader) (*ux.Config, error) {
-	var cfg Config
+func Decode(r io.Reader, c codec.Any) (*uxv1alpha1.Config, error) {
+	// var cfg Config
+	var cfg uxv1alpha1.Config
 	if err := c.NewDecoder(r).Decode(&cfg); err != nil {
 		return nil, err
 	}
-	return ToSpec(cfg), nil
+	// return ToSpec(cfg), nil
+	return &cfg, nil
 }
 
-func DecodeFile(file fs.File) (*ux.Config, error) {
+func DecodeFile(file fs.File) (*uxv1alpha1.Config, error) {
 	stat, err := file.Stat()
 	if err != nil {
 		return nil, err
@@ -39,5 +41,15 @@ func DecodeFile(file fs.File) (*ux.Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	return Decode(c, file)
+	return Decode(file, c)
 }
+
+// func (c *GenerateConfig) UnmarshalJSON(data []byte) error {
+// 	c.data = data
+// 	return nil
+// }
+
+// func (c *GenerateConfig) UnmarshalYAML(data []byte) error {
+// 	c.data = data
+// 	return nil
+// }

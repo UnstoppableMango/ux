@@ -18,8 +18,8 @@ schema = 3
     hash = 'sha256-y+QDUxGOKhugEMQLRUTZYT2C+wKqYHnMLJ44jbh7+JA='
 
   [mod.'github.com/charmbracelet/ultraviolet']
-    version = 'v0.0.0-20260428153724-66037269d7be'
-    hash = 'sha256-OjHjdUtF6P9ajmX5Qqq3x3bjdUZpttBbjeAmdCEMtt0='
+    version = 'v0.0.0-20260511121909-c840852527f3'
+    hash = 'sha256-oWEEaaetCmXvflD03MWy8qD105Kd62iI62+lxofE9Ns='
 
   [mod.'github.com/charmbracelet/x/ansi']
     version = 'v0.11.7'
@@ -60,6 +60,10 @@ schema = 3
   [mod.'github.com/go-task/slim-sprig/v3']
     version = 'v3.0.0'
     hash = 'sha256-vCCw4MXVBm33VNLXcOBccVDD1CSnzDvDdWB6w5FN1cA='
+
+  [mod.'github.com/goccy/go-json']
+    version = 'v0.10.6'
+    hash = 'sha256-/REW1EDZ3Ta45hrDNR9YTIlhkxQQI8OeK5TxBNJ47Ho='
 
   [mod.'github.com/goccy/go-yaml']
     version = 'v1.19.2'
@@ -122,12 +126,12 @@ schema = 3
     hash = 'sha256-sWfjkuKJyDllDEtnM8sb/pdLzPQmUYWYtmeWz/5suUc='
 
   [mod.'github.com/unmango/go']
-    version = 'v0.16.1'
-    hash = 'sha256-x0yQlEYAol6YqDP/I6fgKuYahM62Uqs4C3xw2Uu3FI4='
+    version = 'v0.16.2'
+    hash = 'sha256-53+LL8PAa4N6PIssCLKlCKR1qnUtAHVlUXNfmuqYIsg='
 
   [mod.'github.com/unstoppablemango/godec']
-    version = 'v0.0.0-20260510231506-f365327af4f4'
-    hash = 'sha256-+vNuq9bzSb7LdHrKoL4+C6lXgnnV+WYuEPWIQnNYNtM='
+    version = 'v0.0.0-20260518044222-7638979edc92'
+    hash = 'sha256-JjGqvUuDDveuerAVIGbJMJ7hP9g11so+WcCh7Czal2Y='
 
   [mod.'github.com/xo/terminfo']
     version = 'v0.0.0-20220910002029-abceb7e1c41e'
@@ -166,12 +170,12 @@ schema = 3
     hash = 'sha256-fKsYC186cbOCJROZGUqU6UMSxvK2DZ44hlCEytLvp5c='
 
   [mod.'google.golang.org/genproto/googleapis/rpc']
-    version = 'v0.0.0-20260504160031-60b97b32f348'
+    version = 'v0.0.0-20260511170946-3700d4141b60'
     hash = 'sha256-ldJTTb7hhj1mdmzTn9IEkQVwCoj3KRlENZtUSEKHABU='
 
   [mod.'google.golang.org/grpc']
-    version = 'v1.81.0'
-    hash = 'sha256-rOzEF03TwRZF/rQnqNzxWqQnrd0BKNFmAUwb0Kkt+10='
+    version = 'v1.81.1'
+    hash = 'sha256-YZ5KMHmN1HvsMxyIBIl3SmFmL3r+6bwjzzFLxUFhm1o='
 
   [mod.'google.golang.org/protobuf']
     version = 'v1.36.11'

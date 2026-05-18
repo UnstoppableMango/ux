@@ -52,9 +52,10 @@
             ];
           };
 
-          ux.gen.test = {
+          ux.generate.test = {
             builder = "buf";
-            config = { };
+            config.name = "test";
+            config.spec = "buf.yaml";
           };
 
           packages = {

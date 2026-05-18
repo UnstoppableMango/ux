@@ -1,19 +1,17 @@
 package config
 
-import uxv1alpha1 "github.com/unstoppablemango/ux/gen/ux/v1alpha1"
+import (
+	"maps"
+
+	uxv1alpha1 "github.com/unstoppablemango/ux/gen/ux/v1alpha1"
+)
 
 func ToSpec(cfg Config) *uxv1alpha1.Config {
 	b := &uxv1alpha1.Config_builder{}
-	for _, link := range cfg.Links {
-		b.Links = append(b.Links, linkToSpec(link))
-	}
-	return b.Build()
-}
-
-func linkToSpec(link Link) *uxv1alpha1.Link {
-	b := &uxv1alpha1.Link_builder{
-		Derivation:  drvToSpec(link.Derivation),
-		Destination: destToSpec(link.Destination),
+	maps.Copy(b.Builders, cfg.Builders)
+	b.Generate = make(map[string]*uxv1alpha1.Generate, len(cfg.Generate))
+	for name, gen := range cfg.Generate {
+		b.Generate[name] = generateToSpec(gen)
 	}
 	return b.Build()
 }
@@ -28,12 +26,10 @@ func drvToSpec(drv *Derivation) *uxv1alpha1.Derivation {
 	return b.Build()
 }
 
-func destToSpec(dest *Destination) *uxv1alpha1.Destination {
-	if dest == nil {
-		return nil
-	}
-	b := &uxv1alpha1.Destination_builder{
-		RelativePath: dest.RelativePath,
+func generateToSpec(gen Generate) *uxv1alpha1.Generate {
+	b := &uxv1alpha1.Generate_builder{
+		Builder: &gen.Builder,
+		Config:  gen.Config.Get(),
 	}
 	return b.Build()
 }

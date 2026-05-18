@@ -6,12 +6,12 @@ import (
 	"os"
 
 	"charm.land/log/v2"
-	ux "github.com/unstoppablemango/ux/pkg"
+	uxv1alpha1 "github.com/unstoppablemango/ux/gen/ux/v1alpha1"
 )
 
 var FileGlob = "ux.*"
 
-func OpenFirstRoot(name string) (*ux.Config, error) {
+func OpenFirstRoot(name string) (*uxv1alpha1.Config, error) {
 	root, err := os.OpenRoot(name)
 	if err != nil {
 		return nil, err
@@ -19,7 +19,7 @@ func OpenFirstRoot(name string) (*ux.Config, error) {
 	return OpenFirst(root)
 }
 
-func OpenFirst(root *os.Root) (*ux.Config, error) {
+func OpenFirst(root *os.Root) (*uxv1alpha1.Config, error) {
 	f, err := OpenFirstFile(root)
 	if err != nil {
 		return nil, err

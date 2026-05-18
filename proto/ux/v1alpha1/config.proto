@@ -2,51 +2,38 @@ edition = "2024";
 
 package ux.v1alpha1;
 
-import "google/protobuf/any.proto";
-import "ux/v1alpha1/nix.proto";
-
 message Config {
-  repeated Repo repos = 1;
-  repeated Link links = 2;
-  map<string, string> builders = 3;
-  map<string, Generate> generate = 4;
+  map<string, Registry> registries = 1;
+  map<string, string> builders = 2;
+  map<string, Generate> generate = 3;
+  oneof out {
+    string path = 10;
+  }
 }
 
 message Generate {
   string builder = 1;
-  google.protobuf.Any config = 2;
+  bytes config = 2;
 }
 
-message FlakeRepo {
+message Registry {
+  string name = 1;
+  oneof src {
+    FlakeRegistry flake = 10;
+    GitRegistry git = 11;
+    OciRegistry oci = 12;
+  }
+}
+
+message FlakeRegistry {
   string url = 1;
 }
 
-message GitRepo {
+message GitRegistry {
   string url = 1;
   string rev = 2;
 }
 
-message OciRepo {
+message OciRegistry {
   string url = 1;
-}
-
-message Repo {
-  string name = 1;
-  oneof src {
-    FlakeRepo flake = 10;
-    GitRepo git = 11;
-    OciRepo oci = 12;
-  }
-}
-
-message Destination {
-  string relative_path = 1;
-}
-
-message Link {
-  string name = 1;
-  Destination destination = 2;
-  oneof source {
-    Derivation derivation = 100;
-  }
 }

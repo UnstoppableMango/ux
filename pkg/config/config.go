@@ -15,5 +15,27 @@ type Link struct {
 }
 
 type Config struct {
-	Links []Link `yaml:"links"`
+	Links    []Link              `yaml:"links"`
+	Builders map[string]string   `yaml:"builders"`
+	Generate map[string]Generate `yaml:"generate"`
+}
+
+type Generate struct {
+	Builder string          `yaml:"builder"`
+	Config  *GenerateConfig `yaml:"config"`
+}
+
+func (c *Generate) GetConfig() []byte {
+	if c.Config == nil {
+		return nil
+	}
+	return c.Config.Get()
+}
+
+type GenerateConfig struct {
+	data []byte
+}
+
+func (c *GenerateConfig) Get() []byte {
+	return c.data
 }

@@ -22,7 +22,7 @@ in
           type = types.attrsOf types.package;
           default = { };
         };
-        gen = mkOption {
+        generate = mkOption {
           type = types.attrs;
           default = { };
         };

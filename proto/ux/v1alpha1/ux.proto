@@ -10,15 +10,6 @@ service UxService {
 
 message InvokeRequest {
   Config config = 1;
-  bytes ux_file = 2;
 }
 
-message InvokeMessage {
-  repeated string lines = 1;
-  string level = 2;
-}
-
-message InvokeResponse {
-  repeated Link links = 1;
-  map<string, InvokeMessage> messages = 2;
-}
+message InvokeResponse {}
