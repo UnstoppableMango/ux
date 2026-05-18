@@ -28,10 +28,7 @@ in
         };
       };
 
-      config.packages.uxCodegen = pkgs.callPackage ./codegen.nix {
-        config = config.ux;
-        ux = pkgs.ux or self'.packages.ux;
-      };
+      config.packages.ux-config = pkgs.writeText "ux.json" (builtins.toJSON config.ux);
     }
   );
 }
