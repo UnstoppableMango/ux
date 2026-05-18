@@ -25,7 +25,7 @@ func OpenFirst(root *os.Root) (*uxv1alpha1.Config, error) {
 		return nil, err
 	}
 	defer f.Close()
-	return DecodeFile(f)
+	return ReadFile(f)
 }
 
 func OpenFirstFile(root *os.Root) (fs.File, error) {

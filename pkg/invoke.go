@@ -13,14 +13,14 @@ import (
 var ErrNoDestination = fmt.Errorf("link has no destination")
 
 func Invoke(ctx context.Context, config *Config) error {
+	log.Infof("%v", config)
 	return nil
 }
 
 func InvokeStdin(stdin io.Reader) error {
-	cfg, err := config.Decode(stdin, proto.Json)
+	cfg, err := config.ReadWith(stdin, proto.Json)
 	if err != nil {
 		return err
 	}
-	log.Infof("%v", cfg)
 	return Invoke(context.Background(), cfg)
 }

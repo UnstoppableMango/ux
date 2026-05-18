@@ -188,7 +188,7 @@ func (*config_Path) isConfig_Out() {}
 type Generate struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Builder     *string                `protobuf:"bytes,1,opt,name=builder"`
-	xxx_hidden_Config      []byte                 `protobuf:"bytes,2,opt,name=config"`
+	xxx_hidden_Config      map[string]string      `protobuf:"bytes,2,rep,name=config" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -230,7 +230,7 @@ func (x *Generate) GetBuilder() string {
 	return ""
 }
 
-func (x *Generate) GetConfig() []byte {
+func (x *Generate) GetConfig() map[string]string {
 	if x != nil {
 		return x.xxx_hidden_Config
 	}
@@ -242,12 +242,8 @@ func (x *Generate) SetBuilder(v string) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
 }
 
-func (x *Generate) SetConfig(v []byte) {
-	if v == nil {
-		v = []byte{}
-	}
+func (x *Generate) SetConfig(v map[string]string) {
 	x.xxx_hidden_Config = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
 }
 
 func (x *Generate) HasBuilder() bool {
@@ -257,28 +253,16 @@ func (x *Generate) HasBuilder() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *Generate) HasConfig() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
 func (x *Generate) ClearBuilder() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Builder = nil
-}
-
-func (x *Generate) ClearConfig() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_Config = nil
 }
 
 type Generate_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Builder *string
-	Config  []byte
+	Config  map[string]string
 }
 
 func (b0 Generate_builder) Build() *Generate {
@@ -289,10 +273,7 @@ func (b0 Generate_builder) Build() *Generate {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
 		x.xxx_hidden_Builder = b.Builder
 	}
-	if b.Config != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
-		x.xxx_hidden_Config = b.Config
-	}
+	x.xxx_hidden_Config = b.Config
 	return m0
 }
 
@@ -835,10 +816,13 @@ const file_ux_v1alpha1_config_proto_rawDesc = "" +
 	"\rGenerateEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12+\n" +
 	"\x05value\x18\x02 \x01(\v2\x15.ux.v1alpha1.GenerateR\x05value:\x028\x01B\x05\n" +
-	"\x03out\"<\n" +
+	"\x03out\"\x9a\x01\n" +
 	"\bGenerate\x12\x18\n" +
-	"\abuilder\x18\x01 \x01(\tR\abuilder\x12\x16\n" +
-	"\x06config\x18\x02 \x01(\fR\x06config\"\xb5\x01\n" +
+	"\abuilder\x18\x01 \x01(\tR\abuilder\x129\n" +
+	"\x06config\x18\x02 \x03(\v2!.ux.v1alpha1.Generate.ConfigEntryR\x06config\x1a9\n" +
+	"\vConfigEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xb5\x01\n" +
 	"\bRegistry\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x122\n" +
 	"\x05flake\x18\n" +
@@ -855,7 +839,7 @@ const file_ux_v1alpha1_config_proto_rawDesc = "" +
 	"\x03url\x18\x01 \x01(\tR\x03urlB\xa6\x01\n" +
 	"\x0fcom.ux.v1alpha1B\vConfigProtoP\x01Z9github.com/unstoppablemango/ux/gen/ux/v1alpha1;uxv1alpha1\xa2\x02\x03UXX\xaa\x02\vUx.V1alpha1\xca\x02\vUx\\V1alpha1\xe2\x02\x17Ux\\V1alpha1\\GPBMetadata\xea\x02\fUx::V1alpha1b\beditionsp\xe9\a"
 
-var file_ux_v1alpha1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_ux_v1alpha1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_ux_v1alpha1_config_proto_goTypes = []any{
 	(*Config)(nil),        // 0: ux.v1alpha1.Config
 	(*Generate)(nil),      // 1: ux.v1alpha1.Generate
@@ -866,21 +850,23 @@ var file_ux_v1alpha1_config_proto_goTypes = []any{
 	nil,                   // 6: ux.v1alpha1.Config.RegistriesEntry
 	nil,                   // 7: ux.v1alpha1.Config.BuildersEntry
 	nil,                   // 8: ux.v1alpha1.Config.GenerateEntry
+	nil,                   // 9: ux.v1alpha1.Generate.ConfigEntry
 }
 var file_ux_v1alpha1_config_proto_depIdxs = []int32{
 	6, // 0: ux.v1alpha1.Config.registries:type_name -> ux.v1alpha1.Config.RegistriesEntry
 	7, // 1: ux.v1alpha1.Config.builders:type_name -> ux.v1alpha1.Config.BuildersEntry
 	8, // 2: ux.v1alpha1.Config.generate:type_name -> ux.v1alpha1.Config.GenerateEntry
-	3, // 3: ux.v1alpha1.Registry.flake:type_name -> ux.v1alpha1.FlakeRegistry
-	4, // 4: ux.v1alpha1.Registry.git:type_name -> ux.v1alpha1.GitRegistry
-	5, // 5: ux.v1alpha1.Registry.oci:type_name -> ux.v1alpha1.OciRegistry
-	2, // 6: ux.v1alpha1.Config.RegistriesEntry.value:type_name -> ux.v1alpha1.Registry
-	1, // 7: ux.v1alpha1.Config.GenerateEntry.value:type_name -> ux.v1alpha1.Generate
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	9, // 3: ux.v1alpha1.Generate.config:type_name -> ux.v1alpha1.Generate.ConfigEntry
+	3, // 4: ux.v1alpha1.Registry.flake:type_name -> ux.v1alpha1.FlakeRegistry
+	4, // 5: ux.v1alpha1.Registry.git:type_name -> ux.v1alpha1.GitRegistry
+	5, // 6: ux.v1alpha1.Registry.oci:type_name -> ux.v1alpha1.OciRegistry
+	2, // 7: ux.v1alpha1.Config.RegistriesEntry.value:type_name -> ux.v1alpha1.Registry
+	1, // 8: ux.v1alpha1.Config.GenerateEntry.value:type_name -> ux.v1alpha1.Generate
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_ux_v1alpha1_config_proto_init() }
@@ -902,7 +888,7 @@ func file_ux_v1alpha1_config_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_ux_v1alpha1_config_proto_rawDesc), len(file_ux_v1alpha1_config_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
