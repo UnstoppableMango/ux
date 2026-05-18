@@ -10,8 +10,8 @@ schema = 3
     hash = 'sha256-UpdpM11MkNx20lXC46vtMp7PZ0H0GXvX7ZN9STo5qHE='
 
   [mod.'github.com/Masterminds/semver/v3']
-    version = 'v3.4.0'
-    hash = 'sha256-75kRraVwYVjYLWZvuSlts4Iu28Eh3SpiF0GHc7vCYHI='
+    version = 'v3.5.0'
+    hash = 'sha256-Ps7gEw0nkHDZO/iDru/s+X8rMaUkNmiZ7id1GsIKlDU='
 
   [mod.'github.com/charmbracelet/colorprofile']
     version = 'v0.4.3'
@@ -61,10 +61,6 @@ schema = 3
     version = 'v3.0.0'
     hash = 'sha256-vCCw4MXVBm33VNLXcOBccVDD1CSnzDvDdWB6w5FN1cA='
 
-  [mod.'github.com/goccy/go-json']
-    version = 'v0.10.6'
-    hash = 'sha256-/REW1EDZ3Ta45hrDNR9YTIlhkxQQI8OeK5TxBNJ47Ho='
-
   [mod.'github.com/goccy/go-yaml']
     version = 'v1.19.2'
     hash = 'sha256-pkqkwtziwXoWlTOxJsPFdMc7Mj0mSC3Ll/xUmYAYcYE='
@@ -74,8 +70,8 @@ schema = 3
     hash = 'sha256-JbxZFBFGCh/Rj5XZ1vG94V2x7c18L8XKB0N9ZD5F2rM='
 
   [mod.'github.com/google/pprof']
-    version = 'v0.0.0-20260402051712-545e8a4df936'
-    hash = 'sha256-DBaCmfVLei1HComa+xJN76IpPFTUaDfUEhc1U9gmW8g='
+    version = 'v0.0.0-20260507013755-92041b743c96'
+    hash = 'sha256-PMTAbyZ6gSX6sR9j5AU24ulxzIg8/ohYFi+LN/gI5lQ='
 
   [mod.'github.com/inconshreveable/mousetrap']
     version = 'v1.1.0'
@@ -98,12 +94,12 @@ schema = 3
     hash = 'sha256-uEPpzwRJBJsQWBw6M71FDfgJuR7n55d/7IV8MO+rpwQ='
 
   [mod.'github.com/onsi/ginkgo/v2']
-    version = 'v2.28.3'
-    hash = 'sha256-HD+3cXtEz+3vWn/D5tBUa2nwwBjf/MxMrlBMxyGEGB8='
+    version = 'v2.29.0'
+    hash = 'sha256-MLTachXRpWLD9614nLSR8xHw3iC0dxphcJ3gm6F2Reg='
 
   [mod.'github.com/onsi/gomega']
-    version = 'v1.40.0'
-    hash = 'sha256-FbdhUXLOJrEmiUOJqkWr9TT0ci8pJQBhGtBmRCsvR7U='
+    version = 'v1.41.0'
+    hash = 'sha256-6jMNrk7lrDHbu4mE5TaIuzhnl8oIAWwURVjENujwl1M='
 
   [mod.'github.com/pmezard/go-difflib']
     version = 'v1.0.1-0.20181226105442-5d4384ee4fb2'
@@ -130,8 +126,8 @@ schema = 3
     hash = 'sha256-53+LL8PAa4N6PIssCLKlCKR1qnUtAHVlUXNfmuqYIsg='
 
   [mod.'github.com/unstoppablemango/godec']
-    version = 'v0.0.0-20260518044222-7638979edc92'
-    hash = 'sha256-JjGqvUuDDveuerAVIGbJMJ7hP9g11so+WcCh7Czal2Y='
+    version = 'v0.0.0-20260518055026-60e3301453c7'
+    hash = 'sha256-jfcXmhbTVoTJf4MctoJzaNq8VTLl8vnRDC4r0dsSuUY='
 
   [mod.'github.com/xo/terminfo']
     version = 'v0.0.0-20220910002029-abceb7e1c41e'
