@@ -17,7 +17,7 @@ buildGoApplication {
   ];
 
   ldflags = [
-    "-X github.com/unstoppablemango/ux.Version=${version}"
+    "-X github.com/unstoppablemango/ux/internal.Version=${version}"
   ];
 
   doCheck = false;
