@@ -1,5 +1,6 @@
-links:
-  - name: test
-    derivation:
-      path: /nix/store/l6lyc1vynmpnwhir0940ga8018s341wx-ux-0.1.0
-    relative_path: testing
+generate:
+  test:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
