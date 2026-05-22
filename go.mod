@@ -6,12 +6,13 @@ tool github.com/onsi/ginkgo/v2/ginkgo
 
 require (
 	charm.land/log/v2 v2.0.0
+	github.com/goccy/go-yaml v1.19.2
 	github.com/mattn/go-isatty v0.0.22
 	github.com/onsi/ginkgo/v2 v2.29.0
 	github.com/onsi/gomega v1.41.0
 	github.com/spf13/cobra v1.10.2
-	github.com/unmango/go v0.16.2
-	github.com/unstoppablemango/godec v0.0.0-20260518055026-60e3301453c7
+	github.com/unmango/go v0.16.5
+	github.com/unstoppablemango/godec v0.0.0-20260521205424-efe3d6024696
 	google.golang.org/grpc v1.81.1
 	google.golang.org/protobuf v1.36.11
 )
@@ -31,7 +32,6 @@ require (
 	github.com/go-logfmt/logfmt v0.6.1 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
-	github.com/goccy/go-yaml v1.19.2 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/pprof v0.0.0-20260507013755-92041b743c96 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
