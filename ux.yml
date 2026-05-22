@@ -1,5 +1,295 @@
 generate:
-  test:
+  test1:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test2:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test3:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test4:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test5:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test6:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test7:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test8:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test9:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test10:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test11:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test12:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test13:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test14:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test15:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test16:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test17:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test18:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test19:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test20:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test21:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test22:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test23:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test24:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test25:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test26:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test27:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test28:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test29:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test30:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test31:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test32:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test33:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test34:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test35:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test36:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test37:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test38:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test39:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test40:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test41:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test42:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test43:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test44:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test45:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test46:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test47:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test48:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test49:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test50:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test51:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test52:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test53:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test54:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test55:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test56:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test57:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test58:
+    builder: buf
+    config:
+      name: testname
+      spec: testspec
+  test59:
     builder: buf
     config:
       name: testname

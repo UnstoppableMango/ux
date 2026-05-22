@@ -122,12 +122,8 @@ schema = 3
     hash = 'sha256-sWfjkuKJyDllDEtnM8sb/pdLzPQmUYWYtmeWz/5suUc='
 
   [mod.'github.com/unmango/go']
-    version = 'v0.16.5'
-    hash = 'sha256-SmhElF/fUxZBHUTdY6Nfuc5/5zLen/PD5aim6RiqVVI='
-
-  [mod.'github.com/unstoppablemango/godec']
-    version = 'v0.0.0-20260521205424-efe3d6024696'
-    hash = 'sha256-RYB5J2psoULfrqBErwiU0/7CFBxNGnBIpB0oByZrb7M='
+    version = 'v0.16.6'
+    hash = 'sha256-qBjI1pYTsSms/0be5i+3Ufj0gFKPWXzJ2eVR7V0txAs='
 
   [mod.'github.com/xo/terminfo']
     version = 'v0.0.0-20220910002029-abceb7e1c41e'

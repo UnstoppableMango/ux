@@ -11,8 +11,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.29.0
 	github.com/onsi/gomega v1.41.0
 	github.com/spf13/cobra v1.10.2
-	github.com/unmango/go v0.16.5
-	github.com/unstoppablemango/godec v0.0.0-20260521205424-efe3d6024696
+	github.com/unmango/go v0.16.6
 	google.golang.org/grpc v1.81.1
 	google.golang.org/protobuf v1.36.11
 )

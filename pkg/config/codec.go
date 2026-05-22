@@ -6,51 +6,75 @@ import (
 	"io/fs"
 	"path/filepath"
 
-	"github.com/unmango/go/codec"
-	"github.com/unstoppablemango/godec/proto"
-	"github.com/unstoppablemango/godec/yaml"
+	"github.com/goccy/go-yaml"
 	uxv1alpha1 "github.com/unstoppablemango/ux/gen/ux/v1alpha1"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
-type Codec = codec.Codec[*uxv1alpha1.Config]
+func DecodeFile(file fs.File, cfg *uxv1alpha1.Config) error {
+	stat, err := file.Stat()
+	if err != nil {
+		return err
+	}
 
-var (
-	JsonCodec = proto.NewJson[*uxv1alpha1.Config]()
-	YamlCodec = yaml.NewGoccy[*uxv1alpha1.Config]()
-)
-
-func CodecForFile(name string) (Codec, error) {
-	return CodecForExt(filepath.Ext(name))
-}
-
-func CodecForExt(ext string) (Codec, error) {
-	switch ext {
+	switch ext := filepath.Ext(stat.Name()); ext {
 	case ".yaml", ".yml":
-		// TODO: Pretty sure this won't work with protoc-gen-go types
-		return YamlCodec, nil
+		return DecodeYAML(file, cfg)
 	case ".json":
-		return JsonCodec, nil
+		return DecodeJSON(file, cfg)
 	default:
-		return nil, fmt.Errorf("unsupported file extension: %s", ext)
+		return fmt.Errorf("unsupported extension: %s", ext)
 	}
 }
 
-func ReadWith(r io.Reader, c Codec) (*uxv1alpha1.Config, error) {
+func DecodeJSON(r io.Reader, cfg *uxv1alpha1.Config) error {
+	data, err := io.ReadAll(r)
+	if err != nil {
+		return err
+	}
+	return UnmarshalJSON(data, cfg)
+}
+
+func DecodeYAML(r io.Reader, cfg *uxv1alpha1.Config) error {
+	data, err := io.ReadAll(r)
+	if err != nil {
+		return err
+	}
+	return UnmarshalYAML(data, cfg)
+}
+
+func ReadFile(file fs.File) (*uxv1alpha1.Config, error) {
 	var cfg uxv1alpha1.Config
-	if err := c.NewDecoder(r).Decode(&cfg); err != nil {
+	if err := DecodeFile(file, &cfg); err != nil {
 		return nil, err
 	}
 	return &cfg, nil
 }
 
-func ReadFile(file fs.File) (*uxv1alpha1.Config, error) {
-	stat, err := file.Stat()
-	if err != nil {
+func ReadJSON(r io.Reader) (*uxv1alpha1.Config, error) {
+	var cfg uxv1alpha1.Config
+	if err := DecodeJSON(r, &cfg); err != nil {
 		return nil, err
 	}
-	c, err := CodecForFile(stat.Name())
-	if err != nil {
+	return &cfg, nil
+}
+
+func ReadYAML(r io.Reader) (*uxv1alpha1.Config, error) {
+	var cfg uxv1alpha1.Config
+	if err := DecodeYAML(r, &cfg); err != nil {
 		return nil, err
 	}
-	return ReadWith(file, c)
+	return &cfg, nil
+}
+
+func UnmarshalJSON(data []byte, cfg *uxv1alpha1.Config) error {
+	return protojson.Unmarshal(data, cfg)
+}
+
+func UnmarshalYAML(data []byte, cfg *uxv1alpha1.Config) error {
+	json, err := yaml.YAMLToJSON(data)
+	if err != nil {
+		return err
+	}
+	return UnmarshalJSON(json, cfg)
 }

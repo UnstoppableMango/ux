@@ -19,7 +19,7 @@ func Invoke(ctx context.Context, config *Config) error {
 }
 
 func InvokeStdin(stdin io.Reader) error {
-	cfg, err := config.ReadWith(stdin, config.JsonCodec)
+	cfg, err := config.ReadJSON(stdin)
 	if err != nil {
 		return err
 	}
