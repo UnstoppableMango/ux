@@ -21,13 +21,13 @@ const (
 )
 
 type Config struct {
-	state                 protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Registries map[string]*Registry   `protobuf:"bytes,1,rep,name=registries" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	xxx_hidden_Builders   map[string]string      `protobuf:"bytes,2,rep,name=builders" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	xxx_hidden_Generate   map[string]*Generate   `protobuf:"bytes,3,rep,name=generate" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	xxx_hidden_Out        isConfig_Out           `protobuf_oneof:"out"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Sources  map[string]*Source     `protobuf:"bytes,1,rep,name=sources" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	xxx_hidden_Builders map[string]string      `protobuf:"bytes,2,rep,name=builders" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	xxx_hidden_Generate map[string]*Generate   `protobuf:"bytes,3,rep,name=generate" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	xxx_hidden_Out      isConfig_Out           `protobuf_oneof:"out"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Config) Reset() {
@@ -55,9 +55,9 @@ func (x *Config) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Config) GetRegistries() map[string]*Registry {
+func (x *Config) GetSources() map[string]*Source {
 	if x != nil {
-		return x.xxx_hidden_Registries
+		return x.xxx_hidden_Sources
 	}
 	return nil
 }
@@ -85,8 +85,8 @@ func (x *Config) GetPath() string {
 	return ""
 }
 
-func (x *Config) SetRegistries(v map[string]*Registry) {
-	x.xxx_hidden_Registries = v
+func (x *Config) SetSources(v map[string]*Source) {
+	x.xxx_hidden_Sources = v
 }
 
 func (x *Config) SetBuilders(v map[string]string) {
@@ -144,9 +144,9 @@ func (x *Config) WhichOut() case_Config_Out {
 type Config_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Registries map[string]*Registry
-	Builders   map[string]string
-	Generate   map[string]*Generate
+	Sources  map[string]*Source
+	Builders map[string]string
+	Generate map[string]*Generate
 	// Fields of oneof xxx_hidden_Out:
 	Path *string
 	// -- end of xxx_hidden_Out
@@ -156,7 +156,7 @@ func (b0 Config_builder) Build() *Config {
 	m0 := &Config{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_Registries = b.Registries
+	x.xxx_hidden_Sources = b.Sources
 	x.xxx_hidden_Builders = b.Builders
 	x.xxx_hidden_Generate = b.Generate
 	if b.Path != nil {
@@ -277,30 +277,30 @@ func (b0 Generate_builder) Build() *Generate {
 	return m0
 }
 
-type Registry struct {
+type Source struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Name        *string                `protobuf:"bytes,1,opt,name=name"`
-	xxx_hidden_Src         isRegistry_Src         `protobuf_oneof:"src"`
+	xxx_hidden_Src         isSource_Src           `protobuf_oneof:"src"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
 
-func (x *Registry) Reset() {
-	*x = Registry{}
+func (x *Source) Reset() {
+	*x = Source{}
 	mi := &file_ux_v1alpha1_config_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Registry) String() string {
+func (x *Source) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Registry) ProtoMessage() {}
+func (*Source) ProtoMessage() {}
 
-func (x *Registry) ProtoReflect() protoreflect.Message {
+func (x *Source) ProtoReflect() protoreflect.Message {
 	mi := &file_ux_v1alpha1_config_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -312,7 +312,7 @@ func (x *Registry) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Registry) GetName() string {
+func (x *Source) GetName() string {
 	if x != nil {
 		if x.xxx_hidden_Name != nil {
 			return *x.xxx_hidden_Name
@@ -322,161 +322,161 @@ func (x *Registry) GetName() string {
 	return ""
 }
 
-func (x *Registry) GetFlake() *FlakeRegistry {
+func (x *Source) GetFlake() *Source_Flake {
 	if x != nil {
-		if x, ok := x.xxx_hidden_Src.(*registry_Flake); ok {
+		if x, ok := x.xxx_hidden_Src.(*source_Flake_); ok {
 			return x.Flake
 		}
 	}
 	return nil
 }
 
-func (x *Registry) GetGit() *GitRegistry {
+func (x *Source) GetGit() *Source_Git {
 	if x != nil {
-		if x, ok := x.xxx_hidden_Src.(*registry_Git); ok {
+		if x, ok := x.xxx_hidden_Src.(*source_Git_); ok {
 			return x.Git
 		}
 	}
 	return nil
 }
 
-func (x *Registry) GetOci() *OciRegistry {
+func (x *Source) GetOci() *Source_Oci {
 	if x != nil {
-		if x, ok := x.xxx_hidden_Src.(*registry_Oci); ok {
+		if x, ok := x.xxx_hidden_Src.(*source_Oci_); ok {
 			return x.Oci
 		}
 	}
 	return nil
 }
 
-func (x *Registry) SetName(v string) {
+func (x *Source) SetName(v string) {
 	x.xxx_hidden_Name = &v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
 }
 
-func (x *Registry) SetFlake(v *FlakeRegistry) {
+func (x *Source) SetFlake(v *Source_Flake) {
 	if v == nil {
 		x.xxx_hidden_Src = nil
 		return
 	}
-	x.xxx_hidden_Src = &registry_Flake{v}
+	x.xxx_hidden_Src = &source_Flake_{v}
 }
 
-func (x *Registry) SetGit(v *GitRegistry) {
+func (x *Source) SetGit(v *Source_Git) {
 	if v == nil {
 		x.xxx_hidden_Src = nil
 		return
 	}
-	x.xxx_hidden_Src = &registry_Git{v}
+	x.xxx_hidden_Src = &source_Git_{v}
 }
 
-func (x *Registry) SetOci(v *OciRegistry) {
+func (x *Source) SetOci(v *Source_Oci) {
 	if v == nil {
 		x.xxx_hidden_Src = nil
 		return
 	}
-	x.xxx_hidden_Src = &registry_Oci{v}
+	x.xxx_hidden_Src = &source_Oci_{v}
 }
 
-func (x *Registry) HasName() bool {
+func (x *Source) HasName() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *Registry) HasSrc() bool {
+func (x *Source) HasSrc() bool {
 	if x == nil {
 		return false
 	}
 	return x.xxx_hidden_Src != nil
 }
 
-func (x *Registry) HasFlake() bool {
+func (x *Source) HasFlake() bool {
 	if x == nil {
 		return false
 	}
-	_, ok := x.xxx_hidden_Src.(*registry_Flake)
+	_, ok := x.xxx_hidden_Src.(*source_Flake_)
 	return ok
 }
 
-func (x *Registry) HasGit() bool {
+func (x *Source) HasGit() bool {
 	if x == nil {
 		return false
 	}
-	_, ok := x.xxx_hidden_Src.(*registry_Git)
+	_, ok := x.xxx_hidden_Src.(*source_Git_)
 	return ok
 }
 
-func (x *Registry) HasOci() bool {
+func (x *Source) HasOci() bool {
 	if x == nil {
 		return false
 	}
-	_, ok := x.xxx_hidden_Src.(*registry_Oci)
+	_, ok := x.xxx_hidden_Src.(*source_Oci_)
 	return ok
 }
 
-func (x *Registry) ClearName() {
+func (x *Source) ClearName() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Name = nil
 }
 
-func (x *Registry) ClearSrc() {
+func (x *Source) ClearSrc() {
 	x.xxx_hidden_Src = nil
 }
 
-func (x *Registry) ClearFlake() {
-	if _, ok := x.xxx_hidden_Src.(*registry_Flake); ok {
+func (x *Source) ClearFlake() {
+	if _, ok := x.xxx_hidden_Src.(*source_Flake_); ok {
 		x.xxx_hidden_Src = nil
 	}
 }
 
-func (x *Registry) ClearGit() {
-	if _, ok := x.xxx_hidden_Src.(*registry_Git); ok {
+func (x *Source) ClearGit() {
+	if _, ok := x.xxx_hidden_Src.(*source_Git_); ok {
 		x.xxx_hidden_Src = nil
 	}
 }
 
-func (x *Registry) ClearOci() {
-	if _, ok := x.xxx_hidden_Src.(*registry_Oci); ok {
+func (x *Source) ClearOci() {
+	if _, ok := x.xxx_hidden_Src.(*source_Oci_); ok {
 		x.xxx_hidden_Src = nil
 	}
 }
 
-const Registry_Src_not_set_case case_Registry_Src = 0
-const Registry_Flake_case case_Registry_Src = 10
-const Registry_Git_case case_Registry_Src = 11
-const Registry_Oci_case case_Registry_Src = 12
+const Source_Src_not_set_case case_Source_Src = 0
+const Source_Flake_case case_Source_Src = 10
+const Source_Git_case case_Source_Src = 11
+const Source_Oci_case case_Source_Src = 12
 
-func (x *Registry) WhichSrc() case_Registry_Src {
+func (x *Source) WhichSrc() case_Source_Src {
 	if x == nil {
-		return Registry_Src_not_set_case
+		return Source_Src_not_set_case
 	}
 	switch x.xxx_hidden_Src.(type) {
-	case *registry_Flake:
-		return Registry_Flake_case
-	case *registry_Git:
-		return Registry_Git_case
-	case *registry_Oci:
-		return Registry_Oci_case
+	case *source_Flake_:
+		return Source_Flake_case
+	case *source_Git_:
+		return Source_Git_case
+	case *source_Oci_:
+		return Source_Oci_case
 	default:
-		return Registry_Src_not_set_case
+		return Source_Src_not_set_case
 	}
 }
 
-type Registry_builder struct {
+type Source_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Name *string
 	// Fields of oneof xxx_hidden_Src:
-	Flake *FlakeRegistry
-	Git   *GitRegistry
-	Oci   *OciRegistry
+	Flake *Source_Flake
+	Git   *Source_Git
+	Oci   *Source_Oci
 	// -- end of xxx_hidden_Src
 }
 
-func (b0 Registry_builder) Build() *Registry {
-	m0 := &Registry{}
+func (b0 Source_builder) Build() *Source {
+	m0 := &Source{}
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Name != nil {
@@ -484,20 +484,20 @@ func (b0 Registry_builder) Build() *Registry {
 		x.xxx_hidden_Name = b.Name
 	}
 	if b.Flake != nil {
-		x.xxx_hidden_Src = &registry_Flake{b.Flake}
+		x.xxx_hidden_Src = &source_Flake_{b.Flake}
 	}
 	if b.Git != nil {
-		x.xxx_hidden_Src = &registry_Git{b.Git}
+		x.xxx_hidden_Src = &source_Git_{b.Git}
 	}
 	if b.Oci != nil {
-		x.xxx_hidden_Src = &registry_Oci{b.Oci}
+		x.xxx_hidden_Src = &source_Oci_{b.Oci}
 	}
 	return m0
 }
 
-type case_Registry_Src protoreflect.FieldNumber
+type case_Source_Src protoreflect.FieldNumber
 
-func (x case_Registry_Src) String() string {
+func (x case_Source_Src) String() string {
 	md := file_ux_v1alpha1_config_proto_msgTypes[2].Descriptor()
 	if x == 0 {
 		return "not set"
@@ -505,52 +505,52 @@ func (x case_Registry_Src) String() string {
 	return protoimpl.X.MessageFieldStringOf(md, protoreflect.FieldNumber(x))
 }
 
-type isRegistry_Src interface {
-	isRegistry_Src()
+type isSource_Src interface {
+	isSource_Src()
 }
 
-type registry_Flake struct {
-	Flake *FlakeRegistry `protobuf:"bytes,10,opt,name=flake,oneof"`
+type source_Flake_ struct {
+	Flake *Source_Flake `protobuf:"bytes,10,opt,name=flake,oneof"`
 }
 
-type registry_Git struct {
-	Git *GitRegistry `protobuf:"bytes,11,opt,name=git,oneof"`
+type source_Git_ struct {
+	Git *Source_Git `protobuf:"bytes,11,opt,name=git,oneof"`
 }
 
-type registry_Oci struct {
-	Oci *OciRegistry `protobuf:"bytes,12,opt,name=oci,oneof"`
+type source_Oci_ struct {
+	Oci *Source_Oci `protobuf:"bytes,12,opt,name=oci,oneof"`
 }
 
-func (*registry_Flake) isRegistry_Src() {}
+func (*source_Flake_) isSource_Src() {}
 
-func (*registry_Git) isRegistry_Src() {}
+func (*source_Git_) isSource_Src() {}
 
-func (*registry_Oci) isRegistry_Src() {}
+func (*source_Oci_) isSource_Src() {}
 
-type FlakeRegistry struct {
+type Source_Flake struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Url         *string                `protobuf:"bytes,1,opt,name=url"`
+	xxx_hidden_Installable *string                `protobuf:"bytes,1,opt,name=installable"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
 
-func (x *FlakeRegistry) Reset() {
-	*x = FlakeRegistry{}
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[3]
+func (x *Source_Flake) Reset() {
+	*x = Source_Flake{}
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *FlakeRegistry) String() string {
+func (x *Source_Flake) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FlakeRegistry) ProtoMessage() {}
+func (*Source_Flake) ProtoMessage() {}
 
-func (x *FlakeRegistry) ProtoReflect() protoreflect.Message {
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[3]
+func (x *Source_Flake) ProtoReflect() protoreflect.Message {
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -561,51 +561,51 @@ func (x *FlakeRegistry) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *FlakeRegistry) GetUrl() string {
+func (x *Source_Flake) GetInstallable() string {
 	if x != nil {
-		if x.xxx_hidden_Url != nil {
-			return *x.xxx_hidden_Url
+		if x.xxx_hidden_Installable != nil {
+			return *x.xxx_hidden_Installable
 		}
 		return ""
 	}
 	return ""
 }
 
-func (x *FlakeRegistry) SetUrl(v string) {
-	x.xxx_hidden_Url = &v
+func (x *Source_Flake) SetInstallable(v string) {
+	x.xxx_hidden_Installable = &v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
 }
 
-func (x *FlakeRegistry) HasUrl() bool {
+func (x *Source_Flake) HasInstallable() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *FlakeRegistry) ClearUrl() {
+func (x *Source_Flake) ClearInstallable() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Url = nil
+	x.xxx_hidden_Installable = nil
 }
 
-type FlakeRegistry_builder struct {
+type Source_Flake_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Url *string
+	Installable *string
 }
 
-func (b0 FlakeRegistry_builder) Build() *FlakeRegistry {
-	m0 := &FlakeRegistry{}
+func (b0 Source_Flake_builder) Build() *Source_Flake {
+	m0 := &Source_Flake{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Url != nil {
+	if b.Installable != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
-		x.xxx_hidden_Url = b.Url
+		x.xxx_hidden_Installable = b.Installable
 	}
 	return m0
 }
 
-type GitRegistry struct {
+type Source_Git struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Url         *string                `protobuf:"bytes,1,opt,name=url"`
 	xxx_hidden_Rev         *string                `protobuf:"bytes,2,opt,name=rev"`
@@ -615,21 +615,21 @@ type GitRegistry struct {
 	sizeCache              protoimpl.SizeCache
 }
 
-func (x *GitRegistry) Reset() {
-	*x = GitRegistry{}
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[4]
+func (x *Source_Git) Reset() {
+	*x = Source_Git{}
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GitRegistry) String() string {
+func (x *Source_Git) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GitRegistry) ProtoMessage() {}
+func (*Source_Git) ProtoMessage() {}
 
-func (x *GitRegistry) ProtoReflect() protoreflect.Message {
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[4]
+func (x *Source_Git) ProtoReflect() protoreflect.Message {
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -640,7 +640,7 @@ func (x *GitRegistry) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *GitRegistry) GetUrl() string {
+func (x *Source_Git) GetUrl() string {
 	if x != nil {
 		if x.xxx_hidden_Url != nil {
 			return *x.xxx_hidden_Url
@@ -650,7 +650,7 @@ func (x *GitRegistry) GetUrl() string {
 	return ""
 }
 
-func (x *GitRegistry) GetRev() string {
+func (x *Source_Git) GetRev() string {
 	if x != nil {
 		if x.xxx_hidden_Rev != nil {
 			return *x.xxx_hidden_Rev
@@ -660,49 +660,49 @@ func (x *GitRegistry) GetRev() string {
 	return ""
 }
 
-func (x *GitRegistry) SetUrl(v string) {
+func (x *Source_Git) SetUrl(v string) {
 	x.xxx_hidden_Url = &v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
 }
 
-func (x *GitRegistry) SetRev(v string) {
+func (x *Source_Git) SetRev(v string) {
 	x.xxx_hidden_Rev = &v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
 }
 
-func (x *GitRegistry) HasUrl() bool {
+func (x *Source_Git) HasUrl() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *GitRegistry) HasRev() bool {
+func (x *Source_Git) HasRev() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *GitRegistry) ClearUrl() {
+func (x *Source_Git) ClearUrl() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Url = nil
 }
 
-func (x *GitRegistry) ClearRev() {
+func (x *Source_Git) ClearRev() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_Rev = nil
 }
 
-type GitRegistry_builder struct {
+type Source_Git_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Url *string
 	Rev *string
 }
 
-func (b0 GitRegistry_builder) Build() *GitRegistry {
-	m0 := &GitRegistry{}
+func (b0 Source_Git_builder) Build() *Source_Git {
+	m0 := &Source_Git{}
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Url != nil {
@@ -716,7 +716,7 @@ func (b0 GitRegistry_builder) Build() *GitRegistry {
 	return m0
 }
 
-type OciRegistry struct {
+type Source_Oci struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Url         *string                `protobuf:"bytes,1,opt,name=url"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
@@ -725,21 +725,21 @@ type OciRegistry struct {
 	sizeCache              protoimpl.SizeCache
 }
 
-func (x *OciRegistry) Reset() {
-	*x = OciRegistry{}
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[5]
+func (x *Source_Oci) Reset() {
+	*x = Source_Oci{}
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *OciRegistry) String() string {
+func (x *Source_Oci) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*OciRegistry) ProtoMessage() {}
+func (*Source_Oci) ProtoMessage() {}
 
-func (x *OciRegistry) ProtoReflect() protoreflect.Message {
-	mi := &file_ux_v1alpha1_config_proto_msgTypes[5]
+func (x *Source_Oci) ProtoReflect() protoreflect.Message {
+	mi := &file_ux_v1alpha1_config_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -750,7 +750,7 @@ func (x *OciRegistry) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *OciRegistry) GetUrl() string {
+func (x *Source_Oci) GetUrl() string {
 	if x != nil {
 		if x.xxx_hidden_Url != nil {
 			return *x.xxx_hidden_Url
@@ -760,31 +760,31 @@ func (x *OciRegistry) GetUrl() string {
 	return ""
 }
 
-func (x *OciRegistry) SetUrl(v string) {
+func (x *Source_Oci) SetUrl(v string) {
 	x.xxx_hidden_Url = &v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
 }
 
-func (x *OciRegistry) HasUrl() bool {
+func (x *Source_Oci) HasUrl() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *OciRegistry) ClearUrl() {
+func (x *Source_Oci) ClearUrl() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Url = nil
 }
 
-type OciRegistry_builder struct {
+type Source_Oci_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Url *string
 }
 
-func (b0 OciRegistry_builder) Build() *OciRegistry {
-	m0 := &OciRegistry{}
+func (b0 Source_Oci_builder) Build() *Source_Oci {
+	m0 := &Source_Oci{}
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Url != nil {
@@ -798,18 +798,16 @@ var File_ux_v1alpha1_config_proto protoreflect.FileDescriptor
 
 const file_ux_v1alpha1_config_proto_rawDesc = "" +
 	"\n" +
-	"\x18ux/v1alpha1/config.proto\x12\vux.v1alpha1\"\xcf\x03\n" +
-	"\x06Config\x12C\n" +
-	"\n" +
-	"registries\x18\x01 \x03(\v2#.ux.v1alpha1.Config.RegistriesEntryR\n" +
-	"registries\x12=\n" +
+	"\x18ux/v1alpha1/config.proto\x12\vux.v1alpha1\"\xc1\x03\n" +
+	"\x06Config\x12:\n" +
+	"\asources\x18\x01 \x03(\v2 .ux.v1alpha1.Config.SourcesEntryR\asources\x12=\n" +
 	"\bbuilders\x18\x02 \x03(\v2!.ux.v1alpha1.Config.BuildersEntryR\bbuilders\x12=\n" +
 	"\bgenerate\x18\x03 \x03(\v2!.ux.v1alpha1.Config.GenerateEntryR\bgenerate\x12\x14\n" +
 	"\x04path\x18\n" +
-	" \x01(\tH\x00R\x04path\x1aT\n" +
-	"\x0fRegistriesEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12+\n" +
-	"\x05value\x18\x02 \x01(\v2\x15.ux.v1alpha1.RegistryR\x05value:\x028\x01\x1a;\n" +
+	" \x01(\tH\x00R\x04path\x1aO\n" +
+	"\fSourcesEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12)\n" +
+	"\x05value\x18\x02 \x01(\v2\x13.ux.v1alpha1.SourceR\x05value:\x028\x01\x1a;\n" +
 	"\rBuildersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1aR\n" +
@@ -822,45 +820,45 @@ const file_ux_v1alpha1_config_proto_rawDesc = "" +
 	"\x06config\x18\x02 \x03(\v2!.ux.v1alpha1.Generate.ConfigEntryR\x06config\x1a9\n" +
 	"\vConfigEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xb5\x01\n" +
-	"\bRegistry\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x122\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x9f\x02\n" +
+	"\x06Source\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x121\n" +
 	"\x05flake\x18\n" +
-	" \x01(\v2\x1a.ux.v1alpha1.FlakeRegistryH\x00R\x05flake\x12,\n" +
-	"\x03git\x18\v \x01(\v2\x18.ux.v1alpha1.GitRegistryH\x00R\x03git\x12,\n" +
-	"\x03oci\x18\f \x01(\v2\x18.ux.v1alpha1.OciRegistryH\x00R\x03ociB\x05\n" +
-	"\x03src\"!\n" +
-	"\rFlakeRegistry\x12\x10\n" +
-	"\x03url\x18\x01 \x01(\tR\x03url\"1\n" +
-	"\vGitRegistry\x12\x10\n" +
+	" \x01(\v2\x19.ux.v1alpha1.Source.FlakeH\x00R\x05flake\x12+\n" +
+	"\x03git\x18\v \x01(\v2\x17.ux.v1alpha1.Source.GitH\x00R\x03git\x12+\n" +
+	"\x03oci\x18\f \x01(\v2\x17.ux.v1alpha1.Source.OciH\x00R\x03oci\x1a)\n" +
+	"\x05Flake\x12 \n" +
+	"\vinstallable\x18\x01 \x01(\tR\vinstallable\x1a)\n" +
+	"\x03Git\x12\x10\n" +
 	"\x03url\x18\x01 \x01(\tR\x03url\x12\x10\n" +
-	"\x03rev\x18\x02 \x01(\tR\x03rev\"\x1f\n" +
-	"\vOciRegistry\x12\x10\n" +
-	"\x03url\x18\x01 \x01(\tR\x03urlB\xa6\x01\n" +
+	"\x03rev\x18\x02 \x01(\tR\x03rev\x1a\x17\n" +
+	"\x03Oci\x12\x10\n" +
+	"\x03url\x18\x01 \x01(\tR\x03urlB\x05\n" +
+	"\x03srcB\xa6\x01\n" +
 	"\x0fcom.ux.v1alpha1B\vConfigProtoP\x01Z9github.com/unstoppablemango/ux/gen/ux/v1alpha1;uxv1alpha1\xa2\x02\x03UXX\xaa\x02\vUx.V1alpha1\xca\x02\vUx\\V1alpha1\xe2\x02\x17Ux\\V1alpha1\\GPBMetadata\xea\x02\fUx::V1alpha1b\beditionsp\xe9\a"
 
 var file_ux_v1alpha1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_ux_v1alpha1_config_proto_goTypes = []any{
-	(*Config)(nil),        // 0: ux.v1alpha1.Config
-	(*Generate)(nil),      // 1: ux.v1alpha1.Generate
-	(*Registry)(nil),      // 2: ux.v1alpha1.Registry
-	(*FlakeRegistry)(nil), // 3: ux.v1alpha1.FlakeRegistry
-	(*GitRegistry)(nil),   // 4: ux.v1alpha1.GitRegistry
-	(*OciRegistry)(nil),   // 5: ux.v1alpha1.OciRegistry
-	nil,                   // 6: ux.v1alpha1.Config.RegistriesEntry
-	nil,                   // 7: ux.v1alpha1.Config.BuildersEntry
-	nil,                   // 8: ux.v1alpha1.Config.GenerateEntry
-	nil,                   // 9: ux.v1alpha1.Generate.ConfigEntry
+	(*Config)(nil),       // 0: ux.v1alpha1.Config
+	(*Generate)(nil),     // 1: ux.v1alpha1.Generate
+	(*Source)(nil),       // 2: ux.v1alpha1.Source
+	nil,                  // 3: ux.v1alpha1.Config.SourcesEntry
+	nil,                  // 4: ux.v1alpha1.Config.BuildersEntry
+	nil,                  // 5: ux.v1alpha1.Config.GenerateEntry
+	nil,                  // 6: ux.v1alpha1.Generate.ConfigEntry
+	(*Source_Flake)(nil), // 7: ux.v1alpha1.Source.Flake
+	(*Source_Git)(nil),   // 8: ux.v1alpha1.Source.Git
+	(*Source_Oci)(nil),   // 9: ux.v1alpha1.Source.Oci
 }
 var file_ux_v1alpha1_config_proto_depIdxs = []int32{
-	6, // 0: ux.v1alpha1.Config.registries:type_name -> ux.v1alpha1.Config.RegistriesEntry
-	7, // 1: ux.v1alpha1.Config.builders:type_name -> ux.v1alpha1.Config.BuildersEntry
-	8, // 2: ux.v1alpha1.Config.generate:type_name -> ux.v1alpha1.Config.GenerateEntry
-	9, // 3: ux.v1alpha1.Generate.config:type_name -> ux.v1alpha1.Generate.ConfigEntry
-	3, // 4: ux.v1alpha1.Registry.flake:type_name -> ux.v1alpha1.FlakeRegistry
-	4, // 5: ux.v1alpha1.Registry.git:type_name -> ux.v1alpha1.GitRegistry
-	5, // 6: ux.v1alpha1.Registry.oci:type_name -> ux.v1alpha1.OciRegistry
-	2, // 7: ux.v1alpha1.Config.RegistriesEntry.value:type_name -> ux.v1alpha1.Registry
+	3, // 0: ux.v1alpha1.Config.sources:type_name -> ux.v1alpha1.Config.SourcesEntry
+	4, // 1: ux.v1alpha1.Config.builders:type_name -> ux.v1alpha1.Config.BuildersEntry
+	5, // 2: ux.v1alpha1.Config.generate:type_name -> ux.v1alpha1.Config.GenerateEntry
+	6, // 3: ux.v1alpha1.Generate.config:type_name -> ux.v1alpha1.Generate.ConfigEntry
+	7, // 4: ux.v1alpha1.Source.flake:type_name -> ux.v1alpha1.Source.Flake
+	8, // 5: ux.v1alpha1.Source.git:type_name -> ux.v1alpha1.Source.Git
+	9, // 6: ux.v1alpha1.Source.oci:type_name -> ux.v1alpha1.Source.Oci
+	2, // 7: ux.v1alpha1.Config.SourcesEntry.value:type_name -> ux.v1alpha1.Source
 	1, // 8: ux.v1alpha1.Config.GenerateEntry.value:type_name -> ux.v1alpha1.Generate
 	9, // [9:9] is the sub-list for method output_type
 	9, // [9:9] is the sub-list for method input_type
@@ -878,9 +876,9 @@ func file_ux_v1alpha1_config_proto_init() {
 		(*config_Path)(nil),
 	}
 	file_ux_v1alpha1_config_proto_msgTypes[2].OneofWrappers = []any{
-		(*registry_Flake)(nil),
-		(*registry_Git)(nil),
-		(*registry_Oci)(nil),
+		(*source_Flake_)(nil),
+		(*source_Git_)(nil),
+		(*source_Oci_)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

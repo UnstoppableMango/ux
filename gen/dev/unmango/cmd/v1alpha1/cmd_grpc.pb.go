@@ -19,6 +19,114 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	ConversionService_Args_FullMethodName = "/dev.unmango.cmd.v1alpha1.ConversionService/Args"
+)
+
+// ConversionServiceClient is the client API for ConversionService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ConversionServiceClient interface {
+	// Args converts a typed spec to a command-line argument list.
+	// Pack the spec message using google.protobuf.Any before sending.
+	// Example (Go): anypb.New(&MySpec{...})
+	Args(ctx context.Context, in *ArgsRequest, opts ...grpc.CallOption) (*ArgsResponse, error)
+}
+
+type conversionServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewConversionServiceClient(cc grpc.ClientConnInterface) ConversionServiceClient {
+	return &conversionServiceClient{cc}
+}
+
+func (c *conversionServiceClient) Args(ctx context.Context, in *ArgsRequest, opts ...grpc.CallOption) (*ArgsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ArgsResponse)
+	err := c.cc.Invoke(ctx, ConversionService_Args_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ConversionServiceServer is the server API for ConversionService service.
+// All implementations must embed UnimplementedConversionServiceServer
+// for forward compatibility.
+type ConversionServiceServer interface {
+	// Args converts a typed spec to a command-line argument list.
+	// Pack the spec message using google.protobuf.Any before sending.
+	// Example (Go): anypb.New(&MySpec{...})
+	Args(context.Context, *ArgsRequest) (*ArgsResponse, error)
+	mustEmbedUnimplementedConversionServiceServer()
+}
+
+// UnimplementedConversionServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedConversionServiceServer struct{}
+
+func (UnimplementedConversionServiceServer) Args(context.Context, *ArgsRequest) (*ArgsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Args not implemented")
+}
+func (UnimplementedConversionServiceServer) mustEmbedUnimplementedConversionServiceServer() {}
+func (UnimplementedConversionServiceServer) testEmbeddedByValue()                           {}
+
+// UnsafeConversionServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ConversionServiceServer will
+// result in compilation errors.
+type UnsafeConversionServiceServer interface {
+	mustEmbedUnimplementedConversionServiceServer()
+}
+
+func RegisterConversionServiceServer(s grpc.ServiceRegistrar, srv ConversionServiceServer) {
+	// If the following call panics, it indicates UnimplementedConversionServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&ConversionService_ServiceDesc, srv)
+}
+
+func _ConversionService_Args_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ArgsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConversionServiceServer).Args(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ConversionService_Args_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConversionServiceServer).Args(ctx, req.(*ArgsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ConversionService_ServiceDesc is the grpc.ServiceDesc for ConversionService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ConversionService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "dev.unmango.cmd.v1alpha1.ConversionService",
+	HandlerType: (*ConversionServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Args",
+			Handler:    _ConversionService_Args_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "dev/unmango/cmd/v1alpha1/cmd.proto",
+}
+
+const (
 	CommandService_Run_FullMethodName    = "/dev.unmango.cmd.v1alpha1.CommandService/Run"
 	CommandService_Exec_FullMethodName   = "/dev.unmango.cmd.v1alpha1.CommandService/Exec"
 	CommandService_Start_FullMethodName  = "/dev.unmango.cmd.v1alpha1.CommandService/Start"
