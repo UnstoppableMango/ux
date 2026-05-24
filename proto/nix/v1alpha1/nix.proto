@@ -84,7 +84,7 @@ message CommonOptions {
   map<string, string> argstrs = 18;
   repeated string attrs = 19;
   string eval_store = 20;
-  bool expr = 21;
+  string expr = 21;
   repeated string includes = 22;
   bool impurt = 23;
   map<string, string> options = 24;

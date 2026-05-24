@@ -141,6 +141,10 @@ func applyCommon(b *internal.CommandBuilder, opts *CommonOptions) {
 			b.Append("--log-format", format)
 		}
 	}
+
+	if opts.HasExpr() {
+		b.Append("--expr", opts.GetExpr())
+	}
 }
 
 func BuildArgs(req *BuildRequest) []string {

@@ -1242,7 +1242,7 @@ type CommonOptions struct {
 	xxx_hidden_Argstrs       map[string]string      `protobuf:"bytes,18,rep,name=argstrs" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	xxx_hidden_Attrs         []string               `protobuf:"bytes,19,rep,name=attrs"`
 	xxx_hidden_EvalStore     *string                `protobuf:"bytes,20,opt,name=eval_store,json=evalStore"`
-	xxx_hidden_Expr          bool                   `protobuf:"varint,21,opt,name=expr"`
+	xxx_hidden_Expr          *string                `protobuf:"bytes,21,opt,name=expr"`
 	xxx_hidden_Includes      []string               `protobuf:"bytes,22,rep,name=includes"`
 	xxx_hidden_Impurt        bool                   `protobuf:"varint,23,opt,name=impurt"`
 	xxx_hidden_Options       map[string]string      `protobuf:"bytes,24,rep,name=options" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
@@ -1423,11 +1423,14 @@ func (x *CommonOptions) GetEvalStore() string {
 	return ""
 }
 
-func (x *CommonOptions) GetExpr() bool {
+func (x *CommonOptions) GetExpr() string {
 	if x != nil {
-		return x.xxx_hidden_Expr
+		if x.xxx_hidden_Expr != nil {
+			return *x.xxx_hidden_Expr
+		}
+		return ""
 	}
-	return false
+	return ""
 }
 
 func (x *CommonOptions) GetIncludes() []string {
@@ -1553,8 +1556,8 @@ func (x *CommonOptions) SetEvalStore(v string) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 19, 25)
 }
 
-func (x *CommonOptions) SetExpr(v bool) {
-	x.xxx_hidden_Expr = v
+func (x *CommonOptions) SetExpr(v string) {
+	x.xxx_hidden_Expr = &v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 20, 25)
 }
 
@@ -1779,7 +1782,7 @@ func (x *CommonOptions) ClearEvalStore() {
 
 func (x *CommonOptions) ClearExpr() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 20)
-	x.xxx_hidden_Expr = false
+	x.xxx_hidden_Expr = nil
 }
 
 func (x *CommonOptions) ClearImpurt() {
@@ -1815,7 +1818,7 @@ type CommonOptions_builder struct {
 	Argstrs       map[string]string
 	Attrs         []string
 	EvalStore     *string
-	Expr          *bool
+	Expr          *string
 	Includes      []string
 	Impurt        *bool
 	Options       map[string]string
@@ -1893,7 +1896,7 @@ func (b0 CommonOptions_builder) Build() *CommonOptions {
 	}
 	if b.Expr != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 20, 25)
-		x.xxx_hidden_Expr = *b.Expr
+		x.xxx_hidden_Expr = b.Expr
 	}
 	x.xxx_hidden_Includes = b.Includes
 	if b.Impurt != nil {
@@ -1980,7 +1983,7 @@ const file_nix_v1alpha1_nix_proto_rawDesc = "" +
 	"\x05attrs\x18\x13 \x03(\tR\x05attrs\x12\x1d\n" +
 	"\n" +
 	"eval_store\x18\x14 \x01(\tR\tevalStore\x12\x12\n" +
-	"\x04expr\x18\x15 \x01(\bR\x04expr\x12\x1a\n" +
+	"\x04expr\x18\x15 \x01(\tR\x04expr\x12\x1a\n" +
 	"\bincludes\x18\x16 \x03(\tR\bincludes\x12\x16\n" +
 	"\x06impurt\x18\x17 \x01(\bR\x06impurt\x12B\n" +
 	"\aoptions\x18\x18 \x03(\v2(.nix.v1alpha1.CommonOptions.OptionsEntryR\aoptions\x12\x16\n" +
