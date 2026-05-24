@@ -278,13 +278,10 @@ func (b0 Generate_builder) Build() *Generate {
 }
 
 type Source struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Name        *string                `protobuf:"bytes,1,opt,name=name"`
-	xxx_hidden_Src         isSource_Src           `protobuf_oneof:"src"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Src isSource_Src           `protobuf_oneof:"src"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Source) Reset() {
@@ -310,16 +307,6 @@ func (x *Source) ProtoReflect() protoreflect.Message {
 		return ms
 	}
 	return mi.MessageOf(x)
-}
-
-func (x *Source) GetName() string {
-	if x != nil {
-		if x.xxx_hidden_Name != nil {
-			return *x.xxx_hidden_Name
-		}
-		return ""
-	}
-	return ""
 }
 
 func (x *Source) GetFlake() *Source_Flake {
@@ -349,11 +336,6 @@ func (x *Source) GetOci() *Source_Oci {
 	return nil
 }
 
-func (x *Source) SetName(v string) {
-	x.xxx_hidden_Name = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
-}
-
 func (x *Source) SetFlake(v *Source_Flake) {
 	if v == nil {
 		x.xxx_hidden_Src = nil
@@ -376,13 +358,6 @@ func (x *Source) SetOci(v *Source_Oci) {
 		return
 	}
 	x.xxx_hidden_Src = &source_Oci_{v}
-}
-
-func (x *Source) HasName() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
 func (x *Source) HasSrc() bool {
@@ -416,11 +391,6 @@ func (x *Source) HasOci() bool {
 	return ok
 }
 
-func (x *Source) ClearName() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Name = nil
-}
-
 func (x *Source) ClearSrc() {
 	x.xxx_hidden_Src = nil
 }
@@ -444,9 +414,9 @@ func (x *Source) ClearOci() {
 }
 
 const Source_Src_not_set_case case_Source_Src = 0
-const Source_Flake_case case_Source_Src = 10
-const Source_Git_case case_Source_Src = 11
-const Source_Oci_case case_Source_Src = 12
+const Source_Flake_case case_Source_Src = 1
+const Source_Git_case case_Source_Src = 2
+const Source_Oci_case case_Source_Src = 3
 
 func (x *Source) WhichSrc() case_Source_Src {
 	if x == nil {
@@ -467,7 +437,6 @@ func (x *Source) WhichSrc() case_Source_Src {
 type Source_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Name *string
 	// Fields of oneof xxx_hidden_Src:
 	Flake *Source_Flake
 	Git   *Source_Git
@@ -479,10 +448,6 @@ func (b0 Source_builder) Build() *Source {
 	m0 := &Source{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Name != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
-		x.xxx_hidden_Name = b.Name
-	}
 	if b.Flake != nil {
 		x.xxx_hidden_Src = &source_Flake_{b.Flake}
 	}
@@ -510,15 +475,15 @@ type isSource_Src interface {
 }
 
 type source_Flake_ struct {
-	Flake *Source_Flake `protobuf:"bytes,10,opt,name=flake,oneof"`
+	Flake *Source_Flake `protobuf:"bytes,1,opt,name=flake,oneof"`
 }
 
 type source_Git_ struct {
-	Git *Source_Git `protobuf:"bytes,11,opt,name=git,oneof"`
+	Git *Source_Git `protobuf:"bytes,2,opt,name=git,oneof"`
 }
 
 type source_Oci_ struct {
-	Oci *Source_Oci `protobuf:"bytes,12,opt,name=oci,oneof"`
+	Oci *Source_Oci `protobuf:"bytes,3,opt,name=oci,oneof"`
 }
 
 func (*source_Flake_) isSource_Src() {}
@@ -820,13 +785,11 @@ const file_ux_v1alpha1_config_proto_rawDesc = "" +
 	"\x06config\x18\x02 \x03(\v2!.ux.v1alpha1.Generate.ConfigEntryR\x06config\x1a9\n" +
 	"\vConfigEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x9f\x02\n" +
-	"\x06Source\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x121\n" +
-	"\x05flake\x18\n" +
-	" \x01(\v2\x19.ux.v1alpha1.Source.FlakeH\x00R\x05flake\x12+\n" +
-	"\x03git\x18\v \x01(\v2\x17.ux.v1alpha1.Source.GitH\x00R\x03git\x12+\n" +
-	"\x03oci\x18\f \x01(\v2\x17.ux.v1alpha1.Source.OciH\x00R\x03oci\x1a)\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8b\x02\n" +
+	"\x06Source\x121\n" +
+	"\x05flake\x18\x01 \x01(\v2\x19.ux.v1alpha1.Source.FlakeH\x00R\x05flake\x12+\n" +
+	"\x03git\x18\x02 \x01(\v2\x17.ux.v1alpha1.Source.GitH\x00R\x03git\x12+\n" +
+	"\x03oci\x18\x03 \x01(\v2\x17.ux.v1alpha1.Source.OciH\x00R\x03oci\x1a)\n" +
 	"\x05Flake\x12 \n" +
 	"\vinstallable\x18\x01 \x01(\tR\vinstallable\x1a)\n" +
 	"\x03Git\x12\x10\n" +

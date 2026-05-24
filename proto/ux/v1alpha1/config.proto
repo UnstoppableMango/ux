@@ -17,11 +17,10 @@ message Generate {
 }
 
 message Source {
-  string name = 1;
   oneof src {
-    Flake flake = 10;
-    Git git = 11;
-    Oci oci = 12;
+    Flake flake = 1;
+    Git git = 2;
+    Oci oci = 3;
   }
 
   message Flake {

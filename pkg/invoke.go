@@ -20,25 +20,8 @@ func Invoke(ctx context.Context, config *Config) error {
 	return nil
 }
 
-func BuilderFor(config *Config, gen *uxv1alpha1.Generate) (string, error) {
-	if !gen.HasBuilder() {
-		return "", fmt.Errorf("builder is required")
-	}
-
-	name := gen.GetBuilder()
-	b, ok := config.GetBuilders()[name]
-	if !ok {
-		return "", fmt.Errorf("builder not found: %s", name)
-	}
-
-	return b, nil
-}
-
-func Generate(ctx context.Context, config *Config, gen *uxv1alpha1.Generate) error {
-	builder, err := BuilderFor(config, gen)
-	if err != nil {
-		return err
-	}
+func Generate(ctx context.Context, cfg *Config, gen *uxv1alpha1.Generate) error {
+	builder := config.LookupBuilder(cfg, gen.GetBuilder())
 	return Build(ctx, builder, gen.GetConfig())
 }
 
