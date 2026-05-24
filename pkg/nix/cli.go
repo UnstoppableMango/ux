@@ -109,7 +109,7 @@ func applyCommon(b *internal.CommandBuilder, opts *CommonOptions) {
 	b.Option(opts.HasNoBuildOutput(), "--no-build-output", opts.GetNoBuildOutput)
 	b.AppendIf(opts.HasMaxSlientTime(), "--max-silent-time", opts.GetMaxSlientTime())
 	b.AppendIf(opts.HasTimeout(), "--timeout", opts.GetTimeout())
-	// b.AppendIf(opts.HasKeepGoing(), "--keep-going")
+	b.AppendIf(opts.HasKeepGoing(), "--keep-going")
 	b.Option(opts.HasKeepFailed(), "--keep-failed", opts.GetKeepFailed)
 	b.Option(opts.HasFallback(), "--fallback", opts.GetFallback)
 	b.Option(opts.HasReadonlyMode(), "--readonly-mode", opts.GetReadonlyMode)
