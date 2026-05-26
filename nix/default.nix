@@ -1,15 +1,27 @@
 {
   buildGoApplication,
   git,
+  globs,
   lib,
   nix,
   version,
 }:
+let
+  fs = lib.fileset;
+in
 buildGoApplication {
   inherit version;
   pname = "ux";
-  src = lib.cleanSource ../.;
   modules = ./gomod2nix.toml;
+
+  src = fs.toSource {
+    root = ../.;
+    fileset = globs ../. [
+      "go.mod"
+      "go.sum"
+      "**/*.go"
+    ];
+  };
 
   nativeBuildInputs = [
     git

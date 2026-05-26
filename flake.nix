@@ -12,6 +12,11 @@
       inputs.flake-utils.inputs.systems.follows = "systems";
     };
 
+    globset = {
+      url = "github:pdtpartners/globset";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -40,9 +45,12 @@
         }:
         let
           inherit (inputs'.gomod2nix.legacyPackages) buildGoApplication;
+          inherit (inputs.globset.lib) globs;
 
           version = "0.1.0";
-          ux = pkgs.callPackage ./nix { inherit buildGoApplication version; };
+          ux = pkgs.callPackage ./nix {
+            inherit buildGoApplication globs version;
+          };
         in
         {
           _module.args.pkgs = import inputs.nixpkgs {
