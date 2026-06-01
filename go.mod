@@ -17,12 +17,12 @@ require (
 	github.com/google/go-github/v81 v81.0.0
 	github.com/mattn/go-isatty v0.0.22
 	github.com/onsi/ginkgo/v2 v2.29.0
-	github.com/onsi/gomega v1.40.0
+	github.com/onsi/gomega v1.41.0
 	github.com/sahilm/fuzzy v0.1.2
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.21.0
-	github.com/unmango/go v0.12.1
+	github.com/unmango/go v0.16.6
 	golang.org/x/mod v0.36.0
 	google.golang.org/protobuf v1.36.11
 )
