@@ -28,23 +28,27 @@ func Generate(ctx context.Context, cfg *Config, gen *uxv1alpha1.Generate) error 
 
 func Build(ctx context.Context, builder string, config map[string]string) error {
 	common := &nixv1alpha1.CommonOptions_builder{
-		Expr:  new("import ./nix/builders/buf { }"),
+		Expr:  new("import ./nix/builders/buf"),
 		Attrs: []string{"generate"},
-		Argstrs: map[string]string{
-			"input":  "test",
-			"config": "buf.gen.yaml",
+		Args: map[string]string{
+			"config": "./buf.gen.yaml",
+			"input":  "./.",
 		},
+		Argstrs: map[string]string{},
 	}
-	req := &nixv1alpha1.InstantiateRequest_builder{
+	// req := &nixv1alpha1.InstantiateRequest_builder{
+	// 	Common: common.Build(),
+	// }
+	req := &nixv1alpha1.BuildRequest_builder{
 		Common: common.Build(),
 	}
-	res, err := nix.Instantiate(ctx, req.Build())
+	res, err := nix.Build(ctx, req.Build())
 	if err != nil {
 		return err
 	}
 	if res.HasResult() {
 		r := res.GetResult()
-		log.Info("nix-instantiate",
+		log.Info("nix-build",
 			"stdout", r.GetStdout(),
 			"stderr", r.GetStderr(),
 			"exitCode", r.GetExitCode(),

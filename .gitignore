@@ -20,3 +20,4 @@ dist/
 
 # Added by gomod2nix:
 /gomod2nix-template
+.claude/*

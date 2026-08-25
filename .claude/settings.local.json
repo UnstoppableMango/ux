@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(nix run *)",
-      "Bash(go run *)"
-    ]
-  }
-}

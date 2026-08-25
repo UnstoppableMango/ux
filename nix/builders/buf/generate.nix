@@ -11,6 +11,8 @@ runCommand "buf"
       buf
       protoc-gen-go
     ];
+
+    HOME = "$out";
   }
   ''
     buf generate ${input} \
