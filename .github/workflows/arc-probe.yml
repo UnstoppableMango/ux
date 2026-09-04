@@ -1,0 +1,7 @@
+name: ARC probe
+on: push
+jobs:
+  probe:
+    runs-on: thecluster
+    steps:
+      - run: echo "picked up by $RUNNER_NAME"
