@@ -1,5 +1,7 @@
 # UX - A Codegen Tooling Suite
 
+[![Hercules CI](https://hercules-ci.com/api/v1/site/github/account/UnstoppableMango/project/ux/badge)](https://hercules-ci.com/github/UnstoppableMango/ux)
+
 Some silly idea I had for codegen management tool.
 
 UX will manage inputs and outputs for codegen tool execution.
