@@ -1,14 +1,18 @@
-GO        ?= go
-GOMOD2NIX ?= gomod2nix
-GINKGO    ?= ginkgo
+CABAL          ?= cabal
+PROTOC         ?= protoc
+PROTO_LENS     ?= proto-lens-protoc
+TDL_PROTO      ?= ../tdl/proto
 
-GO_SRC ?= $(shell find . -name '*.go')
+PROTOS := tdl/ir/v1/ir.proto tdl/plugin/v1/plugin.proto google/protobuf/go_features.proto
 
 build:
 	nix build .#
 
 test:
-	$(GINKGO) run -r
+	$(CABAL) test
+
+run:
+	$(CABAL) run ux --
 
 update:
 	nix flake update
@@ -19,10 +23,9 @@ check lint:
 format fmt:
 	nix fmt
 
-tidy: go.sum nix/gomod2nix.toml
+generate:
+	rm -rf gen && mkdir gen
+	$(PROTOC) --plugin=protoc-gen-haskell=$$(command -v $(PROTO_LENS)) \
+		--haskell_out=gen -I $(TDL_PROTO) $(PROTOS)
 
-go.sum: go.mod ${GO_SRC}
-	$(GO) mod tidy
-
-nix/gomod2nix.toml: go.sum ${GO_SRC}
-	$(GOMOD2NIX) generate --dir ${CURDIR} --outdir ${@D}
+.PHONY: build test run update check lint format fmt generate

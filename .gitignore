@@ -2,3 +2,4 @@
 *.local
 .direnv/
 bin/
+dist-newstyle/
