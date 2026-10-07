@@ -1,4 +1,4 @@
-package cli_test
+package main_test
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestCli(t *testing.T) {
+func TestUx(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Cli Suite")
+	RunSpecs(t, "Ux Suite")
 }

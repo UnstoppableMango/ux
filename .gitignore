@@ -1,22 +1,4 @@
-bin/
-obj/
-.make/
-*.test
-*.txt
-*.dummy*
-nupkgs/
-result
-
-.envrc
+/result*
+*.local
 .direnv/
-.vscode/*
-!.vscode/extensions.json
-.DS_Store
-*.user
-.idea/
-
-# Added by goreleaser init:
-dist/
-
-# Added by gomod2nix:
-/gomod2nix-template
+bin/
