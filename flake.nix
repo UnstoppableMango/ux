@@ -15,10 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    gomod2nix = {
-      url = "github:nix-community/gomod2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.inputs.systems.follows = "systems";
+    # Only the protos are read, for `make generate`.
+    tdl = {
+      url = "github:UnstoppableMango/tdl";
+      flake = false;
     };
   };
 
@@ -29,38 +29,48 @@
       imports = with inputs; [ treefmt-nix.flakeModule ];
 
       perSystem =
-        { pkgs, system, ... }:
+        { pkgs, self', ... }:
         let
-          version = "0.0.12";
+          hpkgs = pkgs.haskellPackages;
         in
         {
-          _module.args.pkgs = import inputs.nixpkgs {
-            inherit system;
-            overlays = with inputs; [ gomod2nix.overlays.default ];
+          packages = {
+            ux = import ./nix {
+              inherit (pkgs) haskell lib;
+              haskellPackages = hpkgs;
+            };
+            # The executable without GHC and the library in its closure.
+            default = pkgs.haskell.lib.compose.justStaticExecutables self'.packages.ux;
           };
 
-          packages.default = pkgs.callPackage ./nix { inherit version; };
+          checks.ux = self'.packages.ux;
 
-          devShells.default = pkgs.mkShellNoCC {
-            packages = with pkgs; [
+          devShells.default = hpkgs.shellFor {
+            packages = _: [ self'.packages.ux ];
+            withHoogle = false;
+
+            nativeBuildInputs = with pkgs; [
               direnv
-              go
-              gomod2nix
-              gopls
-              ginkgo
+              cabal-install
+              hpkgs.haskell-language-server
+              hpkgs.proto-lens-protoc
+              protobuf
               gnumake
               nixfmt
             ];
 
-            GO = "${pkgs.go}/bin/go";
-            GOMOD2NIX = "${pkgs.gomod2nix}/bin/gomod2nix";
-            GINKGO = "${pkgs.ginkgo}/bin/ginkgo";
+            TDL_PROTO = "${inputs.tdl}/proto";
           };
 
-          treefmt.programs = {
-            actionlint.enable = true;
-            nixfmt.enable = true;
-            gofmt.enable = true;
+          treefmt = {
+            programs = {
+              actionlint.enable = true;
+              cabal-fmt.enable = true;
+              nixfmt.enable = true;
+              ormolu.enable = true;
+            };
+
+            settings.global.excludes = [ "gen/**" ];
           };
         };
     };

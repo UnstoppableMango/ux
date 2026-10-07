@@ -13,16 +13,15 @@ Nix is first-class.
 
 ## Status
 
-The repository was reset to a fresh [UnstoppableMango/nix](https://github.com/UnstoppableMango/nix) Go template.
-The earlier codegen plugin CLI lives in the git history.
+ux is a Haskell skeleton: a placeholder grammar parsed with [megaparsec](https://hackage.haskell.org/package/megaparsec), a CLI, and Haskell bindings for TDL's IR and plugin protocol.
 
 ## Development
 
 ```shell
 nix develop    # or direnv allow
 make build     # nix build .#
-make test      # ginkgo run -r
+make test      # cabal test
 make fmt       # nix fmt
 make check     # nix flake check
-make tidy      # go mod tidy + regenerate nix/gomod2nix.toml
+make generate  # regenerate gen/ from TDL's protos
 ```
