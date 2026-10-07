@@ -38,6 +38,7 @@ A dependency added to `ux.cabal` is picked up by `callCabal2nix` with no other c
   The grammar is a placeholder: `pipeline name = a -> b -> c`, with `//` comments.
 - `app/Main.hs`: the CLI entry point.
 - `gen/`: proto-lens bindings for `tdl.ir.v1` and `tdl.plugin.v1`, exposed as `ux:ir`.
+- `docs/design/`: designs. `language.md` explores the language itself; a design describes the target, not the implementation.
 - `test/`: hspec. A new `Ux.FooSpec` module is listed in `test/Spec.hs` and `ux.cabal`; `hspec-discover` is avoided because cabal cannot find its executable offline.
 - `cabal.project`: enables the test suite, so `cabal test` solves against the devShell's packages.
 
