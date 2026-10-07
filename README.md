@@ -1,30 +1,28 @@
-# UX - A Codegen Tooling Suite
+# ux
 
-Some silly idea I had for codegen management tool.
+An expressive language for defining artifact conversion pipelines, coupled with a rich developer toolset.
 
-UX will manage inputs and outputs for codegen tool execution.
-Inputs encapsulate configuration and source code; anything a tool needs to generate code.
-Outputs are defined as anything produced by the codegen tool.
+A converter turns an artifact in one format into another.
+[TDL](https://github.com/UnstoppableMango/tdl) backends are converters, bi- or uni-directional depending on what the backend supports, and so is any other tool that turns one format into another.
+ux composes compatible converters into pipelines, so data can pass through several conversions before it reaches a usable format.
 
-A codegen tool must be an executable binary with a name matching the regex `([\w\-]+2[\w\-]+)` i.e. `csharp2go` or `go2csharp`.
-Other plugin types may be supported in the future.
+Lossiness is expected but discouraged.
+When a conversion loses data, ux makes it visible, and it can always be silenced.
 
-## Usage
+Nix is first-class.
 
-The primary mode of execution (which doesn't work right now) is:
+## Status
 
-```shell
-ux gen <source> <target>
-```
+The repository was reset to a fresh [UnstoppableMango/nix](https://github.com/UnstoppableMango/nix) Go template.
+The earlier codegen plugin CLI lives in the git history.
 
-For simplicity, plugins can be invoked with minimal intervention from `ux` by running:
-
-```shell
-ux plugin run <my plugin>
-```
-
-To list plugins that the tool recognizes:
+## Development
 
 ```shell
-ux plugin list
+nix develop    # or direnv allow
+make build     # nix build .#
+make test      # ginkgo run -r
+make fmt       # nix fmt
+make check     # nix flake check
+make tidy      # go mod tidy + regenerate nix/gomod2nix.toml
 ```

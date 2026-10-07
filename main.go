@@ -1,12 +1,18 @@
 package main
 
 import (
-	"github.com/unmango/go/cli"
-	"github.com/unstoppablemango/ux/cmd"
+	"fmt"
+	"os"
 )
 
+var version = "development"
+
 func main() {
-	if err := cmd.Execute(); err != nil {
-		cli.Fail(err)
+	if len(os.Args) > 1 && os.Args[1] == "version" {
+		fmt.Println(version)
+		return
 	}
+
+	fmt.Fprintln(os.Stderr, "usage: ux version")
+	os.Exit(1)
 }
