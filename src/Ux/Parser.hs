@@ -35,13 +35,15 @@ pipeline = do
 
 identifier :: Parser Text
 identifier = lexeme . try $ do
-  ident <- T.cons <$> start <*> takeWhileP Nothing rest
+  ident <- T.cons <$> start <*> (T.concat <$> many chunk)
   if ident `elem` reserved
     then fail ("reserved word " <> show ident)
     else pure ident
   where
     start = letterChar <|> char '_' <?> "identifier"
-    rest c = c == '_' || c == '-' || c `elem` ['a' .. 'z'] || c `elem` ['A' .. 'Z'] || c `elem` ['0' .. '9']
+    word c = c == '_' || c `elem` ['a' .. 'z'] || c `elem` ['A' .. 'Z'] || c `elem` ['0' .. '9']
+    -- A dash belongs to the identifier unless it starts @->@.
+    chunk = takeWhile1P Nothing word <|> try (T.singleton <$> char '-' <* notFollowedBy (char '>'))
 
 reserved :: [Text]
 reserved = ["pipeline"]

@@ -17,6 +17,10 @@ spec = do
       parse file "" "pipeline api = tdl -> protobuf -> go"
         `shouldParse` File [Pipeline "api" ("tdl" :| ["protobuf", "go"])]
 
+    it "parses arrows without spaces" $
+      parse file "" "pipeline a = x-y->z"
+        `shouldParse` File [Pipeline "a" ("x-y" :| ["z"])]
+
     it "skips comments and whitespace" $
       parse file "" "// models\npipeline a = x\n\npipeline b = y -> z // done\n"
         `shouldParse` File [Pipeline "a" ("x" :| []), Pipeline "b" ("y" :| ["z"])]
