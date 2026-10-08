@@ -237,9 +237,9 @@ It is a tooling feature with a syntax question attached, so it waits on the lang
 
 ## What ux needs from TDL
 
-1. **Binary IR out of `tdl`.** `tdl ir --format json` exists; proto-lens has no maintained protojson reader, so ux wants `--format binary`, or lowering as a plugin-protocol request.
-2. **Losses as data.** `tdl losses --format json`, or the table in a proto.
-3. **Shared `[lossy]`.** ux reads `tdl.toml`'s `[lossy]` table rather than inventing its own, so one silencing applies to `tdl gen` and to a ux step running the same backend.
+1. **Binary IR out of `tdl`** ([tdl#1025](https://github.com/UnstoppableMango/tdl/issues/1025)). `tdl ir --format json` exists; proto-lens has no maintained protojson reader, so ux wants `--format binary`, or lowering as a plugin-protocol request.
+2. **Losses as data** ([tdl#1026](https://github.com/UnstoppableMango/tdl/issues/1026)). `tdl losses --format json`, or the table in a proto.
+3. **Shared `[lossy]`** ([tdl#1027](https://github.com/UnstoppableMango/tdl/issues/1027)). ux reads `tdl.toml`'s `[lossy]` table rather than inventing its own, so one silencing applies to `tdl gen` and to a ux step running the same backend.
 
 Each is small and additive on TDL's side, and ux works without all three, more slowly or with a vendored copy.
 
