@@ -16,11 +16,11 @@ From the project's statement of intent:
 
 And one of method:
 
-4. The language and the tools grow independently. A change to concrete syntax touches the parser, the printer, and the highlighting grammar, and nothing else.
+4. The language and the tools grow independently. A change to concrete syntax touches `Ux.Syntax` and what reads it (the parser, the elaborator, the printer, the highlighting grammars, and the LSP's syntax-bound features), and nothing else.
 
 ## The seam
 
-Every tool except three reads a resolved pipeline, never syntax.
+Every tool except those reads a resolved pipeline, never syntax.
 
 ```text
   source text ──parse──▶ Syntax ──elaborate──▶ Core ──plan──▶ Plan ──run──▶ artifacts, diagnostics
