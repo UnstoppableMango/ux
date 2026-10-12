@@ -1,5 +1,7 @@
 # ux
 
+[![Hercules CI](https://hercules-ci.com/api/v1/site/github/account/UnstoppableMango/project/ux/badge)](https://hercules-ci.com/github/UnstoppableMango/ux)
+
 An expressive language for defining artifact conversion pipelines, coupled with a rich developer toolset.
 
 A converter turns an artifact in one format into another.
