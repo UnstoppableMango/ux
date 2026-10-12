@@ -17,7 +17,5 @@ let
     ];
   };
 in
-# description, homepage, and license come from ux.cabal.
-haskell.lib.compose.overrideCabal { mainProgram = "ux"; } (
-  haskellPackages.callCabal2nix "ux" src { }
-)
+# ux.nix is cabal2nix's output for ux.cabal; `make cabal2nix` regenerates it.
+haskell.lib.compose.overrideCabal { inherit src; } (haskellPackages.callPackage ./ux.nix { })
