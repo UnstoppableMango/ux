@@ -1,20 +1,24 @@
 {
-  description = "Some codegen nonsense, idk";
+  description = "Expressive artifact conversion pipelines";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    systems.url = "github:nix-systems/default";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    systems.url = "github:UnstoppableMango/nix-systems";
 
-    gomod2nix = {
-      url = "github:nix-community/gomod2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.inputs.systems.follows = "systems";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Only the protos are read, for `make generate`.
+    tdl = {
+      url = "github:UnstoppableMango/tdl";
+      flake = false;
     };
   };
 
@@ -22,110 +26,54 @@
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import inputs.systems;
-
-      imports = [
-        inputs.treefmt-nix.flakeModule
+      imports = with inputs; [
+        systems.flakeModule or { }
+        treefmt-nix.flakeModule
       ];
 
       perSystem =
-        {
-          inputs',
-          pkgs,
-          system,
-          lib,
-          ...
-        }:
+        { pkgs, self', ... }:
         let
-          inherit (inputs'.gomod2nix.legacyPackages) mkGoEnv;
-          goEnv = mkGoEnv { pwd = ./.; };
-          dotnet = pkgs.dotnetCorePackages.sdk_10_0;
-
-          ux = inputs'.gomod2nix.legacyPackages.buildGoApplication rec {
-            pname = "ux";
-            version = "0.0.12";
-            src = ./.;
-            modules = ./gomod2nix.toml;
-
-            nativeBuildInputs = with pkgs; [
-              git
-              dotnet
-            ];
-
-            ldflags = [
-              "-X github.com/unstoppablemango/ux/internal.Version=${version}"
-            ];
-
-            checkPhase = ''
-              go test ./... -ginkgo.label-filter="!E2E"
-            '';
-
-            meta = {
-              description = "Universal codegen CLI";
-              homepage = "https://github.com/UnstoppableMango/ux";
-              license = lib.licenses.mit;
-              maintainers = with lib.maintainers; [ UnstoppableMango ];
-            };
-          };
-
-          ctr = pkgs.dockerTools.buildImage {
-            name = "ux";
-            tag = "latest";
-
-            copyToRoot = pkgs.buildEnv {
-              name = "image-root";
-              paths = [ ux ];
-              pathsToLink = [ "/bin" ];
-            };
-
-            config = {
-              Cmd = [ "/bin/ux" ];
-            };
-          };
-
-          uxApp = {
-            type = "app";
-            program = ux + "/bin/ux";
-            meta = ux.meta;
-          };
+          hpkgs = pkgs.haskellPackages;
         in
         {
-          _module.args.pkgs = import inputs.nixpkgs {
-            inherit system;
-            overlays = [
-              inputs.gomod2nix.overlays.default
-            ];
+          packages = {
+            ux = import ./nix {
+              inherit (pkgs) haskell lib;
+              haskellPackages = hpkgs;
+            };
+            # The executable without GHC and the library in its closure.
+            default = pkgs.haskell.lib.compose.justStaticExecutables self'.packages.ux;
           };
 
-          packages.ux-image = ctr;
-          packages.ux = ux;
-          packages.default = ux;
+          checks.ux = self'.packages.ux;
 
-          apps.ux = uxApp;
-          apps.default = uxApp;
+          devShells.default = hpkgs.shellFor {
+            packages = _: [ self'.packages.ux ];
+            withHoogle = false;
 
-          devShells.default = pkgs.mkShell {
-            packages = with pkgs; [
-              buf
-              docker
-              dprint
-              git
+            nativeBuildInputs = with pkgs; [
+              direnv
+              cabal-install
+              hpkgs.haskell-language-server
+              hpkgs.proto-lens-protoc
+              protobuf
               gnumake
-              goEnv
-              gomod2nix
-              nil
               nixfmt
-              shellcheck
             ];
+
+            TDL_PROTO = "${inputs.tdl}/proto";
           };
 
           treefmt = {
-            projectRootFile = "flake.nix";
             programs = {
+              actionlint.enable = true;
+              cabal-fmt.enable = true;
               nixfmt.enable = true;
-              # dprint.enable = true;
-              gofmt.enable = true;
-              buf.enable = true;
+              ormolu.enable = true;
             };
+
+            settings.global.excludes = [ "gen/**" ];
           };
         };
     };
