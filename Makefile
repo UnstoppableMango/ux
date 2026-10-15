@@ -1,6 +1,7 @@
 CABAL          ?= cabal
 PROTOC         ?= protoc
 PROTO_LENS     ?= proto-lens-protoc
+CABAL2NIX      ?= cabal2nix
 TDL_PROTO      ?= ../tdl/proto
 
 PROTOS := tdl/ir/v1/ir.proto tdl/plugin/v1/plugin.proto google/protobuf/go_features.proto
@@ -28,4 +29,8 @@ generate:
 	$(PROTOC) --plugin=protoc-gen-haskell=$$(command -v $(PROTO_LENS)) \
 		--haskell_out=gen -I $(TDL_PROTO) $(PROTOS)
 
-.PHONY: build test run update check lint format fmt generate
+cabal2nix: nix/ux.nix
+nix/ux.nix: ux.cabal
+	$(CABAL2NIX) . > $@
+
+.PHONY: build test run update check lint format fmt generate cabal2nix
