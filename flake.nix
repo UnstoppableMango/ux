@@ -46,7 +46,16 @@
             default = pkgs.haskell.lib.compose.justStaticExecutables self'.packages.ux;
           };
 
-          checks.ux = self'.packages.ux;
+          checks = {
+            ux = self'.packages.ux;
+            # nix/ux.nix is committed so evaluation needs no build (IFD).
+            cabal2nix = pkgs.runCommand "ux-cabal2nix" { nativeBuildInputs = [ pkgs.cabal2nix ]; } ''
+              cd ${self'.packages.ux.src}
+              HOME=$TMPDIR cabal2nix . | diff -u ${./nix/ux.nix} - \
+                || { echo "nix/ux.nix is stale; run make cabal2nix" >&2; exit 1; }
+              touch $out
+            '';
+          };
 
           devShells.default = hpkgs.shellFor {
             packages = _: [ self'.packages.ux ];
@@ -55,6 +64,7 @@
             nativeBuildInputs = with pkgs; [
               direnv
               cabal-install
+              cabal2nix
               hpkgs.haskell-language-server
               hpkgs.proto-lens-protoc
               protobuf
@@ -73,7 +83,10 @@
               ormolu.enable = true;
             };
 
-            settings.global.excludes = [ "gen/**" ];
+            settings.global.excludes = [
+              "gen/**"
+              "nix/ux.nix"
+            ];
           };
         };
     };
