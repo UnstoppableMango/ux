@@ -36,6 +36,7 @@
         { pkgs, self', ... }:
         let
           inherit (pkgs.haskell.lib.compose) justStaticExecutables;
+          inherit (pkgs) haskellPackages;
         in
         {
           packages = {
@@ -52,16 +53,17 @@
             packages = _: [ self'.packages.ux ];
             withHoogle = false;
 
-            nativeBuildInputs = with pkgs; [
+            nativeBuildInputs = (with pkgs; [
               direnv
               cabal-install
               cabal2nix
-              hpkgs.haskell-language-server
-              hpkgs.proto-lens-protoc
               protobuf
               gnumake
               nixfmt
-            ];
+            ]) ++ (with haskellPackages; [
+              haskell-language-server
+              proto-lens-protoc
+            ]);
 
             TDL_PROTO = "${inputs.tdl}/proto";
           };
@@ -72,6 +74,7 @@
               cabal-fmt.enable = true;
               nixfmt.enable = true;
               ormolu.enable = true;
+              zizmor.enable = true;
             };
 
             settings.global.excludes = [
