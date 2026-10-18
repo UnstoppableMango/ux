@@ -53,17 +53,19 @@
             packages = _: [ self'.packages.ux ];
             withHoogle = false;
 
-            nativeBuildInputs = (with pkgs; [
-              direnv
-              cabal-install
-              cabal2nix
-              protobuf
-              gnumake
-              nixfmt
-            ]) ++ (with haskellPackages; [
-              haskell-language-server
-              proto-lens-protoc
-            ]);
+            nativeBuildInputs =
+              (with pkgs; [
+                direnv
+                cabal-install
+                cabal2nix
+                protobuf
+                gnumake
+                nixfmt
+              ])
+              ++ (with haskellPackages; [
+                haskell-language-server
+                proto-lens-protoc
+              ]);
 
             TDL_PROTO = "${inputs.tdl}/proto";
           };
