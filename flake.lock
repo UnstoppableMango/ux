@@ -63,11 +63,11 @@
     "tdl": {
       "flake": false,
       "locked": {
-        "lastModified": 1792215269,
-        "narHash": "sha256-N0NJwu+beHGsQcraiqqT9H/ReJ3zsvwGEDu8DGBUH9s=",
+        "lastModified": 1792299741,
+        "narHash": "sha256-NYlQvZLaVwj5nnumKcKF7JHr3Z2QFAJMLJMZxDFYwdc=",
         "owner": "UnstoppableMango",
         "repo": "tdl",
-        "rev": "3afefe6ee27104690103043751b5a2088cb66d54",
+        "rev": "3d64b51ed051982fae1102c9655c77b51a9ce181",
         "type": "github"
       },
       "original": {
