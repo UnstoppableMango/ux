@@ -2,8 +2,11 @@
   haskell,
   haskellPackages,
   lib,
+  ...
 }:
 let
+  ux = haskellPackages.callPackage ./ux.nix { };
+
   src = lib.fileset.toSource {
     root = ../.;
     fileset = lib.fileset.unions [
@@ -18,4 +21,4 @@ let
   };
 in
 # ux.nix is cabal2nix's output for ux.cabal; `make cabal2nix` regenerates it.
-haskell.lib.compose.overrideCabal { inherit src; } (haskellPackages.callPackage ./ux.nix { })
+haskell.lib.compose.overrideCabal { inherit src; } ux

@@ -26,6 +26,7 @@
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import inputs.systems;
+
       imports = with inputs; [
         systems.flakeModule or { }
         treefmt-nix.flakeModule
@@ -34,43 +35,37 @@
       perSystem =
         { pkgs, self', ... }:
         let
-          hpkgs = pkgs.haskellPackages;
+          inherit (pkgs.haskell.lib.compose) justStaticExecutables;
+          inherit (pkgs) haskellPackages;
         in
         {
           packages = {
-            ux = import ./nix {
-              inherit (pkgs) haskell lib;
-              haskellPackages = hpkgs;
-            };
+            ux = pkgs.callPackage ./nix { };
             # The executable without GHC and the library in its closure.
-            default = pkgs.haskell.lib.compose.justStaticExecutables self'.packages.ux;
+            default = justStaticExecutables self'.packages.ux;
           };
 
           checks = {
-            ux = self'.packages.ux;
-            # nix/ux.nix is committed so evaluation needs no build (IFD).
-            cabal2nix = pkgs.runCommand "ux-cabal2nix" { nativeBuildInputs = [ pkgs.cabal2nix ]; } ''
-              cd ${self'.packages.ux.src}
-              HOME=$TMPDIR cabal2nix . | diff -u ${./nix/ux.nix} - \
-                || { echo "nix/ux.nix is stale; run make cabal2nix" >&2; exit 1; }
-              touch $out
-            '';
+            inherit (self'.packages) ux;
           };
 
-          devShells.default = hpkgs.shellFor {
+          devShells.default = pkgs.haskellPackages.shellFor {
             packages = _: [ self'.packages.ux ];
             withHoogle = false;
 
-            nativeBuildInputs = with pkgs; [
-              direnv
-              cabal-install
-              cabal2nix
-              hpkgs.haskell-language-server
-              hpkgs.proto-lens-protoc
-              protobuf
-              gnumake
-              nixfmt
-            ];
+            nativeBuildInputs =
+              (with pkgs; [
+                direnv
+                cabal-install
+                cabal2nix
+                protobuf
+                gnumake
+                nixfmt
+              ])
+              ++ (with haskellPackages; [
+                haskell-language-server
+                proto-lens-protoc
+              ]);
 
             TDL_PROTO = "${inputs.tdl}/proto";
           };
@@ -81,6 +76,7 @@
               cabal-fmt.enable = true;
               nixfmt.enable = true;
               ormolu.enable = true;
+              zizmor.enable = true;
             };
 
             settings.global.excludes = [

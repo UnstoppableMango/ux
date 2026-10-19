@@ -3,3 +3,4 @@
 .direnv/
 bin/
 dist-newstyle/
+.claude/*
